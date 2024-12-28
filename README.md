@@ -5,23 +5,21 @@
 
 ### **Escopo do projeto**
    - Quais dados serão coletados (e.g., ITRs, DFIs, etc.)?
+        - FCA (geral), DFPs, ITRs, IPE e FRE (apenas dados cadastrais).
 
-    FCA (geral), DFPs, ITRs, IPE e FRE (apenas dados cadastrais).
-
+<br>
 
    - Como os dados serão utilizados (armazenamento, análise, visualização)?
+        - Será para armazenamento e visualização.
 
-    Será para armazenamento e visualização.
-
+<br>
 
    - Quais são os pontos de entrada da API ou do site da CVM?
-
-    Diretamente no site da CVM.
-[CVM Dados - CIA ABERTA](https://dados.cvm.gov.br/dados/CIA_ABERTA/)
+        - Diretamente no site da CVM. Link: [CVM Dados - CIA ABERTA](https://dados.cvm.gov.br/dados/CIA_ABERTA/)
 
 ---
 
-### 2. **Estruturar o projeto**
+### **Estruturar o projeto**
 Organize o projeto em pastas e módulos, como mostrado abaixo:
 
 ```
@@ -60,8 +58,32 @@ requests
 unittest
 ```
 
----
+
 
 ### **Executar o projeto**
 - Instale as dependências: `pip install -r requirements.txt`
 - Execute o script principal: `python src/main.py`
+
+---
+
+## Convenções de Commit
+
+Siga as convenções abaixo ao fazer commits para manter a clareza e consistência no histórico do Git:
+
+- **feat**: Para adicionar uma nova funcionalidade.
+  - Exemplo: `feat: Adiciona o menu global da aplicação.`
+  
+- **fix**: Para corrigir um bug.
+  - Exemplo: `fix: Resolve o problema que impedia o login.`
+  
+- **docs**: Para atualizar documentação.
+  - Exemplo: `docs: Atualiza o README com instruções claras sobre comandos de testes unitários.`
+  
+- **style**: Para ajustes de formatação que não afetam o comportamento do código.
+  - Exemplo: `style: Corrige formatação do código.`
+
+- **refactor**: Para reorganizar o código sem alterar funcionalidades.
+  - Exemplo: `refactor: Reestrutura o componente de tabela.`
+
+- **test**: Para adicionar ou modificar testes.
+  - Exemplo: `test: Adiciona testes de unidade para o componente de botão.`
