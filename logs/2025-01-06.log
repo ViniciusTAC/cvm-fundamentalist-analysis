@@ -1,0 +1,32 @@
+
+
+2025-01-06 16:40:38,705 - INFO - === Sistema iniciado ===
+2025-01-06 16:40:38,706 - INFO - Esta é uma mensagem informativa.
+2025-01-06 16:40:38,706 - WARNING - Este é um aviso.
+2025-01-06 16:40:38,706 - ERROR - Este é um erro.
+2025-01-06 16:40:38,706 - CRITICAL - Mensagem de falha crítica.
+
+2025-01-06 16:40:39,844 - INFO - === Sistema iniciado ===
+2025-01-06 16:40:39,845 - INFO - Esta é uma mensagem informativa.
+2025-01-06 16:40:39,845 - WARNING - Este é um aviso.
+2025-01-06 16:40:39,845 - ERROR - Este é um erro.
+2025-01-06 16:40:39,845 - CRITICAL - Mensagem de falha crítica.
+
+2025-01-06 16:40:44,372 - INFO - === Sistema iniciado ===
+2025-01-06 16:40:44,373 - INFO - Esta é uma mensagem informativa.
+2025-01-06 16:40:44,373 - WARNING - Este é um aviso.
+2025-01-06 16:40:44,373 - ERROR - Este é um erro.
+2025-01-06 16:40:44,373 - CRITICAL - Mensagem de falha crítica.
+
+2025-01-06 16:40:57,463 - INFO - === Sistema iniciado ===
+2025-01-06 16:40:57,464 - INFO - Esta é uma mensagem informativa.
+2025-01-06 16:40:57,464 - WARNING - Este é um aviso.
+2025-01-06 16:40:57,464 - ERROR - Este é um erro.
+2025-01-06 16:40:57,465 - ERROR - Mensagem de falha crítica.
+NoneType: None
+
+2025-01-06 16:41:21,126 - INFO - === Sistema iniciado ===
+2025-01-06 16:41:21,127 - INFO - Esta é uma mensagem informativa.
+2025-01-06 16:41:21,127 - WARNING - Este é um aviso.
+2025-01-06 16:41:21,127 - ERROR - Este é um erro.
+2025-01-06 16:41:21,127 - CRITICAL - Mensagem de falha crítica.
