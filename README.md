@@ -23,29 +23,39 @@
 Organize o projeto em pastas e módulos, como mostrado abaixo:
 
 ```
-cvm-fundamentalist-analysis/
-├── data/                   # Armazenamento local (opcional)
-├── src/                    # Código-fonte do projeto
-│   ├── collectors/         # Classes para coleta de dados
-│   │   ├── base_collector.py
-│   │   ├── cvm_collector.py
-│   ├── parsers/            # Classes para análise e transformação
-│   │   ├── base_parser.py
-│   │   ├── financial_parser.py
-│   ├── models/             # Classes representando entidades (e.g., Empresa, Relatório)
-│   │   ├── company.py
-│   │   ├── report.py
-│   ├── storage/            # Classes para salvar dados (e.g., banco de dados, CSV)
-│   │   ├── database.py
-│   │   ├── file_storage.py
-│   ├── utils/              # Funções auxiliares (e.g., logs, validações)
-│   │   ├── helpers.py
-│   │   ├── logger.py
-│   ├── main.py             # Ponto de entrada do programa
-├── tests/                  # Testes unitários
-├── README.md               # Documentação do projeto
-├── requirements.txt        # Dependências do projeto
-└── setup.py                # Configuração para pacotes (opcional)
+Directory structure:
+└── cvm-fundamentalist-analysis/
+    ├── README.md
+    ├── guia.md
+    ├── requirements.txt
+    ├── setup.py
+    ├── logs/
+    └── src/
+        ├── main.py
+        ├── collectors/
+        │   ├── coletor_cvm.py
+        │   └── __pycache__/
+        ├── models/
+        │   ├── demonstrativo_financeiro.py
+        │   ├── empresas.py
+        │   ├── formulario_referencia.py
+        │   ├── grupo_demonstrativo_financeiro.py
+        │   ├── informacao_trimestral.py
+        │   ├── parecer_demonstrativo.py
+        │   ├── parecer_trimestral.py
+        │   ├── periodicos_eventuais.py
+        │   ├── planos_contas.py
+        │   └── __pycache__/
+        ├── parsers/
+        │   ├── base_parser.py
+        │   └── financial_parser.py
+        ├── storage/
+        │   ├── database.py
+        │   └── file_storage.py
+        └── utils/
+            ├── helpers.py
+            └── logger.py
+
 ```
 
 ---
