@@ -33,8 +33,7 @@ Directory structure:
     └── src/
         ├── main.py
         ├── collectors/
-        │   ├── coletor_cvm.py
-        │   └── __pycache__/
+        │   └── coletor_cvm.py
         ├── models/
         │   ├── demonstrativo_financeiro.py
         │   ├── empresas.py
@@ -44,8 +43,7 @@ Directory structure:
         │   ├── parecer_demonstrativo.py
         │   ├── parecer_trimestral.py
         │   ├── periodicos_eventuais.py
-        │   ├── planos_contas.py
-        │   └── __pycache__/
+        │   └── planos_contas.py
         ├── parsers/
         │   ├── base_parser.py
         │   └── financial_parser.py
@@ -55,7 +53,6 @@ Directory structure:
         └── utils/
             ├── helpers.py
             └── logger.py
-
 ```
 
 ---
