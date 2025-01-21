@@ -1,5 +1,6 @@
 # from datetime import datetime
 from collectors.coletor_cvm import Coletor_cvm
+from collectors.coletor import Coletor
 # from models.demonstrativo_financeiro import Demonstrativo_financeiro
 # from models.empresas import Empresas
 # from models.grupo_demonstrativo_financeiro import Grupo_demonstrativo_financeiro
@@ -7,7 +8,7 @@ from collectors.coletor_cvm import Coletor_cvm
 # from models.planos_contas import Planos_contas
 
 
-def main():
+# def main():
     # empresa = Empresas(
     #     "dogmatic",
     #     "47184",
@@ -92,9 +93,20 @@ def main():
     # )
     # itr.mostrarDados()
 
-    coletor = Coletor_cvm()
-    coletor.mostrarDados()
+    # coletor = Coletor_cvm()
+    # coletor.mostrarDados()
+    
+    # coletor = Coletor
+
+
+# if __name__ == "__main__":
+#     main()
 
 
 if __name__ == "__main__":
-    main()
+    # Instancia o coletor
+    Coletor = Coletor()
+
+    # Inicia o processo de coleta de dados
+    Coletor.collect_data()
+
