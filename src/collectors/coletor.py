@@ -1,14 +1,17 @@
-import os 
+import zipfile
+import os
 import requests
 from datetime import datetime
 from bs4 import BeautifulSoup
 import logging
 from collectors.coletor_cvm import Coletor_cvm  # Importa a classe Coletor_cvm
 from utils.logger import escrever_linha_em_branco, escrever_linha_separador
+from extractor.extrator import extrair_arquivo_zip  # Função de extração
 
 class Coletor:
-    def __init__(self, base_dir="data"):
+    def __init__(self, base_dir="data", extracted_dir="data_extraido"):
         self.base_dir = os.path.join(os.getcwd(), base_dir)
+        self.extracted_dir = os.path.join(os.getcwd(), extracted_dir)
         self.logger = self._setup_logger()
         self.DATA_URLS = self._get_data_urls()
 
@@ -46,8 +49,10 @@ class Coletor:
                     file.write(chunk)
 
             self.logger.info(f"Arquivo salvo em: {filepath}")
+            return filepath  # Retorna o caminho do arquivo baixado
         except requests.RequestException as e:
             self.logger.error(f"Erro ao baixar {url}: {e}")
+            return None
 
     def get_files_from_url(self, base_url):
         try:
@@ -69,19 +74,35 @@ class Coletor:
             escrever_linha_separador()
             escrever_linha_em_branco()
             self.logger.info(f"Iniciando download dos dados do tipo: {data_type}")
-            target_dir = os.path.join(self.base_dir, data_type, today)
-            self.create_directory(target_dir)
+            download_dir = os.path.join(self.base_dir, data_type, today)
+            extract_dir = os.path.join(self.extracted_dir, data_type)  # Diretório para arquivos extraídos
+            self.create_directory(download_dir)
+            self.create_directory(extract_dir)
 
             files = self.get_files_from_url(base_url)
 
             if not files:
-                self.logger.lineBreak(2)
                 self.logger.warning(f"Nenhum arquivo encontrado para {data_type} em {base_url}")
                 continue
 
+            # Realiza o download de todos os arquivos ZIP
+            zip_paths = []
             for file in files:
                 file_url = f"{base_url}{file}"
-                self.download_file(file_url, target_dir)
+                zip_path = self.download_file(file_url, download_dir)
+                if zip_path:
+                    zip_paths.append(zip_path)
+
+            # Após o download, realiza a extração dos arquivos ZIP
+            escrever_linha_em_branco()
+            self.logger.info(f"Iniciando extração dos arquivos baixados de {data_type}")
+            for zip_path in zip_paths:
+                try:
+                    self.logger.info(f"Extraindo {zip_path}")
+                    extrair_arquivo_zip(zip_path, extract_dir)  # Extrai para o diretório por tipo
+                    self.logger.info(f"Extração concluída: {zip_path}")
+                except zipfile.BadZipFile:
+                    self.logger.error(f"Erro: O arquivo {zip_path} está corrompido.")
         
         escrever_linha_em_branco()
-        self.logger.info("Coleta de dados concluída.")
+        self.logger.info("Coleta e extração de dados concluídas.")
