@@ -27,10 +27,25 @@ logger.addHandler(console_handler)
 
 # Exemplos de mensagens de log
 # Log de inicialização do sistema
-logger.handlers[0].stream.write("\n")  # Escreve uma linha em branco diretamente no arquivo ou console
-logger.info("=== Sistema iniciado ===")
-logger.debug("Este é um log de depuração (não aparecerá porque o nível é INFO).")
-logger.info("Esta é uma mensagem informativa.")
-logger.warning("Este é um aviso.")
-logger.error("Este é um erro.")
-logger.critical("Mensagem de falha crítica.")
+
+# logger.handlers[0].stream.write("\n")  # Escreve uma linha em branco diretamente no arquivo ou console
+# logger.info("=== Sistema iniciado ===")
+# logger.debug("Este é um log de depuração (não aparecerá porque o nível é INFO).")
+# logger.info("Esta é uma mensagem informativa.")
+# logger.warning("Este é um aviso.")
+# logger.error("Este é um erro.")
+# logger.critical("Mensagem de falha crítica.")
+
+def escrever_linha_em_branco():
+    """Escreve uma linha em branco no stream do handler do arquivo."""
+    for handler in logger.handlers:
+        if isinstance(handler, logging.FileHandler):  # Apenas para FileHandler
+            handler.stream.write("\n")
+            handler.stream.flush()  # Garante que a linha seja gravada no arquivo
+
+def escrever_linha_separador():
+    """Escreve uma linha de separador (------------------)."""
+    for handler in logger.handlers:
+        if isinstance(handler, logging.FileHandler):  # Apenas para FileHandler
+            handler.stream.write("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+            handler.stream.flush()  # Garante que a linha seja gravada no arquivo
