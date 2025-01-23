@@ -1,28 +1,3 @@
-# from mysql.connector import Error
-
-# class MapeadorCVM:
-#     """Classe para mapear e inserir dados no banco de dados."""
-
-#     def __init__(self, conexao):
-#         self.conexao = conexao
-
-#     def inserir_dados(self, tabela, dados):
-#         try:
-#             cursor = self.conexao.connection.cursor()
-#             colunas = ", ".join(dados[0].keys())
-#             valores = ", ".join(["%s"] * len(dados[0]))
-#             query = f"INSERT INTO {tabela} ({colunas}) VALUES ({valores})"
-
-#             for linha in dados:
-#                 cursor.execute(query, list(linha.values()))
-
-#             self.conexao.connection.commit()
-#             print(f"Dados inseridos na tabela {tabela}.")
-#         except Error as e:
-#             print(f"Erro ao inserir dados: {e}")
-#         finally:
-#             cursor.close()
-
 import os
 import pandas as pd
 from datetime import datetime
