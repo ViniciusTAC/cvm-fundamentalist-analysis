@@ -195,3 +195,39 @@ class Coletor_cvm:
     def mostrarDados(self):
         for relacao in self.lista_relacao:
             print("\n", relacao)
+
+
+
+# import os
+# import requests
+# import zipfile
+
+# class ColetorCVM:
+#     """Classe para gerenciar o download e extração dos arquivos da CVM."""
+
+#     def __init__(self, base_dir="dados_cvm"):
+#         self.base_dir = base_dir
+#         if not os.path.exists(self.base_dir):
+#             os.makedirs(self.base_dir)
+
+#     def baixar_arquivo(self, url, destino):
+#         try:
+#             response = requests.get(url, stream=True)
+#             if response.status_code == 200:
+#                 with open(destino, 'wb') as file:
+#                     for chunk in response.iter_content(chunk_size=8192):
+#                         file.write(chunk)
+#                 print(f"Arquivo baixado: {destino}")
+#             else:
+#                 print(f"Erro ao baixar arquivo: {url}")
+#         except Exception as e:
+#             print(f"Erro durante o download: {e}")
+
+#     def extrair_arquivo(self, arquivo_zip, destino):
+#         try:
+#             with zipfile.ZipFile(arquivo_zip, 'r') as zip_ref:
+#                 zip_ref.extractall(destino)
+#             print(f"Arquivos extraídos para: {destino}")
+#         except zipfile.BadZipFile:
+#             print(f"Erro ao extrair: {arquivo_zip} não é um arquivo ZIP válido.")
+

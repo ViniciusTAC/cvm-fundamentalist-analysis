@@ -1,2 +1,10 @@
 src/collectors/__pycache__/
 data
+data_extraido
+src/extractor/__pycache__/
+src/models/__pycache__/
+src/parsers/__pycache__/
+src/storage/__pycache__/
+dados_cvm
+src/utils/__pycache__/
+src/utils/__pycache__/logger.cpython-312.pyc
