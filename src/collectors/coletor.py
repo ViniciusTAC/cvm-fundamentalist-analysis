@@ -138,8 +138,8 @@ class Coletor:
 
     def _setup_logger(self, log_dir, log_type="download"):
         today = datetime.now().strftime("%Y-%m-%d")
-        log_sucesso_dir = os.path.join(log_dir, today, "sucesso")
-        log_erro_dir = os.path.join(log_dir, today, "erro")
+        log_sucesso_dir = os.path.join(log_dir, today)
+        log_erro_dir = os.path.join(log_dir, today)
 
         # Garante que as pastas de sucesso e erro sejam criadas
         self.create_directory(log_sucesso_dir)
@@ -223,9 +223,9 @@ class Coletor:
             files = self.get_files_from_url(base_url, download_erro_logger)
 
             if not files:
-                escrever_linha_em_branco()
-                escrever_linha_separador()
-                escrever_linha_em_branco()
+                escrever_linha_em_branco(download_erro_logger)
+                escrever_linha_separador(download_erro_logger)
+                escrever_linha_em_branco(download_erro_logger)
                 download_erro_logger.warning(f"Nenhum arquivo encontrado para {data_type} em {base_url}")
                 continue
 

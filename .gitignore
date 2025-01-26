@@ -8,3 +8,5 @@ src/storage/__pycache__/
 dados_cvm
 src/utils/__pycache__/
 src/utils/__pycache__/logger.cpython-312.pyc
+src/utils/__pycache__/logger.cpython-312.pyc
+logs
