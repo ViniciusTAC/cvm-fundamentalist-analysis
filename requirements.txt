@@ -4,3 +4,4 @@ mysql-connector-python
 bs4
 pandas
 sqlalchemy
+mysql.connector
