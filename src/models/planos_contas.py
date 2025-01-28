@@ -23,5 +23,5 @@ class Planos_contas:
         self._descricao_conta = value
 
     def mostrarDados(self):
-        print("self._codigo_conta: ", str(self._codigo_conta))
-        print("self._descricao_conta: ", str(self._descricao_conta))
+        print("codigo_conta: ", str(self._codigo_conta))
+        print("descricao_conta: ", str(self._descricao_conta))

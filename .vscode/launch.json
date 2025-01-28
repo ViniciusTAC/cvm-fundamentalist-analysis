@@ -5,6 +5,7 @@
             "name": "Python Debugger: Python File",
             "type": "debugpy",
             "request": "launch",
+            // "program": "${workspaceFolder}/setup.py",
             "program": "${workspaceFolder}/src/main.py",
             // Adicione outras configurações se necessário, como args e cwd
         }
