@@ -2,6 +2,7 @@ import os
 
 from datetime import datetime
 from collectors.coletor import Coletor
+from utils.logger import logger, escrever_linha_em_branco, escrever_linha_separador
 
 # Empresas ---------------------------------------------------------------------------------------------------------------------
 from service.empresas_service import process_csv_files
@@ -38,19 +39,29 @@ def main():
     # coletor.collect_data()
 
 # Empresas ---------------------------------------------------------------------------------------------------------------------    
-    base_path = os.path.join('data_extraido', 'FCA', 'sucesso')
-    empresas = process_csv_files(base_path)
+    try:
+        escrever_linha_separador(logger)
+        logger.info("Processo iniciado de cadastro/atualização de Empresas.")
+        base_path = os.path.join('data_extraido', 'FCA', 'sucesso')
+        empresas = process_csv_files(base_path)
 
-    for i in range(3):
-        print(empresas[i].mostrarDados())
+        # Exibe alguns registros para verificação
+        for i in range(min(3, len(empresas))):
+            print(empresas[i].mostrarDados())
 
-    # Conectar ao banco e salvar os dados
-    banco = ConexaoBanco(host='localhost', database='cvm_dados', user='root', password='31415')
+        # Conectar ao banco e salvar os dados
+        banco = ConexaoBanco(host='localhost', database='cvm_dados', user='root', password='31415')
 
-    banco.conectar()
-    for empresa in empresas:
-        banco.inserir_ou_atualizar_empresa(empresa)
-    banco.desconectar() 
+        banco.conectar()
+        for empresa in empresas:
+            banco.inserir_ou_atualizar_empresa(empresa)
+        banco.desconectar()
+        
+        logger.info("Processo de cadastro/atualização de Empresas finalizado com sucesso.")
+    except Exception as e:
+        logger.error(f"Erro durante o processo  de cadastro/atualização de Empresas: {str(e)}", exc_info=True)
+
+    escrever_linha_em_branco(logger)
     
     
 # IPE ---------------------------------------------------------------------------------------------------------------------

@@ -6,7 +6,7 @@
             "type": "debugpy",
             "request": "launch",
             // "program": "${workspaceFolder}/setup.py",
-            "program": "${workspaceFolder}/src/main.py",
+            "program": "${workspaceFolder}/src/main_teste.py",
             // Adicione outras configurações se necessário, como args e cwd
         }
     ]

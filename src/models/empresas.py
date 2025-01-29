@@ -327,32 +327,64 @@ class Empresas:
         self._ano_doc = value
 
     def mostrarDados(self):
-        print("categoria_doc: ", str(self.categoria_doc))
-        print("codigo_cvm: ", str(self.codigo_cvm))
-        print("cnpj_companhia: ", str(self.cnpj_companhia))
-        print("descricao_atividade: ", str(self.descricao_atividade))
-        print("especie_controle_acionario: ", str(self.especie_controle_acionario))
-        print("identificador_documento: ", str(self.identificador_documento))
-        print("mes_encerramento_exercicio_social: ", str(self.mes_encerramento_exercicio_social))
-        print("nome_empresa: ", str(self.nome_empresa))
-        print("nome_anterior_empresa: ", str(self.nome_anterior_empresa))
-        print("pagina_web: ", str(self.pagina_web))
-        print("pais_custodia_valores_mobiliarios: ", str(self.pais_custodia_valores_mobiliarios))
-        print("pais_origem: ", str(self.pais_origem))
-        print("setor_atividade: ", str(self.setor_atividade))
-        print("situacao_emissor: ", str(self.situacao_emissor))
-        print("situacao_registro_cvm: ", str(self.situacao_registro_cvm))
-        print("versao: ", str(self.versao))
-        print("data_registro_cvm: ", str(self.data_registro_cvm))
-        print("data_nome_empresarial: ", str(self.data_nome_empresarial))
-        print("data_categoria_registro_cvm: ", str(self.data_categoria_registro_cvm))
-        print("data_situacao_registro_cvm: ", str(self.data_situacao_registro_cvm))
-        print("data_constituicao: ", str(self.data_constituicao))
-        print("data_especie_controle_acionario: ", str(self.data_especie_controle_acionario))
-        print("data_referencia_documento: ", str(self.data_referencia_documento))
-        print("data_situacao_emissor: ", str(self.data_situacao_emissor))
-        print("data_alteracao_exercicio_social: ", str(self.data_alteracao_exercicio_social))
-        print("dia_encerramento_exercicio_social: ", str(self.dia_encerramento_exercicio_social))
-        print("data_doc: ", str(self.data_doc))
-        print("mes_doc: ", str(self.mes_doc))
-        print("ano_doc: ", str(self.ano_doc))
+        # print("categoria_doc: ", str(self.categoria_doc))
+        # print("codigo_cvm: ", str(self.codigo_cvm))
+        # print("cnpj_companhia: ", str(self.cnpj_companhia))
+        # print("descricao_atividade: ", str(self.descricao_atividade))
+        # print("especie_controle_acionario: ", str(self.especie_controle_acionario))
+        # print("identificador_documento: ", str(self.identificador_documento))
+        # print("mes_encerramento_exercicio_social: ", str(self.mes_encerramento_exercicio_social))
+        # print("nome_empresa: ", str(self.nome_empresa))
+        # print("nome_anterior_empresa: ", str(self.nome_anterior_empresa))
+        # print("pagina_web: ", str(self.pagina_web))
+        # print("pais_custodia_valores_mobiliarios: ", str(self.pais_custodia_valores_mobiliarios))
+        # print("pais_origem: ", str(self.pais_origem))
+        # print("setor_atividade: ", str(self.setor_atividade))
+        # print("situacao_emissor: ", str(self.situacao_emissor))
+        # print("situacao_registro_cvm: ", str(self.situacao_registro_cvm))
+        # print("versao: ", str(self.versao))
+        # print("data_registro_cvm: ", str(self.data_registro_cvm))
+        # print("data_nome_empresarial: ", str(self.data_nome_empresarial))
+        # print("data_categoria_registro_cvm: ", str(self.data_categoria_registro_cvm))
+        # print("data_situacao_registro_cvm: ", str(self.data_situacao_registro_cvm))
+        # print("data_constituicao: ", str(self.data_constituicao))
+        # print("data_especie_controle_acionario: ", str(self.data_especie_controle_acionario))
+        # print("data_referencia_documento: ", str(self.data_referencia_documento))
+        # print("data_situacao_emissor: ", str(self.data_situacao_emissor))
+        # print("data_alteracao_exercicio_social: ", str(self.data_alteracao_exercicio_social))
+        # print("dia_encerramento_exercicio_social: ", str(self.dia_encerramento_exercicio_social))
+        # print("data_doc: ", str(self.data_doc))
+        # print("mes_doc: ", str(self.mes_doc))
+        # print("ano_doc: ", str(self.ano_doc))
+
+        return (
+            f"categoria_doc: {self.categoria_doc},"
+            f"codigo_cvm: {self.codigo_cvm},"
+            f"cnpj_companhia: {self.cnpj_companhia},"
+            f"descricao_atividade: {self.descricao_atividade},"
+            f"especie_controle_acionario: {self.especie_controle_acionario},"
+            f"identificador_documento: {self.identificador_documento},"
+            f"mes_encerramento_exercicio_social: {self.mes_encerramento_exercicio_social},"
+            f"nome_empresa: {self.nome_empresa},"
+            f"nome_anterior_empresa: {self.nome_anterior_empresa},"
+            f"pagina_web: {self.pagina_web},"
+            f"pais_custodia_valores_mobiliarios: {self.pais_custodia_valores_mobiliarios},"
+            f"pais_origem: {self.pais_origem},"
+            f"setor_atividade: {self.setor_atividade},"
+            f"situacao_emissor: {self.situacao_emissor},"
+            f"situacao_registro_cvm: {self.situacao_registro_cvm},"
+            f"versao: {self.versao},"
+            f"data_registro_cvm: {self.data_registro_cvm},"
+            f"data_nome_empresarial: {self.data_nome_empresarial},"
+            f"data_categoria_registro_cvm: {self.data_categoria_registro_cvm},"
+            f"data_situacao_registro_cvm: {self.data_situacao_registro_cvm},"
+            f"data_constituicao: {self.data_constituicao},"
+            f"data_especie_controle_acionario: {self.data_especie_controle_acionario},"
+            f"data_referencia_documento: {self.data_referencia_documento},"
+            f"data_situacao_emissor: {self.data_situacao_emissor},"
+            f"data_alteracao_exercicio_social: {self.data_alteracao_exercicio_social},"
+            f"dia_encerramento_exercicio_social: {self.dia_encerramento_exercicio_social},"
+            f"data_doc: {self.data_doc},"
+            f"mes_doc: {self.mes_doc},"
+            f"ano_doc: {self.ano_doc},"
+        )
