@@ -153,7 +153,6 @@
 
 import mysql.connector
 from mysql.connector import Error
-from sqlalchemy import null
 import os
 from datetime import datetime
 import logging
@@ -170,7 +169,6 @@ class ConexaoBanco:
         self.password = password
         self.connection = None
         self.log_sucesso, self.log_erro = self._setup_logger()
-
 
     def _setup_logger(self, log_dir="logs/logs_insercao"):
         # Diretórios para logs de sucesso e erro
@@ -225,7 +223,7 @@ class ConexaoBanco:
             self.connection.close()
             print("Conexão com o banco de dados encerrada.")
 
-    def inserir_empresa(self, empresa):
+    def inserir_ou_atualizar_empresa(self, empresa):
         try:
             cursor = self.connection.cursor()
             query = """
@@ -236,13 +234,39 @@ class ConexaoBanco:
                     situacao_registro_cvm, versao, data_registro_cvm, data_nome_empresarial, data_categoria_registro_cvm,
                     data_situacao_registro_cvm, data_constituicao, data_especie_controle_acionario,
                     data_referencia_documento, data_situacao_emissor, data_alteracao_exercicio_social,
-                    dia_encerramento_exercicio_social, data_doc, mes_doc, ano_doc
+                    dia_encerramento_exercicio_social, mes_doc, ano_doc
                 ) VALUES (
-                    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
+                    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
                 )
+                ON DUPLICATE KEY UPDATE 
+                    categoria_doc = VALUES(categoria_doc),
+                    codigo_cvm = VALUES(codigo_cvm),
+                    descricao_atividade = VALUES(descricao_atividade),
+                    especie_controle_acionario = VALUES(especie_controle_acionario),
+                    identificador_documento = VALUES(identificador_documento),
+                    mes_encerramento_exercicio_social = VALUES(mes_encerramento_exercicio_social),
+                    nome_empresa = VALUES(nome_empresa),
+                    nome_anterior_empresa = VALUES(nome_anterior_empresa),
+                    pagina_web = VALUES(pagina_web),
+                    pais_custodia_valores_mobiliarios = VALUES(pais_custodia_valores_mobiliarios),
+                    pais_origem = VALUES(pais_origem),
+                    setor_atividade = VALUES(setor_atividade),
+                    situacao_emissor = VALUES(situacao_emissor),
+                    situacao_registro_cvm = VALUES(situacao_registro_cvm),
+                    versao = VALUES(versao),
+                    data_registro_cvm = VALUES(data_registro_cvm),
+                    data_nome_empresarial = VALUES(data_nome_empresarial),
+                    data_categoria_registro_cvm = VALUES(data_categoria_registro_cvm),
+                    data_situacao_registro_cvm = VALUES(data_situacao_registro_cvm),
+                    data_constituicao = VALUES(data_constituicao),
+                    data_especie_controle_acionario = VALUES(data_especie_controle_acionario),
+                    data_referencia_documento = VALUES(data_referencia_documento),
+                    data_situacao_emissor = VALUES(data_situacao_emissor),
+                    data_alteracao_exercicio_social = VALUES(data_alteracao_exercicio_social),
+                    dia_encerramento_exercicio_social = VALUES(dia_encerramento_exercicio_social),
+                    data_hora_atualizacao = NOW()
             """
-            # Construir valores garantindo que não haja extras e substituindo 'nan' por None
-            # Construir valores garantindo validação dos campos
+
             values = (
                 tratar_valor(empresa._categoria_doc),
                 tratar_valor(empresa._codigo_cvm),
@@ -265,32 +289,19 @@ class ConexaoBanco:
                 tratar_valor(empresa._data_categoria_registro_cvm, tipo='date'),
                 tratar_valor(empresa._data_situacao_registro_cvm, tipo='date'),
                 tratar_valor(empresa._data_constituicao, tipo='date'),
-                tratar_valor(empresa.data_especie_controle_acionario, tipo='date'),
+                tratar_valor(empresa._data_especie_controle_acionario, tipo='date'),
                 tratar_valor(empresa._data_referencia_documento, tipo='date'),
                 tratar_valor(empresa._data_situacao_emissor, tipo='date'),
-                tratar_valor(empresa.data_alteracao_exercicio_social, tipo='date'),
+                tratar_valor(empresa._data_alteracao_exercicio_social, tipo='date'),
                 tratar_valor(empresa._dia_encerramento_exercicio_social, tipo='int'),
-                tratar_valor(empresa._data_doc, tipo='date'),
                 tratar_valor(empresa._mes_doc, tipo='int'),
                 tratar_valor(empresa._ano_doc, tipo='int'),
             )
-            print("\n\n")
-            # Gerar query SQL formatada para depuração
-            formatted_query = query.replace("%s", "{}").format(*[
-                f"'{v}'" if v is not None else "NULL" for v in values
-            ])
-            print("SQL gerado para execução:\n", formatted_query)
-            
 
             cursor.execute(query, values)
             self.connection.commit()
-            # escrever_linha_em_branco()
-            # escrever_linha_separador()
-            # escrever_linha_em_branco()
-            # self.logger.info(f"Empresa {empresa._nome_empresa} do ano {empresa._ano_doc} inserida com sucesso.")
-            # escrever_linha_em_branco()
-            self.log_sucesso.info(f"Periodicos e Eventuais {empresa._nome_empresa}, do CNPJ: {empresa._cnpj_companhia} e do ano {empresa._ano_doc} inserida com sucesso.")
-            print(f"Empresa {empresa._nome_empresa} inserida com sucesso.")
+            self.log_sucesso.info(f"Empresa {empresa._nome_empresa}, do CNPJ: {empresa._cnpj_companhia} e do ano {empresa._ano_doc} inserida/atualizada com sucesso.")
+            print(f"Empresa {empresa._nome_empresa}, do CNPJ: {empresa._cnpj_companhia} e do ano {empresa._ano_doc} inserida/atualizada com sucesso.")
         except Error as e:
             escrever_linha_em_branco(self.log_erro)
             escrever_linha_separador(self.log_erro)
@@ -298,6 +309,8 @@ class ConexaoBanco:
             self.log_erro.error(f"Erro ao inserir empresa {empresa._nome_empresa} do ano {empresa._ano_doc}, erro: {e}.")
             escrever_linha_em_branco(self.log_erro)
             print(f"Erro ao inserir empresa {empresa._nome_empresa} do ano {empresa._ano_doc}, erro: {e}.")
+
+
 
 
 def tratar_valor(valor, tipo=None):
