@@ -123,11 +123,6 @@ class ConexaoBanco:
 
             cursor.execute(query, values)
             self.connection.commit()
-            # escrever_linha_em_branco()
-            # escrever_linha_separador()
-            # escrever_linha_em_branco()
-            # self.logger.info(f"Empresa {empresa._nome_empresa} do ano {empresa._ano_doc} inserida com sucesso.")
-            # escrever_linha_em_branco()
             self.log_sucesso.info(f"Parecer Demonstrativo  do CNPJ: {parecer_trimestral._cnpj_companhia} e do ano {parecer_trimestral._ano_doc} inserida com sucesso.")
             print(
                 f"Parecer Demonstrativo  do CNPJ: {parecer_trimestral._cnpj_companhia} e do ano {parecer_trimestral._ano_doc} inserida com sucesso."
