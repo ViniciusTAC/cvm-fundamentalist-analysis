@@ -23,5 +23,5 @@ class Grupo_demonstrativo_financeiro:
         self._grupo_dpf = value
 
     def mostrarDados(self):
-        print("self.codigo_grupo_dfp: ", str(self.codigo_grupo_dfp))
-        print("self.grupo_dpf: ", str(self.grupo_dpf))
+        print("codigo_grupo_dfp: ", str(self.codigo_grupo_dfp))
+        print("grupo_dpf: ", str(self.grupo_dpf))

@@ -1,7 +1,9 @@
 beautifulsoup4==4.12.2
 requests==2.31.0
 mysql-connector-python
-bs4
 pandas
 sqlalchemy
-mysql.connector
+numpy
+lxml
+sqlite3
+tkinter
