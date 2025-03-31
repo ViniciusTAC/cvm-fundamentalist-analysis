@@ -25,7 +25,8 @@ src/
 ### Pré-requisitos
 
 - Python 3.11+
-- MySQL Server ou banco compatível
+- MySQL Workbench
+- SQLite3
 
 ### Instalação
 

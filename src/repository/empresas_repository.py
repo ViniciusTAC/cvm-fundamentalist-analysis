@@ -1,24 +1,20 @@
-import mysql.connector
-from mysql.connector import Error
+import sqlite3
 import os
 from datetime import datetime
+from zoneinfo import ZoneInfo
 import logging
 from utils.logger import escrever_linha_em_branco, escrever_linha_separador
 
 
 class ConexaoBanco:
-    """Classe para gerenciar a conexão com o banco de dados MySQL."""
+    """Classe para gerenciar a conexão com o banco de dados SQLite."""
 
-    def __init__(self, host, database, user, password):
-        self.host = host
-        self.database = database
-        self.user = user
-        self.password = password
+    def __init__(self, db_path):
+        self.db_path = db_path
         self.connection = None
         self.log_sucesso, self.log_erro = self._setup_logger()
 
     def _setup_logger(self, log_dir="logs/logs_insercao"):
-        # Diretórios para logs de sucesso e erro
         hoje = datetime.now().strftime("%Y-%m-%d")
         log_sucesso_dir = os.path.join(log_dir, hoje)
         log_erro_dir = os.path.join(log_dir, hoje)
@@ -26,7 +22,6 @@ class ConexaoBanco:
         os.makedirs(log_sucesso_dir, exist_ok=True)
         os.makedirs(log_erro_dir, exist_ok=True)
 
-        # Configuração do logger de sucesso
         sucesso_logger = logging.getLogger("sucesso")
         sucesso_logger.setLevel(logging.INFO)
         sucesso_handler = logging.FileHandler(
@@ -38,7 +33,6 @@ class ConexaoBanco:
         if not sucesso_logger.handlers:
             sucesso_logger.addHandler(sucesso_handler)
 
-        # Configuração do logger de erro
         erro_logger = logging.getLogger("erro")
         erro_logger.setLevel(logging.WARNING)
         erro_handler = logging.FileHandler(
@@ -54,25 +48,25 @@ class ConexaoBanco:
 
     def conectar(self):
         try:
-            self.connection = mysql.connector.connect(
-                host=self.host,
-                database=self.database,
-                user=self.user,
-                password=self.password,
-            )
-            if self.connection.is_connected():
-                print("Conexão com o banco de dados estabelecida com sucesso.")
-        except Error as e:
+            self.connection = sqlite3.connect(self.db_path)
+            print("Conexão com o banco de dados SQLite estabelecida com sucesso.")
+        except sqlite3.Error as e:
             print(f"Erro ao conectar ao banco de dados: {e}")
 
     def desconectar(self):
-        if self.connection and self.connection.is_connected():
+        if self.connection:
             self.connection.close()
             print("Conexão com o banco de dados encerrada.")
+
+
+
 
     def inserir_ou_atualizar_empresa(self, empresa):
         try:
             cursor = self.connection.cursor()
+
+            agora_local = datetime.now(ZoneInfo("America/Sao_Paulo")).strftime('%Y-%m-%d %H:%M:%S')
+
             query = """
                 INSERT INTO empresas (
                     categoria_doc, codigo_cvm, cnpj_companhia, descricao_atividade, especie_controle_acionario,
@@ -81,37 +75,41 @@ class ConexaoBanco:
                     situacao_registro_cvm, versao, data_registro_cvm, data_nome_empresarial, data_categoria_registro_cvm,
                     data_situacao_registro_cvm, data_constituicao, data_especie_controle_acionario,
                     data_referencia_documento, data_situacao_emissor, data_alteracao_exercicio_social,
-                    dia_encerramento_exercicio_social, mes_doc, ano_doc
-                ) VALUES (
-                    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
+                    dia_encerramento_exercicio_social, mes_doc, ano_doc,
+                    data_hora_insercao, data_hora_atualizacao
                 )
-                ON DUPLICATE KEY UPDATE 
-                    categoria_doc = VALUES(categoria_doc),
-                    codigo_cvm = VALUES(codigo_cvm),
-                    descricao_atividade = VALUES(descricao_atividade),
-                    especie_controle_acionario = VALUES(especie_controle_acionario),
-                    identificador_documento = VALUES(identificador_documento),
-                    mes_encerramento_exercicio_social = VALUES(mes_encerramento_exercicio_social),
-                    nome_empresa = VALUES(nome_empresa),
-                    nome_anterior_empresa = VALUES(nome_anterior_empresa),
-                    pagina_web = VALUES(pagina_web),
-                    pais_custodia_valores_mobiliarios = VALUES(pais_custodia_valores_mobiliarios),
-                    pais_origem = VALUES(pais_origem),
-                    setor_atividade = VALUES(setor_atividade),
-                    situacao_emissor = VALUES(situacao_emissor),
-                    situacao_registro_cvm = VALUES(situacao_registro_cvm),
-                    versao = VALUES(versao),
-                    data_registro_cvm = VALUES(data_registro_cvm),
-                    data_nome_empresarial = VALUES(data_nome_empresarial),
-                    data_categoria_registro_cvm = VALUES(data_categoria_registro_cvm),
-                    data_situacao_registro_cvm = VALUES(data_situacao_registro_cvm),
-                    data_constituicao = VALUES(data_constituicao),
-                    data_especie_controle_acionario = VALUES(data_especie_controle_acionario),
-                    data_referencia_documento = VALUES(data_referencia_documento),
-                    data_situacao_emissor = VALUES(data_situacao_emissor),
-                    data_alteracao_exercicio_social = VALUES(data_alteracao_exercicio_social),
-                    dia_encerramento_exercicio_social = VALUES(dia_encerramento_exercicio_social),
-                    data_hora_atualizacao = NOW()
+                VALUES (
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                )
+                ON CONFLICT(cnpj_companhia, mes_doc, ano_doc) DO UPDATE SET
+                    categoria_doc = excluded.categoria_doc,
+                    codigo_cvm = excluded.codigo_cvm,
+                    descricao_atividade = excluded.descricao_atividade,
+                    especie_controle_acionario = excluded.especie_controle_acionario,
+                    identificador_documento = excluded.identificador_documento,
+                    mes_encerramento_exercicio_social = excluded.mes_encerramento_exercicio_social,
+                    nome_empresa = excluded.nome_empresa,
+                    nome_anterior_empresa = excluded.nome_anterior_empresa,
+                    pagina_web = excluded.pagina_web,
+                    pais_custodia_valores_mobiliarios = excluded.pais_custodia_valores_mobiliarios,
+                    pais_origem = excluded.pais_origem,
+                    setor_atividade = excluded.setor_atividade,
+                    situacao_emissor = excluded.situacao_emissor,
+                    situacao_registro_cvm = excluded.situacao_registro_cvm,
+                    versao = excluded.versao,
+                    data_registro_cvm = excluded.data_registro_cvm,
+                    data_nome_empresarial = excluded.data_nome_empresarial,
+                    data_categoria_registro_cvm = excluded.data_categoria_registro_cvm,
+                    data_situacao_registro_cvm = excluded.data_situacao_registro_cvm,
+                    data_constituicao = excluded.data_constituicao,
+                    data_especie_controle_acionario = excluded.data_especie_controle_acionario,
+                    data_referencia_documento = excluded.data_referencia_documento,
+                    data_situacao_emissor = excluded.data_situacao_emissor,
+                    data_alteracao_exercicio_social = excluded.data_alteracao_exercicio_social,
+                    dia_encerramento_exercicio_social = excluded.dia_encerramento_exercicio_social,
+                    mes_doc = excluded.mes_doc,
+                    ano_doc = excluded.ano_doc,
+                    data_hora_atualizacao = ?
             """
 
             values = (
@@ -143,20 +141,22 @@ class ConexaoBanco:
                 tratar_valor(empresa._dia_encerramento_exercicio_social, tipo='int'),
                 tratar_valor(empresa._mes_doc, tipo='int'),
                 tratar_valor(empresa._ano_doc, tipo='int'),
+                agora_local,  # data_hora_insercao (só no insert)
+                agora_local,  # data_hora_atualizacao (também usada no update)
+                agora_local   # parâmetro extra para o update (último ? do SQL)
             )
 
             cursor.execute(query, values)
             self.connection.commit()
             self.log_sucesso.info(f"Empresa {empresa._nome_empresa}, do CNPJ: {empresa._cnpj_companhia} e do ano {empresa._ano_doc} inserida/atualizada com sucesso.")
             print(f"Empresa {empresa._nome_empresa}, do CNPJ: {empresa._cnpj_companhia} e do ano {empresa._ano_doc} inserida/atualizada com sucesso.")
-        except Error as e:
+        except sqlite3.Error as e:
             escrever_linha_em_branco(self.log_erro)
             escrever_linha_separador(self.log_erro)
             escrever_linha_em_branco(self.log_erro)
             self.log_erro.error(f"Erro ao inserir empresa {empresa._nome_empresa} do ano {empresa._ano_doc}, erro: {e}.")
             escrever_linha_em_branco(self.log_erro)
             print(f"Erro ao inserir empresa {empresa._nome_empresa} do ano {empresa._ano_doc}, erro: {e}.")
-
 
 
 
@@ -185,6 +185,3 @@ def tratar_valor(valor, tipo=None):
             return None
     else:
         return valor  # Retorna o valor original se não precisa de conversão
-
-
-

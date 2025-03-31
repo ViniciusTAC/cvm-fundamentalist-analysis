@@ -1,10 +1,33 @@
 PRAGMA foreign_keys = ON;
 
 -- Tabela: planos_contas
-CREATE TABLE IF NOT EXISTS planos_contas (
-  codigo_conta TEXT PRIMARY KEY,
-  descricao_conta TEXT NOT NULL
+CREATE TABLE planos_contas (
+  id_planos_contas INTEGER PRIMARY KEY AUTOINCREMENT,
+  codigo_conta TEXT NOT NULL,
+  descricao_conta TEXT NOT NULL,
+  comportamento TEXT NOT NULL,
+  UNIQUE(codigo_conta)
 );
+
+INSERT INTO planos_contas (codigo_conta, descricao_conta, comportamento)
+VALUES
+  ('1', 'Ativo Total', 'BPA'),
+  ('1.01', 'Ativo Circulante', 'BPA'),
+  ('1.01.01', 'Disponibilidades', 'BPA'),
+  ('2', 'Passivo Total', 'BPP'),
+  ('2.01', 'Passivo Circulante', 'BPP'),
+  ('2.02', 'Passivo Não Circulante', 'BPP'),
+  ('Patrimônio Líquido', 'Patrimônio Líquido', 'BPP'),
+  ('3.01', 'Receita Líquida', 'DRE'),
+  ('3.03', 'Custo dos Produtos Vendidos', 'DRE'),
+  ('3.05', 'Despesas Operacionais', 'DRE'),
+  ('3.07', 'Resultado Financeiro', 'DRE'),
+  ('3.11', 'Imposto de Renda', 'DRE'),
+  ('3.13', 'Lucro Líquido', 'DRE'),
+  ('3.99', 'Outros Resultados', 'DRE'),
+  ('Juros sobre o Capital Próprio', 'Juros sobre o Capital Próprio', 'DVA'),
+  ('Dividendos', 'Dividendos', 'DVA');
+
 
 -- Tabela: grupo_demonstrativo_financeiro
 CREATE TABLE IF NOT EXISTS grupo_demonstrativo_financeiro (
@@ -28,7 +51,7 @@ VALUES
 CREATE TABLE IF NOT EXISTS empresas (
   categoria_doc TEXT,
   codigo_cvm TEXT NOT NULL,
-  cnpj_companhia TEXT NOT NULL UNIQUE,
+  cnpj_companhia TEXT NOT NULL,
   descricao_atividade TEXT,
   especie_controle_acionario TEXT,
   identificador_documento INTEGER,
@@ -48,14 +71,15 @@ CREATE TABLE IF NOT EXISTS empresas (
   data_situacao_registro_cvm TEXT,
   data_constituicao TEXT,
   data_especie_controle_acionario TEXT,
-  data_referencia_documento TEXT,
   data_situacao_emissor TEXT,
   data_alteracao_exercicio_social TEXT,
   dia_encerramento_exercicio_social INTEGER,
-  data_doc TEXT,
+  data_referencia_documento TEXT,
   mes_doc TEXT,
   ano_doc TEXT,
-  PRIMARY KEY (codigo_cvm, cnpj_companhia)
+  data_hora_insercao DATETIME,
+  data_hora_atualizacao DATETIME,
+  PRIMARY KEY (cnpj_companhia, mes_doc, ano_doc)
 );
 
 -- Tabela: demonstrativo_financeiro
@@ -189,3 +213,5 @@ CREATE TABLE IF NOT EXISTS numeros_acoes (
   ano_doc TEXT,
   FOREIGN KEY (cnpj_companhia) REFERENCES empresas (cnpj_companhia)
 );
+
+
