@@ -1,26 +1,20 @@
-import mysql.connector
-from mysql.connector import Error
-from sqlalchemy import null
+import sqlite3
 import os
 from datetime import datetime
+from zoneinfo import ZoneInfo
 import logging
 from utils.logger import escrever_linha_em_branco, escrever_linha_separador
 
 
 class ConexaoBanco:
-    """Classe para gerenciar a conexão com o banco de dados MySQL."""
+    """Classe para gerenciar a conexão com o banco de dados SQLite."""
 
-    def __init__(self, host, database, user, password):
-        self.host = host
-        self.database = database
-        self.user = user
-        self.password = password
+    def __init__(self, db_path):
+        self.db_path = db_path
         self.connection = None
         self.log_sucesso, self.log_erro = self._setup_logger()
 
-
     def _setup_logger(self, log_dir="logs/logs_insercao"):
-        # Diretórios para logs de sucesso e erro
         hoje = datetime.now().strftime("%Y-%m-%d")
         log_sucesso_dir = os.path.join(log_dir, hoje)
         log_erro_dir = os.path.join(log_dir, hoje)
@@ -28,7 +22,6 @@ class ConexaoBanco:
         os.makedirs(log_sucesso_dir, exist_ok=True)
         os.makedirs(log_erro_dir, exist_ok=True)
 
-        # Configuração do logger de sucesso
         sucesso_logger = logging.getLogger("sucesso")
         sucesso_logger.setLevel(logging.INFO)
         sucesso_handler = logging.FileHandler(
@@ -40,7 +33,6 @@ class ConexaoBanco:
         if not sucesso_logger.handlers:
             sucesso_logger.addHandler(sucesso_handler)
 
-        # Configuração do logger de erro
         erro_logger = logging.getLogger("erro")
         erro_logger.setLevel(logging.WARNING)
         erro_handler = logging.FileHandler(
@@ -56,19 +48,13 @@ class ConexaoBanco:
 
     def conectar(self):
         try:
-            self.connection = mysql.connector.connect(
-                host=self.host,
-                database=self.database,
-                user=self.user,
-                password=self.password,
-            )
-            if self.connection.is_connected():
-                print("Conexão com o banco de dados estabelecida com sucesso.")
-        except Error as e:
+            self.connection = sqlite3.connect(self.db_path)
+            print("Conexão com o banco de dados SQLite estabelecida com sucesso.")
+        except sqlite3.Error as e:
             print(f"Erro ao conectar ao banco de dados: {e}")
 
     def desconectar(self):
-        if self.connection and self.connection.is_connected():
+        if self.connection:
             self.connection.close()
             print("Conexão com o banco de dados encerrada.")
 
@@ -92,20 +78,20 @@ class ConexaoBanco:
                                 mes_doc,
                                 ano_doc
                             ) VALUES (
-                                %s,
-                                %s,
-                                %s,
-                                %s,
-                                %s,
-                                %s,
-                                %s,
-                                %s,
-                                %s,
-                                %s,
-                                %s,
-                                %s,
-                                %s,
-                                %s
+                                ?,
+                                ?,
+                                ?,
+                                ?,
+                                ?,
+                                ?,
+                                ?,
+                                ?,
+                                ?,
+                                ?,
+                                ?,
+                                ?,
+                                ?,
+                                ?
                             )
                     """
             # Construir valores garantindo que não haja extras e substituindo 'nan' por None
@@ -145,7 +131,7 @@ class ConexaoBanco:
                 f"Numero de Ações {numeros_acoes._denominacao_companhia} inserida com sucesso."
             )
             escrever_linha_em_branco(self.log_sucesso)
-        except Error as e:
+        except sqlite3.Error as e:
             escrever_linha_em_branco(self.log_erro)
             escrever_linha_separador(self.log_erro)
             escrever_linha_em_branco(self.log_erro)
@@ -159,18 +145,10 @@ class ConexaoBanco:
             )
 
 
-def tratar_valor(valor, tipo=None):
-    """
-    Trata um valor, convertendo 'nan' ou valores inválidos em None.
-    Opcionalmente, converte o valor para o tipo especificado.
 
-    :param valor: O valor a ser tratado.
-    :param tipo: O tipo esperado (str, int, float, etc.) ou 'date' para datas.
-    :return: O valor tratado ou None.
-    """
+def tratar_valor(valor, tipo=None):
     if str(valor).lower() == "nan" or valor is None:
         return None
-
     if tipo == "int":
         try:
             return int(valor)
@@ -178,9 +156,17 @@ def tratar_valor(valor, tipo=None):
             return None
     elif tipo == "date":
         try:
-            # Garantir que o valor seja uma string válida para data
             return str(valor) if str(valor) != "" else None
         except (ValueError, TypeError):
             return None
     else:
-        return valor  # Retorna o valor original se não precisa de conversão
+        return valor
+
+
+
+
+
+
+
+
+

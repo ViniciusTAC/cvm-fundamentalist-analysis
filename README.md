@@ -25,17 +25,44 @@ src/
 ### Pré-requisitos
 
 - Python 3.11+
-- MySQL Server ou banco compatível
+- SQLite3
 
 ### Instalação
+
+Clone o repositório:
 
 ```bash
 git clone https://github.com/seu-usuario/cvm-fundamentalist-analysis.git
 cd cvm-fundamentalist-analysis
+```
+
+Crie e ative o ambiente virtual (opcional, mas recomendado):
+
+```bash
+python -m venv .venv
+source .venv/bin/activate  # Linux/macOS
+.venv\Scripts\activate     # Windows
+```
+
+Instale as dependências:
+
+```bash
 pip install -r requirements.txt
 ```
 
+### Configuração do banco de dados
+
+Execute o script SQL localizado em `sqlite-projeto` para criar o esquema necessário no SQLite:
+
+```bash
+python script-sqlite.sql
+```
+
+Configure as credenciais do banco no arquivo de configuração apropriado (normalmente em `src/utils` ou variáveis de ambiente).
+
 ### Execução
+
+Rode o projeto usando:
 
 ```bash
 python src/main.py
@@ -48,10 +75,12 @@ python src/main.py
 - Requests
 - Pandas
 - SQLAlchemy
-- MySQL Connector
 - SQLite3
 - Tkinter
 
 ## 📄 Licença
 
 Este projeto está licenciado sob a MIT License.
+
+---
+
