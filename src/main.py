@@ -1,4 +1,8 @@
 import os
+import sys
+import subprocess
+import tkinter as tk
+from tkinter import messagebox
 from utils.logger import logger, escrever_linha_em_branco, escrever_linha_separador
 from collectors.coletor import Coletor
 
@@ -66,8 +70,37 @@ def executar_etapa(nome, base_path, processar, repositorio_cls, metodo_insercao,
     escrever_linha_em_branco(logger)
 
 
+def executar_script_inicial():
+    # Inicializa o tkinter para poder usar messagebox
+    root = tk.Tk()
+    root.withdraw()
+
+    db_path = os.path.join("sqlite-projeto", "cvm-dados.db")
+
+    if os.path.exists(db_path):
+        msg = "Banco de dados já existe. Pulando execução do script."
+        print(msg)
+        messagebox.showinfo("Banco de Dados", msg)
+        return
+
+    try:
+        subprocess.run(
+            [sys.executable, "sqlite-projeto/script-automatizar-sqlite.py"],
+            check=True
+        )
+        print("Script de automação executado com sucesso.")
+    except subprocess.CalledProcessError as e:
+        print("Erro ao executar o script:", e)
+        print("Arquivo com erro:", "sqlite-projeto/script-automatizar-sqlite.py")
+        messagebox.showerror("Erro", f"❌ Erro ao executar o script:\n{str(e)}")
+        sys.exit(1)
+
+
 # Função principal do programa
 def main():
+    print("Executando a função principal...")
+
+
     # Instancia o coletor de dados
     coletor = Coletor()
 
@@ -116,4 +149,5 @@ def main():
 
 # Ponto de entrada do programa
 if __name__ == "__main__":
+    executar_script_inicial()
     main()
