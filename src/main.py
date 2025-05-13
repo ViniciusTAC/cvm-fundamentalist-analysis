@@ -101,50 +101,50 @@ def main():
     print("Executando a função principal...")
 
 
-    # Instancia o coletor de dados
-    coletor = Coletor()
+    # # Instancia o coletor de dados
+    # coletor = Coletor()
 
-    # Inicia o processo de coleta de dados
-    coletor.collect_data()
+    # # Inicia o processo de coleta de dados
+    # coletor.collect_data()
 
-    # Executa as etapas de processamento e inserção de dados para cada tipo de informação
-    executar_etapa("Empresas", os.path.join("data_extraido", "FCA", "sucesso"), process_empresas, BancoEmpresas, "inserir_ou_atualizar_empresa")
-    executar_etapa("IPE", os.path.join("data_extraido", "IPE", "sucesso"), process_ipe, BancoIPE, "inserir_periodicos_eventuais")
-    executar_etapa("FRE", os.path.join("data_extraido", "FRE", "sucesso"), process_fre, BancoFRE, "inserir_formulario_referencia")
-    executar_etapa("Parecer Demonstrativo", os.path.join("data_extraido", "DFP", "sucesso"), process_parecer_demo, BancoParecerDemo, "inserir_parecer_demonstrativo")
-    executar_etapa("Parecer Trimestral", os.path.join("data_extraido", "ITR", "sucesso"), process_parecer_trim, BancoParecerTrim, "inserir_parecer_trimestral")
+    # # Executa as etapas de processamento e inserção de dados para cada tipo de informação
+    # executar_etapa("Empresas", os.path.join("data_extraido", "FCA", "sucesso"), process_empresas, BancoEmpresas, "inserir_ou_atualizar_empresa")
+    # executar_etapa("IPE", os.path.join("data_extraido", "IPE", "sucesso"), process_ipe, BancoIPE, "inserir_periodicos_eventuais")
+    # executar_etapa("FRE", os.path.join("data_extraido", "FRE", "sucesso"), process_fre, BancoFRE, "inserir_formulario_referencia")
+    # executar_etapa("Parecer Demonstrativo", os.path.join("data_extraido", "DFP", "sucesso"), process_parecer_demo, BancoParecerDemo, "inserir_parecer_demonstrativo")
+    # executar_etapa("Parecer Trimestral", os.path.join("data_extraido", "ITR", "sucesso"), process_parecer_trim, BancoParecerTrim, "inserir_parecer_trimestral")
 
-    # Processa e insere os dados de Número de Ações (DFP + ITR)
-    try:
-        escrever_linha_separador(logger)
-        logger.info("Processo iniciado de cadastro/atualização de Numero de Ações.")
+    # # Processa e insere os dados de Número de Ações (DFP + ITR)
+    # try:
+    #     escrever_linha_separador(logger)
+    #     logger.info("Processo iniciado de cadastro/atualização de Numero de Ações.")
 
-        # Caminhos para os arquivos DFP e ITR
-        dfp_base = os.path.join("data_extraido", "DFP", "sucesso")
-        itr_base = os.path.join("data_extraido", "ITR", "sucesso")
+    #     # Caminhos para os arquivos DFP e ITR
+    #     dfp_base = os.path.join("data_extraido", "DFP", "sucesso")
+    #     itr_base = os.path.join("data_extraido", "ITR", "sucesso")
 
-        # Processa os arquivos de Número de Ações
-        dfp = process_num_acoes(dfp_base, "DFP")
-        itr = process_num_acoes(itr_base, "ITR")
-        numeros_acoes = dfp + itr
+    #     # Processa os arquivos de Número de Ações
+    #     dfp = process_num_acoes(dfp_base, "DFP")
+    #     itr = process_num_acoes(itr_base, "ITR")
+    #     numeros_acoes = dfp + itr
 
-        # Exibe os primeiros 3 registros processados no console
-        for numero_acao in numeros_acoes[:3]:
-            print(numero_acao)
+    #     # Exibe os primeiros 3 registros processados no console
+    #     for numero_acao in numeros_acoes[:3]:
+    #         print(numero_acao)
 
-        # Conecta ao banco de dados e insere os dados
-        banco = BancoNumAcoes(db_path=CAMINHO_BANCO)
-        banco.conectar()
-        for numero_acao in numeros_acoes:
-            banco.inserir_numeros_acoes(numero_acao)
-        banco.desconectar()
+    #     # Conecta ao banco de dados e insere os dados
+    #     banco = BancoNumAcoes(db_path=CAMINHO_BANCO)
+    #     banco.conectar()
+    #     for numero_acao in numeros_acoes:
+    #         banco.inserir_numeros_acoes(numero_acao)
+    #     banco.desconectar()
 
-        logger.info("Processo de cadastro/atualização de Numero de Ações finalizado com sucesso.")
-    except Exception as e:
-        # Registra erros no log
-        logger.error(f"Erro durante o processo de cadastro/atualização de Numero de Ações: {str(e)}", exc_info=True)
-    # Escreve uma linha em branco no log
-    escrever_linha_em_branco(logger)
+    #     logger.info("Processo de cadastro/atualização de Numero de Ações finalizado com sucesso.")
+    # except Exception as e:
+    #     # Registra erros no log
+    #     logger.error(f"Erro durante o processo de cadastro/atualização de Numero de Ações: {str(e)}", exc_info=True)
+    # # Escreve uma linha em branco no log
+    # escrever_linha_em_branco(logger)
 
 
 # Ponto de entrada do programa
