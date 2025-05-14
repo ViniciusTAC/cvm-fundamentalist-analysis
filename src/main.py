@@ -32,6 +32,10 @@ from repository.numeros_acoes_repository import ConexaoBanco as BancoNumAcoes
 from service.demostrativo_financeiro_service import process_dfp_files
 from repository.demostrativo_financeiro_repository import ConexaoBanco as BancoDemostrativo
 
+# ---------------
+from service.informacao_trimestral_service import process_dfp_files
+from repository.informacao_trimestral_repository import ConexaoBanco as BancoInformacaoTri
+
 # Caminho para o banco de dados SQLite
 CAMINHO_BANCO = os.path.join("sqlite-projeto", "cvm-dados.db")
 
@@ -153,18 +157,35 @@ def main():
     # # Escreve uma linha em branco no log
     # escrever_linha_em_branco(logger)
 
-    print("Iniciando processamento dos demonstrativos financeiros...")
+    # print("Iniciando processamento dos demonstrativos financeiros...")
     
     
-    conexao = BancoDemostrativo(db_path=CAMINHO_BANCO)
+    # conexao = BancoDemostrativo(db_path=CAMINHO_BANCO)
+    # conexao.conectar()
+
+    # lista = process_dfp_files("data_extraido/DFP/sucesso", conexao)
+    # for a in lista[:3]:
+    #     print(a.mostrarDados())
+        
+    # for demonstrativo in lista[:3]:
+    #     conexao.inserir_ou_atualizar_demonstrativo(demonstrativo)
+
+    # conexao.desconectar()
+    # print("Processamento concluído.")
+    
+    
+    print("Iniciando processamento dos informações trimestrais...")
+    
+    
+    conexao = BancoInformacaoTri(db_path=CAMINHO_BANCO)
     conexao.conectar()
 
-    lista = process_dfp_files("data_extraido/DFP/sucesso", conexao)
+    lista = process_dfp_files("data_extraido/ITR/sucesso", conexao)
     for a in lista[:3]:
         print(a.mostrarDados())
         
-    for demonstrativo in lista[:3]:
-        conexao.inserir_ou_atualizar_demonstrativo(demonstrativo)
+    for informacao_tri in lista[:3]:
+        conexao.inserir_ou_atualizar_informacao_tri(informacao_tri)
 
     conexao.desconectar()
     print("Processamento concluído.")
