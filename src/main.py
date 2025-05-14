@@ -27,6 +27,11 @@ from repository.parecer_trimestral_repository import ConexaoBanco as BancoParece
 from service.numeros_acoes_service import process_csv_files as process_num_acoes
 from repository.numeros_acoes_repository import ConexaoBanco as BancoNumAcoes
 
+
+# ---------------
+from service.demostrativo_financeiro_service import process_dfp_files
+from repository.demostrativo_financeiro_repository import ConexaoBanco as BancoDemostrativo
+
 # Caminho para o banco de dados SQLite
 CAMINHO_BANCO = os.path.join("sqlite-projeto", "cvm-dados.db")
 
@@ -98,7 +103,9 @@ def executar_script_inicial():
 
 # Função principal do programa
 def main():
-    print("Executando a função principal...")
+    # print("Executando a função principal...")
+    
+
 
 
     # # Instancia o coletor de dados
@@ -146,8 +153,24 @@ def main():
     # # Escreve uma linha em branco no log
     # escrever_linha_em_branco(logger)
 
+    print("Iniciando processamento dos demonstrativos financeiros...")
+    
+    
+    conexao = BancoDemostrativo(db_path=CAMINHO_BANCO)
+    conexao.conectar()
+
+    lista = process_dfp_files("data_extraido/DFP/sucesso", conexao)
+    for a in lista[:3]:
+        print(a.mostrarDados())
+        
+    for demonstrativo in lista[:3]:
+        conexao.inserir_ou_atualizar_demonstrativo(demonstrativo)
+
+    conexao.desconectar()
+    print("Processamento concluído.")
+
 
 # Ponto de entrada do programa
 if __name__ == "__main__":
-    executar_script_inicial()
+    # executar_script_inicial()
     main()

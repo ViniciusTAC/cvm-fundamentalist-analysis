@@ -38,14 +38,14 @@ CREATE TABLE IF NOT EXISTS grupo_demonstrativo_financeiro (
 -- Inserts para grupo_demonstrativo_financeiro
 INSERT INTO grupo_demonstrativo_financeiro (codigo_grupo_dfp, grupo_dfp)
 VALUES
-  ("BPA-IND", "DF Individual - Ativo"),
-  ("BPA-CON", "DF Consolidado - Ativo"),
-  ("BPP-IND", "DF Individual - Passivo"),
-  ("BPP-CON", "DF Consolidado - Passivo"),
-  ("DVA-IND", "DF Individual - Demonstração de Valor Adicionado"),
-  ("DVA-CON", "DF Consolidado - Demonstração de Valor Adicionado"),
-  ("DRE-IND", "DF Individual - Demonstração do Resultado"),
-  ("DRE-CON", "DF Consolidado - Demonstração do Resultado");
+  ("BPA_IND", "DF Individual - Ativo"),
+  ("BPA_CON", "DF Consolidado - Ativo"),
+  ("BPP_IND", "DF Individual - Passivo"),
+  ("BPP_CON", "DF Consolidado - Passivo"),
+  ("DVA_IND", "DF Individual - Demonstração de Valor Adicionado"),
+  ("DVA_CON", "DF Consolidado - Demonstração de Valor Adicionado"),
+  ("DRE_IND", "DF Individual - Demonstração do Resultado"),
+  ("DRE_CON", "DF Consolidado - Demonstração do Resultado");
 
 -- Tabela: empresas
 CREATE TABLE IF NOT EXISTS empresas (
