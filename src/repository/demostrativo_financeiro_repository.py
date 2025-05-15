@@ -128,7 +128,7 @@ class ConexaoBanco:
             debug_sql(query, values)
             cursor.execute(query, values)
             
-            self.connection.commit()
+            # self.connection.commit()
             self.log_sucesso.info(
                 f"Demonstrativo inserido para CNPJ {demonstrativo._cnpj_companhia}, conta {demonstrativo._codigo_conta}, mês {demonstrativo._mes_doc}, ano {demonstrativo._ano_doc}."
             )

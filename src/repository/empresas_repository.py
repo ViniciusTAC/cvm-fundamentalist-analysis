@@ -147,7 +147,7 @@ class ConexaoBanco:
             )
 
             cursor.execute(query, values)
-            self.connection.commit()
+            # self.connection.commit()
             self.log_sucesso.info(f"Empresa {empresa._nome_empresa}, do CNPJ: {empresa._cnpj_companhia} e do ano {empresa._ano_doc} inserida/atualizada com sucesso.")
             print(f"Empresa {empresa._nome_empresa}, do CNPJ: {empresa._cnpj_companhia} e do ano {empresa._ano_doc} inserida/atualizada com sucesso.")
         except sqlite3.Error as e:
@@ -157,6 +157,9 @@ class ConexaoBanco:
             self.log_erro.error(f"Erro ao inserir empresa {empresa._nome_empresa} do ano {empresa._ano_doc}, erro: {e}.")
             escrever_linha_em_branco(self.log_erro)
             print(f"Erro ao inserir empresa {empresa._nome_empresa} do ano {empresa._ano_doc}, erro: {e}.")
+            # if commit:
+            #     self.connection.rollback()
+            # raise
 
 
 

@@ -58,7 +58,7 @@ def process_csv_files(base_path):
                         _mes_doc=row.get('Data_Referencia')[5:7],
                         _ano_doc=row.get('Data_Referencia')[:4]
                     )
-                    # print(periodicos_eventuais.mostrarDados())
+                    
                     empresas_list.append(empresa)
 
     return empresas_list

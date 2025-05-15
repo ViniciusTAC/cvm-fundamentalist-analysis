@@ -128,7 +128,7 @@ class ConexaoBanco:
             debug_sql(query, values)
             cursor.execute(query, values)
             
-            self.connection.commit()
+            # self.connection.commit()
             self.log_sucesso.info(
                 f"informacao_trimestral inserido para CNPJ {informacao_trimestral._cnpj_companhia}, conta {informacao_trimestral._codigo_conta}, mês {informacao_trimestral._mes_doc}, ano {informacao_trimestral._ano_doc}."
             )

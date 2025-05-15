@@ -198,7 +198,7 @@ CREATE TABLE IF NOT EXISTS periodicos_eventuais (
 -- Tabela: numeros_acoes
 CREATE TABLE IF NOT EXISTS numeros_acoes (
   fonte_dados TEXT,
-  cnpj_companhia TEXT NOT NULL UNIQUE,
+  cnpj_companhia TEXT NOT NULL,
   denominacao_companhia TEXT,
   qtd_acoes_ordinarias_capital_integralizado INTEGER,
   qtd_acoes_preferenciais_capital_integralizado INTEGER,
@@ -211,7 +211,32 @@ CREATE TABLE IF NOT EXISTS numeros_acoes (
   data_doc TEXT,
   mes_doc TEXT,
   ano_doc TEXT,
-  FOREIGN KEY (cnpj_companhia) REFERENCES empresas (cnpj_companhia)
+  FOREIGN KEY (cnpj_companhia) REFERENCES empresas (cnpj_companhia),
+  UNIQUE(fonte_dados, cnpj_companhia, data_referencia_doc, data_doc, mes_doc, ano_doc)
 );
 
 
+
+DROP INDEX IF EXISTS idx_unico_demonstrativo_financeiro;
+
+CREATE UNIQUE INDEX idx_unico_demonstrativo_financeiro
+ON demonstrativo_financeiro (
+    cnpj_companhia,
+    codigo_conta,
+    grupo_dfp,
+    conta_fixa,
+    mes_doc,
+    ano_doc
+);
+
+DROP INDEX IF EXISTS idx_unico_informacao_trimestral;
+
+CREATE UNIQUE INDEX idx_unico_informacao_trimestral
+ON informacao_trimestral (
+    cnpj_companhia,
+    codigo_conta,
+    grupo_dfp,
+    conta_fixa,
+    mes_doc,
+    ano_doc
+);

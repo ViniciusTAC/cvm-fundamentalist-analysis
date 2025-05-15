@@ -108,7 +108,7 @@ class ConexaoBanco:
             print("SQL gerado para execução:\n", formatted_query)
 
             cursor.execute(query, values)
-            self.connection.commit()
+            # self.connection.commit()
             self.log_sucesso.info(f"Parecer Trimestral do CNPJ: {parecer_trimestral._cnpj_companhia} e do ano {parecer_trimestral._ano_doc} inserida com sucesso.")
             print(
                 f"Parecer Demonstrativo  do CNPJ: {parecer_trimestral._cnpj_companhia} e do ano {parecer_trimestral._ano_doc} inserida com sucesso."
