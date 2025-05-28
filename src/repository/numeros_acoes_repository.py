@@ -107,12 +107,12 @@ class ConexaoBanco:
                     tratar_valor(numeros_acoes._mes_doc,tipo="int"),
                     tratar_valor(numeros_acoes._ano_doc,tipo="int"),
             )
-            print("\n\n")
-            # Gerar query SQL formatada para depuração
-            formatted_query = query.replace("%s", "{}").format(
-                *[f"'{v}'" if v is not None else "NULL" for v in values]
-            )
-            print("SQL gerado para execução:\n", formatted_query)
+            # print("\n\n")
+            # # Gerar query SQL formatada para depuração
+            # formatted_query = query.replace("%s", "{}").format(
+            #     *[f"'{v}'" if v is not None else "NULL" for v in values]
+            # )
+            # print("SQL gerado para execução:\n", formatted_query)
 
             cursor.execute(query, values)
             # self.connection.commit()
