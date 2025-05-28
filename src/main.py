@@ -1,6 +1,5 @@
 import os
 import sys
-import shutil
 import subprocess
 import threading
 
@@ -81,6 +80,7 @@ def executar_etapa(nome, base_path, processar, repositorio_cls, metodo_insercao,
                 logger.warning(f"{nome} abortado com rollback.")
                 return f"{nome} abortado pelo usuário."
             try:
+                # print(dado.mostrarDados())
                 getattr(banco, metodo_insercao)(dado)
                 sucesso += 1
             except Exception as e:
@@ -100,7 +100,7 @@ def executar_etapa(nome, base_path, processar, repositorio_cls, metodo_insercao,
         try:
             if 'conn' in locals():
                 conn.rollback()
-        except:
+        except:  # noqa: E722
             pass
         banco.desconectar()
         escrever_linha_em_branco(logger)

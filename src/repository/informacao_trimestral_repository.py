@@ -125,7 +125,7 @@ class ConexaoBanco:
                 tratar_valor(informacao_trimestral._mes_doc),
                 tratar_valor(informacao_trimestral._ano_doc)
             )
-            debug_sql(query, values)
+            # debug_sql(query, values)
             cursor.execute(query, values)
             
             # self.connection.commit()
