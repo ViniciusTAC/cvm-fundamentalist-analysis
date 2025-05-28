@@ -315,7 +315,7 @@ class ConexaoBanco:
             print("SQL gerado para execução:\n", formatted_query)
 
             cursor.execute(query, values)
-            self.connection.commit()
+            # self.connection.commit()
             self.log_sucesso.info(
                 f"Periodicos e Eventuais {periodicos_eventuais._nome_companhia}, do CNPJ: {periodicos_eventuais._cnpj_companhia} e do ano {periodicos_eventuais._ano_doc} inserida com sucesso."
             )

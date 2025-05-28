@@ -38,14 +38,14 @@ CREATE TABLE IF NOT EXISTS grupo_demonstrativo_financeiro (
 -- Inserts para grupo_demonstrativo_financeiro
 INSERT INTO grupo_demonstrativo_financeiro (codigo_grupo_dfp, grupo_dfp)
 VALUES
-  ("BPA-IND", "DF Individual - Ativo"),
-  ("BPA-CON", "DF Consolidado - Ativo"),
-  ("BPP-IND", "DF Individual - Passivo"),
-  ("BPP-CON", "DF Consolidado - Passivo"),
-  ("DVA-IND", "DF Individual - Demonstração de Valor Adicionado"),
-  ("DVA-CON", "DF Consolidado - Demonstração de Valor Adicionado"),
-  ("DRE-IND", "DF Individual - Demonstração do Resultado"),
-  ("DRE-CON", "DF Consolidado - Demonstração do Resultado");
+  ("BPA_IND", "DF Individual - Ativo"),
+  ("BPA_CON", "DF Consolidado - Ativo"),
+  ("BPP_IND", "DF Individual - Passivo"),
+  ("BPP_CON", "DF Consolidado - Passivo"),
+  ("DVA_IND", "DF Individual - Demonstração de Valor Adicionado"),
+  ("DVA_CON", "DF Consolidado - Demonstração de Valor Adicionado"),
+  ("DRE_IND", "DF Individual - Demonstração do Resultado"),
+  ("DRE_CON", "DF Consolidado - Demonstração do Resultado");
 
 -- Tabela: empresas
 CREATE TABLE IF NOT EXISTS empresas (
@@ -198,7 +198,7 @@ CREATE TABLE IF NOT EXISTS periodicos_eventuais (
 -- Tabela: numeros_acoes
 CREATE TABLE IF NOT EXISTS numeros_acoes (
   fonte_dados TEXT,
-  cnpj_companhia TEXT NOT NULL UNIQUE,
+  cnpj_companhia TEXT NOT NULL,
   denominacao_companhia TEXT,
   qtd_acoes_ordinarias_capital_integralizado INTEGER,
   qtd_acoes_preferenciais_capital_integralizado INTEGER,
@@ -211,7 +211,32 @@ CREATE TABLE IF NOT EXISTS numeros_acoes (
   data_doc TEXT,
   mes_doc TEXT,
   ano_doc TEXT,
-  FOREIGN KEY (cnpj_companhia) REFERENCES empresas (cnpj_companhia)
+  FOREIGN KEY (cnpj_companhia) REFERENCES empresas (cnpj_companhia),
+  UNIQUE(fonte_dados, cnpj_companhia, data_referencia_doc, data_doc, mes_doc, ano_doc)
 );
 
 
+
+DROP INDEX IF EXISTS idx_unico_demonstrativo_financeiro;
+
+CREATE UNIQUE INDEX idx_unico_demonstrativo_financeiro
+ON demonstrativo_financeiro (
+    cnpj_companhia,
+    codigo_conta,
+    grupo_dfp,
+    conta_fixa,
+    mes_doc,
+    ano_doc
+);
+
+DROP INDEX IF EXISTS idx_unico_informacao_trimestral;
+
+CREATE UNIQUE INDEX idx_unico_informacao_trimestral
+ON informacao_trimestral (
+    cnpj_companhia,
+    codigo_conta,
+    grupo_dfp,
+    conta_fixa,
+    mes_doc,
+    ano_doc
+);

@@ -62,38 +62,33 @@ class ConexaoBanco:
         try:
             cursor = self.connection.cursor()
             query = """
-                            INSERT INTO numeros_acoes (
-                                fonte_dados,
-                                cnpj_companhia,
-                                denominacao_companhia,
-                                qtd_acoes_ordinarias_capital_integralizado,
-                                qtd_acoes_preferenciais_capital_integralizado,
-                                qtd_total_acoes_capital_integralizado,
-                                qtd_acoes_ordinarias_tesouro,
-                                qtd_acoes_preferenciais_tesouro,
-                                qtd_total_acoes_tesouro,
-                                versao,
-                                data_referencia_doc,
-                                data_doc,
-                                mes_doc,
-                                ano_doc
-                            ) VALUES (
-                                ?,
-                                ?,
-                                ?,
-                                ?,
-                                ?,
-                                ?,
-                                ?,
-                                ?,
-                                ?,
-                                ?,
-                                ?,
-                                ?,
-                                ?,
-                                ?
-                            )
-                    """
+                INSERT INTO numeros_acoes (
+                    fonte_dados,
+                    cnpj_companhia,
+                    denominacao_companhia,
+                    qtd_acoes_ordinarias_capital_integralizado,
+                    qtd_acoes_preferenciais_capital_integralizado,
+                    qtd_total_acoes_capital_integralizado,
+                    qtd_acoes_ordinarias_tesouro,
+                    qtd_acoes_preferenciais_tesouro,
+                    qtd_total_acoes_tesouro,
+                    versao,
+                    data_referencia_doc,
+                    data_doc,
+                    mes_doc,
+                    ano_doc
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(fonte_dados, cnpj_companhia, data_referencia_doc, data_doc, mes_doc, ano_doc) DO UPDATE SET
+                    denominacao_companhia = excluded.denominacao_companhia,
+                    qtd_acoes_ordinarias_capital_integralizado = excluded.qtd_acoes_ordinarias_capital_integralizado,
+                    qtd_acoes_preferenciais_capital_integralizado = excluded.qtd_acoes_preferenciais_capital_integralizado,
+                    qtd_total_acoes_capital_integralizado = excluded.qtd_total_acoes_capital_integralizado,
+                    qtd_acoes_ordinarias_tesouro = excluded.qtd_acoes_ordinarias_tesouro,
+                    qtd_acoes_preferenciais_tesouro = excluded.qtd_acoes_preferenciais_tesouro,
+                    qtd_total_acoes_tesouro = excluded.qtd_total_acoes_tesouro,
+                    versao = excluded.versao
+            """
+
             # Construir valores garantindo que não haja extras e substituindo 'nan' por None
             # Construir valores garantindo validação dos campos
             values = (
@@ -120,7 +115,7 @@ class ConexaoBanco:
             print("SQL gerado para execução:\n", formatted_query)
 
             cursor.execute(query, values)
-            self.connection.commit()
+            # self.connection.commit()
             # escrever_linha_em_branco()
             # escrever_linha_separador()
             # escrever_linha_em_branco()

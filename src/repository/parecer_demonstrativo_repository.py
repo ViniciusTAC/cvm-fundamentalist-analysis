@@ -108,7 +108,7 @@ class ConexaoBanco:
             print("SQL gerado para execução:\n", formatted_query)
 
             cursor.execute(query, values)
-            self.connection.commit()
+            # self.connection.commit()
             # escrever_linha_em_branco()
             # escrever_linha_separador()
             # escrever_linha_em_branco()

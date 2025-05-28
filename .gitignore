@@ -12,3 +12,7 @@ src/utils/__pycache__/logger.cpython-312.pyc
 logs
 data_xml/
 XML/
+sqlite-projeto/cvm-dados.db
+src/service/__pycache__/
+src/repository/__pycache__/
+resumo_execucao.log
