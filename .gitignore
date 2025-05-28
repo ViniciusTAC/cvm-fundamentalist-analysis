@@ -16,3 +16,4 @@ sqlite-projeto/cvm-dados.db
 src/service/__pycache__/
 src/repository/__pycache__/
 resumo_execucao.log
+sqlite-projeto/cvm-dados.db
