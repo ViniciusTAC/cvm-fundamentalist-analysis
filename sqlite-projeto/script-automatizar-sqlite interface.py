@@ -1,5 +1,11 @@
 import sqlite3
+import tkinter as tk
+from tkinter import messagebox
 import os
+
+# Cria uma janela oculta só para exibir os alertas
+root = tk.Tk()
+root.withdraw()
 
 # Caminho absoluto do diretório do script atual
 base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -23,7 +29,9 @@ try:
     conn.close()
 
     print("✅ Banco de dados criado com sucesso!")
+    messagebox.showinfo("Sucesso", "Banco de dados criado com sucesso!")
 
 except Exception as e:
     print("❌ Ocorreu um erro ao criar o banco de dados:")
     print(e)
+    messagebox.showerror("Erro", f"Ocorreu um erro:\n{str(e)}")
