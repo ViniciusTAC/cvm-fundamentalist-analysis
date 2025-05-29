@@ -15,7 +15,9 @@ from repository.periodicos_eventuais_repository import ConexaoBanco as BancoIPE
 from service.formulario_referencia_service import process_csv_files as process_fre
 from repository.formulario_referencia_repository import ConexaoBanco as BancoFRE
 
-from service.parecer_demonstrativo_service import process_csv_files as process_parecer_demo
+from service.parecer_demonstrativo_service import (
+    process_csv_files as process_parecer_demo,
+)
 from repository.parecer_demonstrativo_repository import ConexaoBanco as BancoParecerDemo
 
 from service.parecer_trimestral_service import process_csv_files as process_parecer_trim
@@ -25,10 +27,14 @@ from service.numeros_acoes_service import process_csv_files as process_num_acoes
 from repository.numeros_acoes_repository import ConexaoBanco as BancoNumAcoes
 
 from service.demostrativo_financeiro_service import process_dfp_files as process_dfp
-from repository.demostrativo_financeiro_repository import ConexaoBanco as BancoDemostrativo
+from repository.demostrativo_financeiro_repository import (
+    ConexaoBanco as BancoDemostrativo,
+)
 
 from service.informacao_trimestral_service import process_dfp_files as process_itr
-from repository.informacao_trimestral_repository import ConexaoBanco as BancoInformacaoTri
+from repository.informacao_trimestral_repository import (
+    ConexaoBanco as BancoInformacaoTri,
+)
 
 CAMINHO_BANCO = os.path.join("sqlite-projeto", "cvm-dados.db")
 cancelar_evento = threading.Event()
@@ -51,7 +57,9 @@ def executar_script_inicial():
         print("⚠️ Banco de dados já existe. Pulando execução do script.")
         return
     try:
-        subprocess.run([sys.executable, "sqlite-projeto/script-automatizar-sqlite.py"], check=True)
+        subprocess.run(
+            [sys.executable, "sqlite-projeto/script-automatizar-sqlite.py"], check=True
+        )
         print("✅ Script de automação executado com sucesso.")
     except subprocess.CalledProcessError as e:
         logger.error(f"Erro no script inicial: {str(e)}", exc_info=True)
@@ -59,11 +67,15 @@ def executar_script_inicial():
         sys.exit(1)
 
 
-def executar_etapa(nome, base_path, processar, repositorio_cls, metodo_insercao, extras=None):
+def executar_etapa(
+    nome, base_path, processar, repositorio_cls, metodo_insercao, extras=None
+):
     try:
         escrever_linha_separador(logger)
         logger.info(f"Iniciando etapa: {nome}")
-        dados = processar(base_path) if extras is None else processar(base_path, *extras)
+        dados = (
+            processar(base_path) if extras is None else processar(base_path, *extras)
+        )
         banco = repositorio_cls(db_path=CAMINHO_BANCO)
         banco.conectar()
         conn = banco.connection
@@ -90,7 +102,9 @@ def executar_etapa(nome, base_path, processar, repositorio_cls, metodo_insercao,
 
         conn.commit()
         banco.desconectar()
-        logger.info(f"{nome} finalizado com sucesso. Inseridos: {sucesso}, Falhas: {falha}")
+        logger.info(
+            f"{nome} finalizado com sucesso. Inseridos: {sucesso}, Falhas: {falha}"
+        )
         if falha:
             return f"{nome}: {sucesso} inseridos, {falha} com erro.\nErros: {erros[:3]}"
         return f"{nome}: Todos os {sucesso} registros inseridos com sucesso."
@@ -98,7 +112,7 @@ def executar_etapa(nome, base_path, processar, repositorio_cls, metodo_insercao,
     except Exception as e:
         logger.error(f"Erro na etapa {nome}: {str(e)}", exc_info=True)
         try:
-            if 'conn' in locals():
+            if "conn" in locals():
                 conn.rollback()
         except:  # noqa: E722
             pass
@@ -118,16 +132,54 @@ def run_processos_selecionados(vars):
         mensagens.append("Coleta e extração concluídas.")
 
     etapas = [
-        ("empresas", "Empresas", "data_extraido/FCA/sucesso", process_empresas, BancoEmpresas, "inserir_ou_atualizar_empresa"),
-        ("ipe", "Periódicos Eventuais", "data_extraido/IPE/sucesso", process_ipe, BancoIPE, "inserir_periodicos_eventuais"),
-        ("fre", "Formulários de Referência", "data_extraido/FRE/sucesso", process_fre, BancoFRE, "inserir_formulario_referencia"),
-        ("parecer_demo", "Parecer - Demonst. Financeiros", "data_extraido/DFP/sucesso", process_parecer_demo, BancoParecerDemo, "inserir_parecer_demonstrativo"),
-        ("parecer_trim", "Parecer - Inf. Trimestrais", "data_extraido/ITR/sucesso", process_parecer_trim, BancoParecerTrim, "inserir_parecer_trimestral"),
+        (
+            "empresas",
+            "Empresas",
+            "data_extraido/FCA/sucesso",
+            process_empresas,
+            BancoEmpresas,
+            "inserir_ou_atualizar_empresa",
+        ),
+        (
+            "ipe",
+            "Periódicos Eventuais",
+            "data_extraido/IPE/sucesso",
+            process_ipe,
+            BancoIPE,
+            "inserir_periodicos_eventuais",
+        ),
+        (
+            "fre",
+            "Formulários de Referência",
+            "data_extraido/FRE/sucesso",
+            process_fre,
+            BancoFRE,
+            "inserir_formulario_referencia",
+        ),
+        (
+            "parecer_demo",
+            "Parecer - Demonst. Financeiros",
+            "data_extraido/DFP/sucesso",
+            process_parecer_demo,
+            BancoParecerDemo,
+            "inserir_parecer_demonstrativo",
+        ),
+        (
+            "parecer_trim",
+            "Parecer - Inf. Trimestrais",
+            "data_extraido/ITR/sucesso",
+            process_parecer_trim,
+            BancoParecerTrim,
+            "inserir_parecer_trimestral",
+        ),
     ]
 
     for chave, nome, caminho, func, banco_cls, metodo in etapas:
         if vars[chave].get():
-            msg = executar_etapa(nome, caminho, func, banco_cls, metodo) or f"{nome}: Nenhuma ação executada."
+            msg = (
+                executar_etapa(nome, caminho, func, banco_cls, metodo)
+                or f"{nome}: Nenhuma ação executada."
+            )
             mensagens.append(msg)
 
     if vars["num_acoes"].get():
@@ -159,7 +211,11 @@ def run_processos_selecionados(vars):
 
             conn.commit()
             banco.desconectar()
-            msg = f"Número de Ações: {sucesso} inseridos, {falha} com erro." if falha else f"Número de Ações: Todos os {sucesso} inseridos com sucesso."
+            msg = (
+                f"Número de Ações: {sucesso} inseridos, {falha} com erro."
+                if falha
+                else f"Número de Ações: Todos os {sucesso} inseridos com sucesso."
+            )
             mensagens.append(msg)
         except Exception as e:
             mensagens.append(f"Erro fatal em Número de Ações: {str(e)}")
@@ -186,7 +242,11 @@ def run_processos_selecionados(vars):
                 erros.append(str(e))
         conn.commit()
         banco.desconectar()
-        msg = f"Demonstrativos Financeiros: {sucesso} inseridos, {falha} com erro." if falha else f"Demonstrativos Financeiros: Todos os {sucesso} inseridos com sucesso."
+        msg = (
+            f"Demonstrativos Financeiros: {sucesso} inseridos, {falha} com erro."
+            if falha
+            else f"Demonstrativos Financeiros: Todos os {sucesso} inseridos com sucesso."
+        )
         mensagens.append(msg)
 
     if vars["itr"].get():
@@ -211,7 +271,11 @@ def run_processos_selecionados(vars):
                 erros.append(str(e))
         conn.commit()
         banco.desconectar()
-        msg = f"Informações Trimestrais: {sucesso} inseridos, {falha} com erro." if falha else f"Informações Trimestrais: Todos os {sucesso} inseridos com sucesso."
+        msg = (
+            f"Informações Trimestrais: {sucesso} inseridos, {falha} com erro."
+            if falha
+            else f"Informações Trimestrais: Todos os {sucesso} inseridos com sucesso."
+        )
         mensagens.append(msg)
 
     print("\n✅ Execução finalizada com sucesso.\n")
@@ -225,7 +289,10 @@ def run_processos_selecionados(vars):
 if __name__ == "__main__":
     try:
         # Marca todas as etapas como True (simulando os checkboxes)
-        vars = {chave: type('BoolVar', (), {'get': lambda self=True: True})() for chave in ETIQUETAS.keys()}
+        vars = {
+            chave: type("BoolVar", (), {"get": lambda self=True: True})()
+            for chave in ETIQUETAS.keys()
+        }
         cancelar_evento.clear()
         run_processos_selecionados(vars)
     except KeyboardInterrupt:
