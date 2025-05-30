@@ -1,7 +1,7 @@
 import sqlite3
 import os
 from datetime import datetime
-from zoneinfo import ZoneInfo
+# from zoneinfo import ZoneInfo
 import logging
 from utils.logger import escrever_linha_em_branco, escrever_linha_separador
 
@@ -9,15 +9,38 @@ from utils.logger import escrever_linha_em_branco, escrever_linha_separador
 class ConexaoBanco:
     """Classe para gerenciar a conexão com o banco de dados SQLite."""
 
-    def __init__(self, db_path):
+
+    def __init__(self, db_path, nivel=logging.WARNING):
         self.db_path = db_path
         self.connection = None
-        self.log_sucesso, self.log_erro = self._setup_logger()
+        self.log_sucesso, self.log_erro = self._setup_logger(nivel=nivel)
 
-    def _setup_logger(self, log_dir="logs/logs_insercao"):
+
+    def _setup_logger(self, log_dir="logs/logs_insercao", nivel=logging.WARNING):
         hoje = datetime.now().strftime("%Y-%m-%d")
         log_sucesso_dir = os.path.join(log_dir, hoje)
         log_erro_dir = os.path.join(log_dir, hoje)
+
+        os.makedirs(log_sucesso_dir, exist_ok=True)
+        os.makedirs(log_erro_dir, exist_ok=True)
+
+        sucesso_logger = logging.getLogger(f"sucesso_{id(self)}")
+        sucesso_logger.setLevel(nivel)
+        sucesso_handler = logging.FileHandler(
+            os.path.join(log_sucesso_dir, "sucesso.log"), encoding="utf-8"
+        )
+        sucesso_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+        sucesso_logger.addHandler(sucesso_handler)
+
+        erro_logger = logging.getLogger(f"erro_{id(self)}")
+        erro_logger.setLevel(nivel)
+        erro_handler = logging.FileHandler(
+            os.path.join(log_erro_dir, "erro.log"), encoding="utf-8"
+        )
+        erro_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+        erro_logger.addHandler(erro_handler)
+
+        return sucesso_logger, erro_logger
 
         os.makedirs(log_sucesso_dir, exist_ok=True)
         os.makedirs(log_erro_dir, exist_ok=True)
@@ -83,7 +106,7 @@ class ConexaoBanco:
                 print("--- FIM SQL ---\n")
                 
             cursor = self.connection.cursor()
-            agora_local = datetime.now(ZoneInfo("America/Sao_Paulo")).strftime('%Y-%m-%d %H:%M:%S')
+            # agora_local = datetime.now(ZoneInfo("America/Sao_Paulo")).strftime('%Y-%m-%d %H:%M:%S')
 
             query = """
                 INSERT INTO informacao_trimestral (
