@@ -43,7 +43,7 @@ class ConexaoBanco:
         )
         erro_logger.addHandler(erro_handler)
 
-        return sucesso_logger, erro_logger
+        # return sucesso_logger, erro_logger
 
         os.makedirs(log_sucesso_dir, exist_ok=True)
         os.makedirs(log_erro_dir, exist_ok=True)
