@@ -353,10 +353,10 @@ def run_processos_selecionados(vars):
     mensagens = []
     executar_script_inicial()
 
-    # if vars["coletar"].get():
-    #     coletor = Coletor(nivel=nivel_log)
-    #     coletor.collect_data()
-    #     mensagens.append("Coleta e extração concluídas.")
+    if vars["coletar"].get():
+        coletor = Coletor(nivel=nivel_log)
+        coletor.collect_data()
+        mensagens.append("Coleta e extração concluídas.")
 
     etapas = [
         (

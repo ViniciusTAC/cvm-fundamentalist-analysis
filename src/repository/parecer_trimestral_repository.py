@@ -40,7 +40,7 @@ class ConexaoBanco:
         erro_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
         erro_logger.addHandler(erro_handler)
 
-        return sucesso_logger, erro_logger
+        # return sucesso_logger, erro_logger
 
         os.makedirs(log_sucesso_dir, exist_ok=True)
         os.makedirs(log_erro_dir, exist_ok=True)
