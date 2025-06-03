@@ -11,7 +11,7 @@ CREATE TABLE categoria_documento (
 -- Tabela de tipos de parecer (utilizada em parecer_demonstrativo e parecer_trimestral para padronização)
 CREATE TABLE tipo_parecer (
   id_tipo_parecer    INTEGER PRIMARY KEY,       -- Identificador único do tipo de parecer
-  descricao          TEXT    UNIQUE NOT NULL    -- Descrição do tipo de parecer (ex.: 'Auditor Independente', 'Revisor Fiscal' etc.)
+  descricao          TEXT    UNIQUE NOT NULL     -- Descrição do tipo de parecer (ex.: 'Auditor Independente', 'Revisor Fiscal' etc.)
 );
 
 -- Tabela de tipos de relatório de auditoria em demonstrativos financeiros
@@ -50,18 +50,6 @@ CREATE TABLE tipo_apresentacao_evento (
   descricao           TEXT    UNIQUE NOT NULL   -- Descrição do tipo (ex.: 'Eletrônico', 'Impresso' etc.)
 );
 
--- Tabela de meses (mapeia números de 1 a 12 para nomes de meses)
-CREATE TABLE meses (
-  id_mes    INTEGER PRIMARY KEY,  -- Mês (valores: 1 a 12)
-  nome_mes  TEXT    UNIQUE NOT NULL -- Nome do mês (ex.: 'Janeiro', 'Fevereiro' etc.)
-);
-
--- Tabela de anos (mapa cada ano para sua representação textual, facilita buscas por ano)
-CREATE TABLE anos (
-  id_ano    INTEGER PRIMARY KEY,  -- Ano (ex.: 2020, 2021 etc.)
-  descricao TEXT    UNIQUE NOT NULL -- Texto do ano (ex.: '2020', '2021' etc.)
-);
-
 -- Tabela de escala monetária (normaliza valores de escala, ex.: mil, milhão, etc.)
 CREATE TABLE escala_monetaria (
   id_escala   INTEGER PRIMARY KEY,        -- Identificador da escala monetária
@@ -90,7 +78,7 @@ CREATE TABLE especie_controle (
 -- Tabela de situação do emissor (padroniza status do emissor, ex.: 'Ativo', 'Inativo' etc.)
 CREATE TABLE situacao_emissor (
   id_situacao INTEGER PRIMARY KEY,        -- Identificador da situação do emissor
-  descricao   TEXT    UNIQUE NOT NULL     -- Descrição da situação (ex.: 'Ativo', 'Inativo' etc.)
+  descricao   TEXT    UNIQUE NOT NULL     -- Descrição da situação do emissor (ex.: 'Ativo', 'Inativo' etc.)
 );
 
 -- Tabela de setor de atividade (padroniza setores econômicos, ex.: 'Financeiro', 'Industrial' etc.)
@@ -107,19 +95,22 @@ CREATE TABLE setor_atividade (
 -- ========== empresas ==========
 -- Armazena dados cadastrais de cada empresa (companhias abertas) com referências a tabelas auxiliares
 CREATE TABLE empresas (
-  codigo_cvm                              TEXT    PRIMARY KEY,  -- Código CVM único da empresa
+  codigo_cvm                              TEXT    NOT NULL,     -- Código CVM único da empresa
   cnpj_companhia                          TEXT    NOT NULL,     -- CNPJ da empresa
   nome_empresa                            TEXT,                 -- Nome atual da empresa
   nome_anterior_empresa                   TEXT,                 -- Nome anterior, se houver
   descricao_atividade                     TEXT,                 -- Descrição das atividades da empresa
-  id_especie                              INTEGER NOT NULL,     -- FK para espécie de controle acionário
-  id_situacao                             INTEGER NOT NULL,     -- FK para situação do emissor
-  id_setor                                INTEGER NOT NULL,     -- FK para setor de atividade
+  identificador_documento                 INTEGER,
+  id_especie                              INTEGER,              -- FK para especie_controle(id_especie)
+  id_situacao                             INTEGER,              -- FK para situacao_emissor(id_situacao)
+  id_setor                                INTEGER,              -- FK para setor_atividade(id_setor)
+  id_categoria_doc                        INTEGER,              -- FK para categoria_documento(id_categoria_doc)
   versao                                  INTEGER,              -- Versão do registro
   pagina_web                              TEXT,                 -- URL do site da empresa
   pais_origem                             TEXT,                 -- País de origem da empresa
+  situacao_registro_cvm                   TEXT,
   pais_custodia_valores_mobiliarios       TEXT,                 -- País de custódia de valores mobiliários
-  mes_encerramento_exercicio_social       INTEGER,              -- Mês de encerramento do exercício (1-12), refere-se a meses.id_mes
+  mes_encerramento_exercicio_social       INTEGER,              -- Mês de encerramento do exercício (1-12)
   dia_encerramento_exercicio_social       INTEGER,              -- Dia de encerramento do exercício social
   data_constituicao                       DATE,                 -- Data de constituição da empresa
   data_situacao_emissor                   DATE,                 -- Data de mudança de situação do emissor
@@ -132,11 +123,17 @@ CREATE TABLE empresas (
   data_referencia_documento               DATE,                 -- Data de referência do documento
   data_hora_insercao                      DATETIME,             -- Timestamp de inserção do registro
   data_hora_atualizacao                   DATETIME,             -- Timestamp de última atualização do registro
-  FOREIGN KEY (id_especie)                REFERENCES especie_controle(id_especie),
-  FOREIGN KEY (id_situacao)               REFERENCES situacao_emissor(id_situacao),
-  FOREIGN KEY (id_setor)                  REFERENCES setor_atividade(id_setor),
-  FOREIGN KEY (mes_encerramento_exercicio_social)
-        REFERENCES meses(id_mes)
+  mes                                     INTEGER,              -- Mês extraído de data_doc (1-12)
+  ano                                     INTEGER,              -- Ano extraído de data_doc (ex.: 2020, 2021 etc.)
+  
+  -- Restrição de unicidade para permitir ON CONFLICT(codigo_cvm, ano, mes)
+  UNIQUE (codigo_cvm, ano, mes),
+  
+  -- Chaves estrangeiras
+  FOREIGN KEY (id_categoria_doc) REFERENCES categoria_documento(id_categoria_doc),
+  FOREIGN KEY (id_especie)       REFERENCES especie_controle(id_especie),
+  FOREIGN KEY (id_situacao)      REFERENCES situacao_emissor(id_situacao),
+  FOREIGN KEY (id_setor)         REFERENCES setor_atividade(id_setor)
 );
 
 -- ========== planos_contas ==========
@@ -172,16 +169,14 @@ CREATE TABLE demonstrativo_financeiro (
   data_referencia_doc      DATE,                              -- Data de referência do documento
   valor_conta              REAL,                              -- Valor monetário do item
   data_doc                 DATE    NOT NULL,                  -- Data do documento
-  id_mes                   INTEGER,                           -- Mês extraído de data_doc, refere-se a meses(id_mes)
-  id_ano                   INTEGER,                           -- Ano extraído de data_doc, refere-se a anos(id_ano)
+  mes                      INTEGER,                           -- Mês extraído de data_doc (1-12)
+  ano                      INTEGER,                           -- Ano extraído de data_doc (ex.: 2020, 2021 etc.)
   FOREIGN KEY (codigo_cvm)          REFERENCES empresas(codigo_cvm),
   FOREIGN KEY (id_plano_conta)      REFERENCES planos_contas(id_planos_contas),
   FOREIGN KEY (codigo_grupo_dfp)    REFERENCES grupo_demonstrativo_financeiro(codigo_grupo_dfp),
   FOREIGN KEY (id_escala)           REFERENCES escala_monetaria(id_escala),
   FOREIGN KEY (id_moeda)            REFERENCES moeda(id_moeda),
-  FOREIGN KEY (id_ordem)            REFERENCES ordem_exercicio(id_ordem),
-  FOREIGN KEY (id_mes)              REFERENCES meses(id_mes),
-  FOREIGN KEY (id_ano)              REFERENCES anos(id_ano)
+  FOREIGN KEY (id_ordem)            REFERENCES ordem_exercicio(id_ordem)
 );
 
 -- ========== informacao_trimestral ==========
@@ -201,16 +196,14 @@ CREATE TABLE informacao_trimestral (
   data_referencia_doc       DATE,                             -- Data de referência do documento
   valor_conta               REAL,                             -- Valor contabilizado
   data_doc                  DATE    NOT NULL,                 -- Data do documento ITR
-  id_mes                    INTEGER,                          -- Mês extraído de data_doc, refere-se a meses(id_mes)
-  id_ano                    INTEGER,                          -- Ano extraído de data_doc, refere-se a anos(id_ano)
+  mes                       INTEGER,                          -- Mês extraído de data_doc (1-12)
+  ano                       INTEGER,                          -- Ano extraído de data_doc (ex.: 2020, 2021 etc.)
   FOREIGN KEY (codigo_cvm)          REFERENCES empresas(codigo_cvm),
   FOREIGN KEY (id_plano_conta)      REFERENCES planos_contas(id_planos_contas),
   FOREIGN KEY (codigo_grupo_dfp)    REFERENCES grupo_demonstrativo_financeiro(codigo_grupo_dfp),
   FOREIGN KEY (id_escala)           REFERENCES escala_monetaria(id_escala),
   FOREIGN KEY (id_moeda)            REFERENCES moeda(id_moeda),
-  FOREIGN KEY (id_ordem)            REFERENCES ordem_exercicio(id_ordem),
-  FOREIGN KEY (id_mes)              REFERENCES meses(id_mes),
-  FOREIGN KEY (id_ano)              REFERENCES anos(id_ano)
+  FOREIGN KEY (id_ordem)            REFERENCES ordem_exercicio(id_ordem)
 );
 
 -- ========== parecer_demonstrativo ==========
@@ -225,13 +218,11 @@ CREATE TABLE parecer_demonstrativo (
   versao                    INTEGER,                           -- Versão do parecer
   data_referencia_doc       DATE,                              -- Data de referência do documento
   data_doc                  DATE    NOT NULL,                  -- Data do documento de parecer
-  id_mes                    INTEGER,                           -- Mês extraído de data_doc, refere-se a meses(id_mes)
-  id_ano                    INTEGER,                           -- Ano extraído de data_doc, refere-se a anos(id_ano)
+  mes                       INTEGER,                           -- Mês extraído de data_doc (1-12)
+  ano                       INTEGER,                           -- Ano extraído de data_doc (ex.: 2020, 2021 etc.)
   FOREIGN KEY (codigo_cvm)          REFERENCES empresas(codigo_cvm),
   FOREIGN KEY (id_tipo_parecer)    REFERENCES tipo_parecer(id_tipo_parecer),
-  FOREIGN KEY (id_tipo_rel_auditor)REFERENCES tipo_relatorio_auditor(id_tipo_rel_auditor),
-  FOREIGN KEY (id_mes)             REFERENCES meses(id_mes),
-  FOREIGN KEY (id_ano)             REFERENCES anos(id_ano)
+  FOREIGN KEY (id_tipo_rel_auditor)REFERENCES tipo_relatorio_auditor(id_tipo_rel_auditor)
 );
 
 -- ========== parecer_trimestral ==========
@@ -246,13 +237,11 @@ CREATE TABLE parecer_trimestral (
   versao                    INTEGER,                           -- Versão do parecer
   data_referencia_doc       DATE,                              -- Data de referência do documento
   data_doc                  DATE    NOT NULL,                  -- Data do documento de parecer
-  id_mes                    INTEGER,                           -- Mês extraído de data_doc, refere-se a meses(id_mes)
-  id_ano                    INTEGER,                           -- Ano extraído de data_doc, refere-se a anos(id_ano)
+  mes                       INTEGER,                           -- Mês extraído de data_doc (1-12)
+  ano                       INTEGER,                           -- Ano extraído de data_doc (ex.: 2020, 2021 etc.)
   FOREIGN KEY (codigo_cvm)          REFERENCES empresas(codigo_cvm),
   FOREIGN KEY (id_tipo_parecer)    REFERENCES tipo_parecer(id_tipo_parecer),
-  FOREIGN KEY (id_tipo_rel_especial) REFERENCES tipo_relatorio_especial(id_tipo_rel_especial),
-  FOREIGN KEY (id_mes)             REFERENCES meses(id_mes),
-  FOREIGN KEY (id_ano)             REFERENCES anos(id_ano)
+  FOREIGN KEY (id_tipo_rel_especial) REFERENCES tipo_relatorio_especial(id_tipo_rel_especial)
 );
 
 -- ========== formulario_referencia ==========
@@ -267,12 +256,10 @@ CREATE TABLE formulario_referencia (
   data_recebimento   DATE,                               -- Data em que o documento foi recebido
   data_referencia    DATE,                               -- Data de referência do documento
   data_doc           DATE    NOT NULL,                   -- Data do próprio documento
-  id_mes             INTEGER,                            -- Mês extraído de data_doc, refere-se a meses(id_mes)
-  id_ano             INTEGER,                            -- Ano extraído de data_doc, refere-se a anos(id_ano)
+  mes                INTEGER,                            -- Mês extraído de data_doc (1-12)
+  ano                INTEGER,                            -- Ano extraído de data_doc (ex.: 2020, 2021 etc.)
   FOREIGN KEY (codigo_cvm)       REFERENCES empresas(codigo_cvm),
-  FOREIGN KEY (id_categoria_doc) REFERENCES categoria_documento(id_categoria_doc),
-  FOREIGN KEY (id_mes)           REFERENCES meses(id_mes),
-  FOREIGN KEY (id_ano)           REFERENCES anos(id_ano)
+  FOREIGN KEY (id_categoria_doc) REFERENCES categoria_documento(id_categoria_doc)
 );
 
 -- ========== periodicos_eventuais ==========
@@ -290,16 +277,14 @@ CREATE TABLE periodicos_eventuais (
   data_entrega          DATE,                              -- Data de entrega/publicação do documento
   data_referencia       DATE,                              -- Data de referência do documento
   data_doc              DATE    NOT NULL,                  -- Data do documento
-  id_mes                INTEGER,                           -- Mês extraído de data_doc, refere-se a meses(id_mes)
-  id_ano                INTEGER,                           -- Ano extraído de data_doc, refere-se a anos(id_ano)
+  mes                   INTEGER,                           -- Mês extraído de data_doc (1-12)
+  ano                   INTEGER,                           -- Ano extraído de data_doc (ex.: 2020, 2021 etc.)
   FOREIGN KEY (codigo_cvm)            REFERENCES empresas(codigo_cvm),
   FOREIGN KEY (id_assunto)            REFERENCES assunto_prensa(id_assunto),
   FOREIGN KEY (id_categoria_doc)      REFERENCES categoria_documento(id_categoria_doc),
   FOREIGN KEY (id_especie_eventual)   REFERENCES especie_documento_eventual(id_especie_eventual),
   FOREIGN KEY (id_tipo_evento)        REFERENCES tipo_evento(id_tipo_evento),
-  FOREIGN KEY (id_tipo_apres)         REFERENCES tipo_apresentacao_evento(id_tipo_apres),
-  FOREIGN KEY (id_mes)                REFERENCES meses(id_mes),
-  FOREIGN KEY (id_ano)                REFERENCES anos(id_ano)
+  FOREIGN KEY (id_tipo_apres)         REFERENCES tipo_apresentacao_evento(id_tipo_apres)
 );
 
 -- ========== numeros_acoes ==========
@@ -317,11 +302,9 @@ CREATE TABLE numeros_acoes (
   versao                  INTEGER,                     -- Versão do relatório
   data_referencia         DATE,                        -- Data de referência do documento
   data_doc                DATE    NOT NULL,             -- Data do documento de quantidade de ações
-  id_mes                  INTEGER,                     -- Mês extraído de data_doc, refere-se a meses(id_mes)
-  id_ano                  INTEGER,                     -- Ano extraído de data_doc, refere-se a anos(id_ano)
+  mes                     INTEGER,                     -- Mês extraído de data_doc (1-12)
+  ano                     INTEGER,                     -- Ano extraído de data_doc (ex.: 2020, 2021 etc.)
   FOREIGN KEY (codigo_cvm)      REFERENCES empresas(codigo_cvm),
-  FOREIGN KEY (id_mes)          REFERENCES meses(id_mes),
-  FOREIGN KEY (id_ano)          REFERENCES anos(id_ano),
   UNIQUE (fonte_dados, codigo_cvm, data_referencia, data_doc) -- Garante unicidade por fonte, empresa e datas
 );
 
@@ -335,8 +318,8 @@ CREATE UNIQUE INDEX idx_unico_demonstrativo_financeiro ON demonstrativo_financei
   id_plano_conta, 
   codigo_grupo_dfp, 
   conta_fixa, 
-  id_mes, 
-  id_ano
+  mes, 
+  ano
 );
 
 -- Índice único na informacao_trimestral para evitar duplicatas
@@ -345,6 +328,37 @@ CREATE UNIQUE INDEX idx_unico_informacao_trimestral ON informacao_trimestral (
   id_plano_conta, 
   codigo_grupo_dfp, 
   conta_fixa, 
-  id_mes, 
-  id_ano
+  mes, 
+  ano
 );
+-- ==========================
+-- INSERTS
+-- ==========================
+
+INSERT INTO grupo_demonstrativo_financeiro (codigo_grupo_dfp, grupo_dfp) VALUES
+  ("BPA_IND", "DF Individual - Ativo"),
+  ("BPA_CON", "DF Consolidado - Ativo"),
+  ("BPP_IND", "DF Individual - Passivo"),
+  ("BPP_CON", "DF Consolidado - Passivo"),
+  ("DVA_IND", "DF Individual - Demonstração de Valor Adicionado"),
+  ("DVA_CON", "DF Consolidado - Demonstração de Valor Adicionado"),
+  ("DRE_IND", "DF Individual - Demonstração do Resultado"),
+  ("DRE_CON", "DF Consolidado - Demonstração do Resultado");
+
+INSERT INTO planos_contas (codigo_conta, descricao_conta, comportamento) VALUES
+  ('1', 'Ativo Total', 'BPA'),
+  ('1.01', 'Ativo Circulante', 'BPA'),
+  ('1.01.01', 'Disponibilidades', 'BPA'),
+  ('2', 'Passivo Total', 'BPP'),
+  ('2.01', 'Passivo Circulante', 'BPP'),
+  ('2.02', 'Passivo Não Circulante', 'BPP'),
+  ('Patrimônio Líquido', 'Patrimônio Líquido', 'BPP'),
+  ('3.01', 'Receita Líquida', 'DRE'),
+  ('3.03', 'Custo dos Produtos Vendidos', 'DRE'),
+  ('3.05', 'Despesas Operacionais', 'DRE'),
+  ('3.07', 'Resultado Financeiro', 'DRE'),
+  ('3.11', 'Imposto de Renda', 'DRE'),
+  ('3.13', 'Lucro Líquido', 'DRE'),
+  ('3.99', 'Outros Resultados', 'DRE'),
+  ('Juros sobre o Capital Próprio', 'Juros sobre o Capital Próprio', 'DVA'),
+  ('Dividendos', 'Dividendos', 'DVA');

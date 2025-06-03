@@ -1,4 +1,4 @@
-class Situacao_emissor:
+class Categoria_documento:
     _descricao: str
 
     def __init__(self, _descricao):

@@ -1,18 +1,18 @@
 class Escala_monetaria:
-    id_escala: int
+    _id_escala: int
     _descricao: str
 
-    def __init__(self, id_escala, _descricao):
-        self.id_escala = id_escala
+    def __init__(self, _id_escala, _descricao):
+        self._id_escala = _id_escala
         self._descricao = _descricao
 
     @property
-    def id_especie(self):
-        return self.id_escala
+    def id_escala(self):
+        return self._id_escala
 
-    @id_especie.setter
-    def id_especie(self, value):
-        self.id_escala = value
+    @id_escala.setter
+    def id_escala(self, value):
+        self._id_escala = value
 
     @property
     def descricao(self):
@@ -22,5 +22,6 @@ class Escala_monetaria:
     def descricao(self, value):
         self._descricao = value
 
-    def mostrarDados(self):
-        return f"id_especie: {self.id_especie},descricao: {self.descricao}"
+    def mostrar_dados(self):
+        print("id_escala:", self._id_escala)
+        print("descricao:", self._descricao)

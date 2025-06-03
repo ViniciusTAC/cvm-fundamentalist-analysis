@@ -1,18 +1,28 @@
 class Moeda:
-    id_moeda: int
+    _id_moeda: int
+    _sigla: str
     _descricao: str
 
-    def __init__(self, id_moeda, _descricao):
-        self.id_moeda = id_moeda
+    def __init__(self, _id_moeda, _sigla, _descricao):
+        self._id_moeda = _id_moeda
+        self._sigla = _sigla
         self._descricao = _descricao
 
     @property
-    def id_especie(self):
-        return self.id_moeda
+    def id_moeda(self):
+        return self._id_moeda
 
-    @id_especie.setter
-    def id_especie(self, value):
-        self.id_moeda = value
+    @id_moeda.setter
+    def id_moeda(self, value):
+        self._id_moeda = value
+
+    @property
+    def sigla(self):
+        return self._sigla
+
+    @sigla.setter
+    def sigla(self, value):
+        self._sigla = value
 
     @property
     def descricao(self):
@@ -22,5 +32,7 @@ class Moeda:
     def descricao(self, value):
         self._descricao = value
 
-    def mostrarDados(self):
-        return f"id_especie: {self.id_especie},descricao: {self.descricao}"
+    def mostrar_dados(self):
+        print("id_moeda:", self._id_moeda)
+        print("sigla:", self._sigla)
+        print("descricao:", self._descricao)
