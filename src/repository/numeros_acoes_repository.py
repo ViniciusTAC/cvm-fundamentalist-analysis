@@ -98,10 +98,10 @@ class ConexaoBanco:
                     versao,
                     data_referencia_doc,
                     data_doc,
-                    mes_doc,
-                    ano_doc
+                    mes,
+                    ano
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ON CONFLICT(fonte_dados, cnpj_companhia, data_referencia_doc, data_doc, mes_doc, ano_doc) DO UPDATE SET
+                ON CONFLICT(fonte_dados, codigo_cvm, data_referencia, data_doc) DO UPDATE SET
                     denominacao_companhia = excluded.denominacao_companhia,
                     qtd_acoes_ordinarias_capital_integralizado = excluded.qtd_acoes_ordinarias_capital_integralizado,
                     qtd_acoes_preferenciais_capital_integralizado = excluded.qtd_acoes_preferenciais_capital_integralizado,

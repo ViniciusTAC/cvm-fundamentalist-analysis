@@ -6,7 +6,7 @@ base_dir = os.path.dirname(os.path.abspath(__file__))
 
 try:
     # Caminho absoluto do arquivo SQL
-    sql_path = os.path.join(base_dir, "script-sqlite-v2.sql")
+    sql_path = os.path.join(base_dir, "script-sqlite-v3.sql")
 
     # Lê o script SQL
     with open(sql_path, "r", encoding="utf-8") as f:

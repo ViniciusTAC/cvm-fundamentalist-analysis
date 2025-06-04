@@ -9,12 +9,10 @@ from utils.logger import escrever_linha_em_branco, escrever_linha_separador
 class ConexaoBanco:
     """Classe para gerenciar a conexão com o banco de dados SQLite."""
 
-
     def __init__(self, db_path, nivel=logging.WARNING):
         self.db_path = db_path
         self.connection = None
         self.log_sucesso, self.log_erro = self._setup_logger(nivel=nivel)
-
 
     def _setup_logger(self, log_dir="logs/logs_insercao", nivel=logging.WARNING):
         hoje = datetime.now().strftime("%Y-%m-%d")
@@ -29,7 +27,9 @@ class ConexaoBanco:
         sucesso_handler = logging.FileHandler(
             os.path.join(log_sucesso_dir, "sucesso.log"), encoding="utf-8"
         )
-        sucesso_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+        sucesso_handler.setFormatter(
+            logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+        )
         sucesso_logger.addHandler(sucesso_handler)
 
         erro_logger = logging.getLogger(f"erro_{id(self)}")
@@ -37,7 +37,9 @@ class ConexaoBanco:
         erro_handler = logging.FileHandler(
             os.path.join(log_erro_dir, "erro.log"), encoding="utf-8"
         )
-        erro_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+        erro_handler.setFormatter(
+            logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+        )
         erro_logger.addHandler(erro_handler)
 
         # return sucesso_logger, erro_logger
@@ -81,109 +83,116 @@ class ConexaoBanco:
             self.connection.close()
             print("Conexão com o banco de dados encerrada.")
 
-
-
-
     def inserir_ou_atualizar_empresa(self, empresa):
         try:
             cursor = self.connection.cursor()
 
-            agora_local = datetime.now(ZoneInfo("America/Sao_Paulo")).strftime('%Y-%m-%d %H:%M:%S')
+            agora_local = datetime.now(ZoneInfo("America/Sao_Paulo")).strftime(
+                "%Y-%m-%d %H:%M:%S"
+            )
 
             query = """
-                INSERT INTO empresas (
-                    categoria_doc, codigo_cvm, cnpj_companhia, descricao_atividade, especie_controle_acionario,
-                    identificador_documento, mes_encerramento_exercicio_social, nome_empresa, nome_anterior_empresa,
-                    pagina_web, pais_custodia_valores_mobiliarios, pais_origem, setor_atividade, situacao_emissor,
-                    situacao_registro_cvm, versao, data_registro_cvm, data_nome_empresarial, data_categoria_registro_cvm,
-                    data_situacao_registro_cvm, data_constituicao, data_especie_controle_acionario,
-                    data_referencia_documento, data_situacao_emissor, data_alteracao_exercicio_social,
-                    dia_encerramento_exercicio_social, mes_doc, ano_doc,
-                    data_hora_insercao, data_hora_atualizacao
-                )
-                VALUES (
-                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-                )
-                ON CONFLICT(cnpj_companhia, mes_doc, ano_doc) DO UPDATE SET
-                    categoria_doc = excluded.categoria_doc,
-                    codigo_cvm = excluded.codigo_cvm,
-                    descricao_atividade = excluded.descricao_atividade,
-                    especie_controle_acionario = excluded.especie_controle_acionario,
-                    identificador_documento = excluded.identificador_documento,
-                    mes_encerramento_exercicio_social = excluded.mes_encerramento_exercicio_social,
-                    nome_empresa = excluded.nome_empresa,
-                    nome_anterior_empresa = excluded.nome_anterior_empresa,
-                    pagina_web = excluded.pagina_web,
-                    pais_custodia_valores_mobiliarios = excluded.pais_custodia_valores_mobiliarios,
-                    pais_origem = excluded.pais_origem,
-                    setor_atividade = excluded.setor_atividade,
-                    situacao_emissor = excluded.situacao_emissor,
-                    situacao_registro_cvm = excluded.situacao_registro_cvm,
-                    versao = excluded.versao,
-                    data_registro_cvm = excluded.data_registro_cvm,
-                    data_nome_empresarial = excluded.data_nome_empresarial,
-                    data_categoria_registro_cvm = excluded.data_categoria_registro_cvm,
-                    data_situacao_registro_cvm = excluded.data_situacao_registro_cvm,
-                    data_constituicao = excluded.data_constituicao,
-                    data_especie_controle_acionario = excluded.data_especie_controle_acionario,
-                    data_referencia_documento = excluded.data_referencia_documento,
-                    data_situacao_emissor = excluded.data_situacao_emissor,
-                    data_alteracao_exercicio_social = excluded.data_alteracao_exercicio_social,
-                    dia_encerramento_exercicio_social = excluded.dia_encerramento_exercicio_social,
-                    mes_doc = excluded.mes_doc,
-                    ano_doc = excluded.ano_doc,
-                    data_hora_atualizacao = ?
+                        INSERT INTO empresas (
+                            id_categoria_doc, codigo_cvm, cnpj_companhia, descricao_atividade, id_especie,
+                            identificador_documento, mes_encerramento_exercicio_social, nome_empresa, nome_anterior_empresa,
+                            pagina_web, pais_custodia_valores_mobiliarios, pais_origem, id_setor, id_situacao,
+                            situacao_registro_cvm, versao, data_registro_cvm, data_nome_empresarial, data_categoria_registro_cvm,
+                            data_situacao_registro_cvm, data_constituicao, data_especie_controle_acionario,
+                            data_referencia_documento, data_situacao_emissor, data_alteracao_exercicio_social,
+                            dia_encerramento_exercicio_social, mes, ano,
+                            data_hora_insercao, data_hora_atualizacao
+                        )
+                        VALUES (
+                            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                        )
+                        ON CONFLICT(codigo_cvm, mes, ano) DO UPDATE SET
+                            id_categoria_doc = excluded.id_categoria_doc,
+                            codigo_cvm = excluded.codigo_cvm,
+                            descricao_atividade = excluded.descricao_atividade,
+                            id_especie = excluded.id_especie,
+                            identificador_documento = excluded.identificador_documento,
+                            mes_encerramento_exercicio_social = excluded.mes_encerramento_exercicio_social,
+                            nome_empresa = excluded.nome_empresa,
+                            nome_anterior_empresa = excluded.nome_anterior_empresa,
+                            pagina_web = excluded.pagina_web,
+                            pais_custodia_valores_mobiliarios = excluded.pais_custodia_valores_mobiliarios,
+                            pais_origem = excluded.pais_origem,
+                            id_setor = excluded.id_setor,
+                            id_situacao = excluded.id_situacao,
+                            situacao_registro_cvm = excluded.situacao_registro_cvm,
+                            versao = excluded.versao,
+                            data_registro_cvm = excluded.data_registro_cvm,
+                            data_nome_empresarial = excluded.data_nome_empresarial,
+                            data_categoria_registro_cvm = excluded.data_categoria_registro_cvm,
+                            data_situacao_registro_cvm = excluded.data_situacao_registro_cvm,
+                            data_constituicao = excluded.data_constituicao,
+                            data_especie_controle_acionario = excluded.data_especie_controle_acionario,
+                            data_referencia_documento = excluded.data_referencia_documento,
+                            data_situacao_emissor = excluded.data_situacao_emissor,
+                            data_alteracao_exercicio_social = excluded.data_alteracao_exercicio_social,
+                            dia_encerramento_exercicio_social = excluded.dia_encerramento_exercicio_social,
+                            mes = excluded.mes,
+                            ano = excluded.ano,
+                            data_hora_atualizacao = ?
+
             """
 
             values = (
-                tratar_valor(empresa._categoria_doc),
+                tratar_valor(empresa._id_categoria_doc, tipo="int"),
                 tratar_valor(empresa._codigo_cvm),
                 tratar_valor(empresa._cnpj_companhia),
                 tratar_valor(empresa._descricao_atividade),
-                tratar_valor(empresa._especie_controle_acionario),
+                tratar_valor(empresa._id_especie, tipo="int"),
                 tratar_valor(empresa._identificador_documento),
-                tratar_valor(empresa._mes_encerramento_exercicio_social, tipo='int'),
+                tratar_valor(empresa._mes_encerramento_exercicio_social, tipo="int"),
                 tratar_valor(empresa._nome_empresa),
                 tratar_valor(empresa._nome_anterior_empresa),
                 tratar_valor(empresa._pagina_web),
                 tratar_valor(empresa._pais_custodia_valores_mobiliarios),
                 tratar_valor(empresa._pais_origem),
-                tratar_valor(empresa._setor_atividade),
-                tratar_valor(empresa._situacao_emissor),
+                tratar_valor(empresa._id_setor, tipo="int"),
+                tratar_valor(empresa._id_situacao, tipo="int"),
                 tratar_valor(empresa._situacao_registro_cvm),
-                tratar_valor(empresa._versao, tipo='int'),
-                tratar_valor(empresa._data_registro_cvm, tipo='date'),
-                tratar_valor(empresa._data_nome_empresarial, tipo='date'),
-                tratar_valor(empresa._data_categoria_registro_cvm, tipo='date'),
-                tratar_valor(empresa._data_situacao_registro_cvm, tipo='date'),
-                tratar_valor(empresa._data_constituicao, tipo='date'),
-                tratar_valor(empresa._data_especie_controle_acionario, tipo='date'),
-                tratar_valor(empresa._data_referencia_documento, tipo='date'),
-                tratar_valor(empresa._data_situacao_emissor, tipo='date'),
-                tratar_valor(empresa._data_alteracao_exercicio_social, tipo='date'),
-                tratar_valor(empresa._dia_encerramento_exercicio_social, tipo='int'),
-                tratar_valor(empresa._mes_doc, tipo='int'),
-                tratar_valor(empresa._ano_doc, tipo='int'),
-                agora_local,  # data_hora_insercao (só no insert)
-                agora_local,  # data_hora_atualizacao (também usada no update)
-                agora_local   # parâmetro extra para o update (último ? do SQL)
+                tratar_valor(empresa._versao, tipo="int"),
+                tratar_valor(empresa._data_registro_cvm, tipo="date"),
+                tratar_valor(empresa._data_nome_empresarial, tipo="date"),
+                tratar_valor(empresa._data_categoria_registro_cvm, tipo="date"),
+                tratar_valor(empresa._data_situacao_registro_cvm, tipo="date"),
+                tratar_valor(empresa._data_constituicao, tipo="date"),
+                tratar_valor(empresa._data_especie_controle_acionario, tipo="date"),
+                tratar_valor(empresa._data_referencia_documento, tipo="date"),
+                tratar_valor(empresa._data_situacao_emissor, tipo="date"),
+                tratar_valor(empresa._data_alteracao_exercicio_social, tipo="date"),
+                tratar_valor(empresa._dia_encerramento_exercicio_social, tipo="int"),
+                tratar_valor(empresa._mes_doc, tipo="int"),
+                tratar_valor(empresa._ano_doc, tipo="int"),
+                agora_local,
+                agora_local,
+                agora_local,
             )
 
             cursor.execute(query, values)
             # self.connection.commit()
-            self.log_sucesso.info(f"Empresa {empresa._nome_empresa}, do CNPJ: {empresa._cnpj_companhia} e do ano {empresa._ano_doc} inserida/atualizada com sucesso.")
-            print(f"Empresa {empresa._nome_empresa}, do CNPJ: {empresa._cnpj_companhia} e do ano {empresa._ano_doc} inserida/atualizada com sucesso.")
+            self.log_sucesso.info(
+                f"Empresa {empresa._nome_empresa}, do CNPJ: {empresa._cnpj_companhia} e do ano {empresa._ano_doc} inserida/atualizada com sucesso."
+            )
+            print(
+                f"Empresa {empresa._nome_empresa}, do CNPJ: {empresa._cnpj_companhia} e do ano {empresa._ano_doc} inserida/atualizada com sucesso."
+            )
         except sqlite3.Error as e:
             escrever_linha_em_branco(self.log_erro)
             escrever_linha_separador(self.log_erro)
             escrever_linha_em_branco(self.log_erro)
-            self.log_erro.error(f"Erro ao inserir empresa {empresa._nome_empresa} do ano {empresa._ano_doc}, erro: {e}.")
+            self.log_erro.error(
+                f"Erro ao inserir empresa {empresa._nome_empresa} do ano {empresa._ano_doc}, erro: {e}."
+            )
             escrever_linha_em_branco(self.log_erro)
-            print(f"Erro ao inserir empresa {empresa._nome_empresa} do ano {empresa._ano_doc}, erro: {e}.")
+            print(
+                f"Erro ao inserir empresa {empresa._nome_empresa} do ano {empresa._ano_doc}, erro: {e}."
+            )
             # if commit:
             #     self.connection.rollback()
             # raise
-
 
 
 def tratar_valor(valor, tipo=None):
