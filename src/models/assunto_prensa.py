@@ -1,18 +1,9 @@
 class Assunto_prensa:
-    _id_assunto: int
     _descricao: str
 
-    def __init__(self, _id_assunto, _descricao):
-        self._id_assunto = _id_assunto
+    def __init__(self, _descricao):
         self._descricao = _descricao
 
-    @property
-    def id_assunto(self):
-        return self._id_assunto
-
-    @id_assunto.setter
-    def id_assunto(self, value):
-        self._id_assunto = value
 
     @property
     def descricao(self):
@@ -23,5 +14,4 @@ class Assunto_prensa:
         self._descricao = value
 
     def mostrar_dados(self):
-        print("id_assunto:", self._id_assunto)
         print("descricao:", self._descricao)

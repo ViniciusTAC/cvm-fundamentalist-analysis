@@ -65,7 +65,6 @@ CREATE TABLE ordem_exercicio (
 -- Tabela de moedas (padroniza moedas, ex.: 'BRL', 'USD' etc.)
 CREATE TABLE moeda (
   id_moeda    INTEGER PRIMARY KEY,        -- Identificador da moeda
-  sigla       TEXT    UNIQUE NOT NULL,    -- Sigla da moeda (ex.: 'BRL', 'USD')
   descricao   TEXT    NOT NULL            -- Descrição completa da moeda (ex.: 'Real Brasileiro', 'Dólar Americano' etc.)
 );
 
@@ -209,17 +208,17 @@ CREATE TABLE informacao_trimestral (
 -- ========== parecer_demonstrativo ==========
 -- Armazena texto de parecer sobre demonstrativos financeiros (DFP) de cada empresa
 CREATE TABLE parecer_demonstrativo (
-  id_parecer_demonstrativo  INTEGER PRIMARY KEY AUTOINCREMENT, -- Identificador interno do parecer
-  codigo_cvm                TEXT    NOT NULL,                  -- FK para empresas(codigo_cvm)
-  num_linha                 INTEGER,                           -- Número da linha do parecer/declaracao
-  id_tipo_parecer           INTEGER,                           -- FK para tipo_parecer(id_tipo_parecer)
-  id_tipo_rel_auditor       INTEGER,                           -- FK para tipo_relatorio_auditor(id_tipo_rel_auditor)
-  texto_parecer_declaracao  TEXT,                              -- Texto completo do parecer/declaracao
-  versao                    INTEGER,                           -- Versão do parecer
-  data_referencia_doc       DATE,                              -- Data de referência do documento
-  data_doc                  DATE    NOT NULL,                  -- Data do documento de parecer
-  mes                       INTEGER,                           -- Mês extraído de data_doc (1-12)
-  ano                       INTEGER,                           -- Ano extraído de data_doc (ex.: 2020, 2021 etc.)
+  id_parecer_demonstrativo          INTEGER PRIMARY KEY AUTOINCREMENT,  -- Identificador interno do parecer
+  codigo_cvm                        TEXT    NOT NULL,                   -- FK para empresas(codigo_cvm)
+  num_linha_parecer_declaracao      INTEGER,                            -- Número da linha do texto do Parecer/Declaração
+  id_tipo_parecer                   INTEGER,                            -- FK para tipo_parecer(id_tipo_parecer)
+  id_tipo_rel_auditor               INTEGER,                            -- FK para tipo_relatorio_auditor(id_tipo_rel_auditor)
+  texto_parecer_declaracao          TEXT,                               -- Texto completo do parecer/declaracao
+  versao                            INTEGER,                            -- Versão do parecer
+  data_referencia_doc               DATE,                               -- Data de referência do documento
+  data_doc                          DATE    NOT NULL,                   -- Data do documento de parecer
+  mes                               INTEGER,                            -- Mês extraído de data_doc (1-12)
+  ano                               INTEGER,                            -- Ano extraído de data_doc (ex.: 2020, 2021 etc.)
   FOREIGN KEY (codigo_cvm)          REFERENCES empresas(codigo_cvm),
   FOREIGN KEY (id_tipo_parecer)    REFERENCES tipo_parecer(id_tipo_parecer),
   FOREIGN KEY (id_tipo_rel_auditor)REFERENCES tipo_relatorio_auditor(id_tipo_rel_auditor)
@@ -228,17 +227,17 @@ CREATE TABLE parecer_demonstrativo (
 -- ========== parecer_trimestral ==========
 -- Armazena texto de parecer trimestral (ITR) de cada empresa
 CREATE TABLE parecer_trimestral (
-  id_parecer_trimestral     INTEGER PRIMARY KEY AUTOINCREMENT, -- Identificador interno do parecer trimestral
-  codigo_cvm                TEXT    NOT NULL,                  -- FK para empresas(codigo_cvm)
-  num_linha                 INTEGER,                           -- Número da linha do parecer/declaracao
-  id_tipo_parecer           INTEGER,                           -- FK para tipo_parecer(id_tipo_parecer)
-  id_tipo_rel_especial      INTEGER,                           -- FK para tipo_relatorio_especial(id_tipo_rel_especial)
-  texto_parecer_declaracao  TEXT,                              -- Texto completo do parecer/declaracao
-  versao                    INTEGER,                           -- Versão do parecer
-  data_referencia_doc       DATE,                              -- Data de referência do documento
-  data_doc                  DATE    NOT NULL,                  -- Data do documento de parecer
-  mes                       INTEGER,                           -- Mês extraído de data_doc (1-12)
-  ano                       INTEGER,                           -- Ano extraído de data_doc (ex.: 2020, 2021 etc.)
+  id_parecer_trimestral             INTEGER PRIMARY KEY AUTOINCREMENT,  -- Identificador interno do parecer trimestral
+  codigo_cvm                        TEXT    NOT NULL,                   -- FK para empresas(codigo_cvm)
+  num_linha_parecer_declaracao      INTEGER,                            -- Número da linha do texto do Parecer/Declaração
+  id_tipo_parecer                   INTEGER,                            -- FK para tipo_parecer(id_tipo_parecer)
+  id_tipo_rel_especial              INTEGER,                            -- FK para tipo_relatorio_especial(id_tipo_rel_especial)
+  texto_parecer_declaracao          TEXT,                               -- Texto completo do parecer/declaracao
+  versao                            INTEGER,                            -- Versão do parecer
+  data_referencia_doc               DATE,                               -- Data de referência do documento
+  data_doc                          DATE    NOT NULL,                   -- Data do documento de parecer
+  mes                               INTEGER,                            -- Mês extraído de data_doc (1-12)
+  ano                               INTEGER,                            -- Ano extraído de data_doc (ex.: 2020, 2021 etc.)
   FOREIGN KEY (codigo_cvm)          REFERENCES empresas(codigo_cvm),
   FOREIGN KEY (id_tipo_parecer)    REFERENCES tipo_parecer(id_tipo_parecer),
   FOREIGN KEY (id_tipo_rel_especial) REFERENCES tipo_relatorio_especial(id_tipo_rel_especial)
