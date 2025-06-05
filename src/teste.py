@@ -12,9 +12,9 @@ import os
 # from service.setor_atividade_service import process_csv_files as process_setor_atividade
 # from repository.setor_atividade_repository import ConexaoBanco as BancoSetor_atividade
 
-# # setor_atividade
-# from service.categoria_documento_service import process_csv_files as process_categoria_documento
+# # categoria_documento
 # from repository.categoria_documento_repository import ConexaoBanco as BancoCategoria_documento
+# from service.categoria_documento_service import process_categoria_documento
 
 # # empresas
 # from service.empresas_service import process_csv_files as process_empresas
@@ -70,22 +70,20 @@ import os
 
 
 # tipo_parecer
-from service.tipo_parecer_service import (
-    process_csv_files as process_tipo_parecer,
-)
-from repository.tipo_parecer_repository import (
-    ConexaoBanco as BancoTipo_parecer,
-)
+# from service.tipo_parecer_service import process_tipo_parecer
+# from repository.tipo_parecer_repository import (
+#     ConexaoBanco as BancoTipo_parecer,
+# )
 
-# escala_monetaria
-from service.escala_monetaria_service import (
-    process_csv_files as process_escala_monetaria,
-)
-from repository.escala_monetaria_repository import (
-    ConexaoBanco as BancoEscala_monetaria,
-)
+## escala_monetaria
+# from service.escala_monetaria_service import (
+#     process_csv_files as process_escala_monetaria,
+# )
+# from repository.escala_monetaria_repository import (
+#     ConexaoBanco as BancoEscala_monetaria,
+# )
 
-# ordem_exercicio
+# # ordem_exercicio
 from service.ordem_exercicio_service import (
     process_csv_files as process_ordem_exercicio,
 )
@@ -102,6 +100,119 @@ from repository.moeda_repository import (
 )
 
 CAMINHO_BANCO = os.path.join("sqlite-projeto", "cvm-dados.db")
+
+
+# def executar_categoria_documento():
+#     entradas = [
+#         {
+#             "base_path": "data_extraido/FCA/sucesso",
+#             "regex_arquivo": r"^fca_cia_aberta_geral.*\.csv$",
+#             "campo": "Categoria_Registro_CVM",
+#         },
+#         {
+#             "base_path": "data_extraido/FRE/sucesso",
+#             "regex_arquivo": r"^fre_cia_aberta_\d{4}\.csv$",
+#             "campo": "CATEG_DOC",
+#         },
+#         {
+#             "base_path": "data_extraido/IPE/sucesso",
+#             "regex_arquivo": r"^ipe_cia_aberta.*\.csv$",
+#             "campo": "Categoria",
+#         },
+#     ]
+
+#     repo = BancoCategoria_documento(db_path=CAMINHO_BANCO)
+#     repo.conectar()
+
+#     for entrada in entradas:
+#         dados = process_categoria_documento(
+#             base_path=entrada["base_path"],
+#             regex_arquivo=entrada["regex_arquivo"],
+#             nome_campo=entrada["campo"],
+#         )
+#         for dado in dados:
+#             repo.inserir_ou_ignorar_categoria_documento(dado)
+
+#     repo.desconectar()
+
+# def executar_tipo_parecer():
+#     entradas = [
+#         {
+#             "base_path": "data_extraido/DFP/sucesso",
+#             "regex_arquivo": r"^dfp_cia_aberta_parecer.*\.csv$",
+#             "campo": "TP_PARECER_DECL",
+#         },
+#         {
+#             "base_path": "data_extraido/ITR/sucesso",
+#             "regex_arquivo": r"^itr_cia_aberta_parecer.*\.csv$",
+#             "campo": "TP_PARECER_DECL",
+#         }
+#     ]
+
+#     repo = BancoTipo_parecer(db_path=CAMINHO_BANCO)
+#     repo.conectar()
+
+#     for entrada in entradas:
+#         dados = process_tipo_parecer(
+#             base_path=entrada["base_path"],
+#             regex_arquivo=entrada["regex_arquivo"],
+#             nome_campo=entrada["campo"],
+#         )
+#         for dado in dados:
+#             repo.inserir_ou_ignorar_tipo_parecer(dado)
+
+#     repo.desconectar()
+
+
+# def executar_escala_monetaria():
+#     entradas = [
+#         {"base_path": "data_extraido/DFP/sucesso"},
+#         {"base_path": "data_extraido/ITR/sucesso"},
+#     ]
+
+#     repo = BancoEscala_monetaria(db_path=CAMINHO_BANCO)
+#     repo.conectar()
+
+#     for entrada in entradas:
+#         valores = process_escala_monetaria(entrada["base_path"], conexao=repo)
+#         for valor in valores:
+#             repo.inserir_ou_ignorar_escala_monetaria(valor)
+
+#     repo.desconectar()
+
+
+def executar_ordem_exercicio():
+    entradas = [
+        {"base_path": "data_extraido/DFP/sucesso"},
+        {"base_path": "data_extraido/ITR/sucesso"},
+    ]
+
+    repo = BancoOrdem_exercicio(db_path=CAMINHO_BANCO)
+    repo.conectar()
+
+    for entrada in entradas:
+        valores = process_ordem_exercicio(entrada["base_path"], conexao=repo)
+        for valor in valores:
+            repo.inserir_ou_ignorar_ordem_exercicio(valor)
+
+    repo.desconectar()
+
+
+def executar_moeda():
+    entradas = [
+        {"base_path": "data_extraido/DFP/sucesso"},
+        {"base_path": "data_extraido/ITR/sucesso"},
+    ]
+
+    repo = BancoMoeda(db_path=CAMINHO_BANCO)
+    repo.conectar()
+
+    for entrada in entradas:
+        valores = process_moeda(entrada["base_path"], conexao=repo)
+        for valor in valores:
+            repo.inserir_ou_ignorar_moeda(valor)
+
+    repo.desconectar()
 
 
 def main():
@@ -133,13 +244,7 @@ def main():
     # repo.desconectar()
 
     # # categoria_documento
-    # base_path = "data_extraido/FCA/sucesso"
-    # dados = process_categoria_documento(base_path)
-    # repo = BancoCategoria_documento(db_path=CAMINHO_BANCO)
-    # repo.conectar()
-    # for dado in dados:
-    #     repo.inserir_ou_ignorar_categoria_documento(dado)
-    # repo.desconectar()
+    # executar_categoria_documento()
 
     # # empresas
     # base_path = "data_extraido/FCA/sucesso"
@@ -168,9 +273,7 @@ def main():
     #     repo.inserir_ou_ignorar_tipo_relatorio_especial(dado)
     # repo.desconectar()
 
-
-
-# -----------------
+    # -----------------
     # # assunto_prensa
     # base_path = "data_extraido/IPE/sucesso"
     # dados = process_assunto_prensa(base_path)
@@ -207,45 +310,19 @@ def main():
     #     repo.inserir_ou_ignorar_tipo_apresentacao_evento(dado)
     # repo.desconectar()
 
-    
-# -----------------
+    # # -----------------
 
-    # tipo_parecer
-    base_path = "data_extraido/DFP/sucesso"
-    dados = process_tipo_parecer(base_path)
-    repo = BancoTipo_parecer(db_path=CAMINHO_BANCO)
-    repo.conectar()
-    for dado in dados:
-        repo.inserir_ou_ignorar_tipo_parecer(dado)
-    repo.desconectar()
+    # # tipo_parecer
+    # executar_tipo_parecer()
 
-    # escala_monetaria
-    base_path = "data_extraido/DFP/sucesso"
-    dados = process_escala_monetaria(base_path)
-    repo = BancoEscala_monetaria(db_path=CAMINHO_BANCO)
-    repo.conectar()
-    for dado in dados:
-        repo.inserir_ou_ignorar_escala_monetaria(dado)
-    repo.desconectar()
+    ## escala_monetaria
+    # executar_escala_monetaria()
 
-    # ordem_exercicio
-    base_path = "data_extraido/DFP/sucesso"
-    dados = process_ordem_exercicio(base_path)
-    repo = BancoOrdem_exercicio(db_path=CAMINHO_BANCO)
-    repo.conectar()
-    for dado in dados:
-        repo.inserir_ou_ignorar_ordem_exercicio(dado)
-    repo.desconectar()
+    # # ordem_exercicio
+    # executar_ordem_exercicio()
 
     # moeda
-    base_path = "data_extraido/DFP/sucesso"
-    dados = process_moeda(base_path)
-    repo = BancoMoeda(db_path=CAMINHO_BANCO)
-    repo.conectar()
-    for dado in dados:
-        repo.inserir_ou_ignorar_moeda(dado)
-    repo.desconectar()
-
+    executar_moeda()
 
 
 if __name__ == "__main__":

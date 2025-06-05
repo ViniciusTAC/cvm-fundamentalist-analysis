@@ -65,7 +65,7 @@ CREATE TABLE ordem_exercicio (
 -- Tabela de moedas (padroniza moedas, ex.: 'BRL', 'USD' etc.)
 CREATE TABLE moeda (
   id_moeda    INTEGER PRIMARY KEY,        -- Identificador da moeda
-  descricao   TEXT    NOT NULL            -- Descrição completa da moeda (ex.: 'Real Brasileiro', 'Dólar Americano' etc.)
+  descricao   TEXT    UNIQUE NOT NULL     -- Descrição completa da moeda (ex.: 'Real Brasileiro', 'Dólar Americano' etc.)
 );
 
 -- Tabela de espécies de controle acionário (padroniza tipos de controle, ex.: 'Estatal', 'Privado', etc.)
