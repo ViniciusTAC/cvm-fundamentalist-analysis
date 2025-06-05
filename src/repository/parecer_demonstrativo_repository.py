@@ -112,16 +112,16 @@ class ConexaoBanco:
             # Construir valores garantindo que não haja extras e substituindo 'nan' por None
             # Construir valores garantindo validação dos campos
             values = (
-                        tratar_valor(parecer_demonstrativo._cnpj_companhia),
-                        tratar_valor(parecer_demonstrativo._num_linha_parecer_declaracao, tipo="int"),
-                        tratar_valor(parecer_demonstrativo._tipo_parecer_declaracao),
-                        tratar_valor(parecer_demonstrativo._tipo_relatorio_auditor),
-                        tratar_valor(parecer_demonstrativo._texto_parecer_declaracao),
-                        tratar_valor(parecer_demonstrativo._versao, tipo="int"),
-                        tratar_valor(parecer_demonstrativo.data_referencia_doc, tipo="date"),
-                        tratar_valor(parecer_demonstrativo._data_doc, tipo="date"),
-                        tratar_valor(parecer_demonstrativo._mes_doc, tipo="int"),
-                        tratar_valor(parecer_demonstrativo._ano_doc, tipo="int"),
+                tratar_valor(parecer_demonstrativo.cnpj_companhia),
+                tratar_valor(parecer_demonstrativo.num_linha_parecer_declaracao, tipo="int"),
+                tratar_valor(parecer_demonstrativo.tipo_parecer_declaracao),
+                tratar_valor(parecer_demonstrativo.tipo_relatorio_auditor),
+                tratar_valor(parecer_demonstrativo.texto_parecer_declaracao),
+                tratar_valor(parecer_demonstrativo.versao, tipo="int"),
+                tratar_valor(parecer_demonstrativo.data_referencia_doc, tipo="date"),
+                tratar_valor(parecer_demonstrativo.data_doc, tipo="date"),
+                tratar_valor(parecer_demonstrativo.mes_doc, tipo="int"),
+                tratar_valor(parecer_demonstrativo.ano_doc, tipo="int"),
             )
             # print("\n\n")
             # # Gerar query SQL formatada para depuração

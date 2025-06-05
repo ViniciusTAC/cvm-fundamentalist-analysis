@@ -117,17 +117,17 @@ class ConexaoBanco:
             # Construir valores garantindo que não haja extras e substituindo 'nan' por None
             # Construir valores garantindo validação dos campos
             values = (
-                tratar_valor(formulario_referencia._cnpj_companhia),
-                tratar_valor(formulario_referencia._categoria_doc),
-                tratar_valor(formulario_referencia._denominacao_companhia),
-                tratar_valor(formulario_referencia._id_doc, tipo="int"),
-                tratar_valor(formulario_referencia._link_doc),
-                tratar_valor(formulario_referencia._versao, tipo="int"),
+                tratar_valor(formulario_referencia.cnpj_companhia),
+                tratar_valor(formulario_referencia.categoria_doc, tipo="int"),
+                tratar_valor(formulario_referencia.denominacao_companhia),
+                tratar_valor(formulario_referencia.id_doc, tipo="int"),
+                tratar_valor(formulario_referencia.link_doc),
+                tratar_valor(formulario_referencia.versao, tipo="int"),
                 tratar_valor(formulario_referencia.data_recebimento_doc, tipo="date"),
                 tratar_valor(formulario_referencia.data_referencia_doc, tipo="date"),
-                tratar_valor(formulario_referencia._data_doc, tipo="date"),
-                tratar_valor(formulario_referencia._mes_doc, tipo="int"),
-                tratar_valor(formulario_referencia._ano_doc, tipo="int"),
+                tratar_valor(formulario_referencia.data_doc, tipo="date"),
+                tratar_valor(formulario_referencia.mes_doc),
+                tratar_valor(formulario_referencia.ano_doc),
             )
             # print("\n\n")
             # Gerar query SQL formatada para depuração

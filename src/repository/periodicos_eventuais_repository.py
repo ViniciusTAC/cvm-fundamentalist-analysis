@@ -1,6 +1,7 @@
 import sqlite3
 import os
 from datetime import datetime
+
 # from zoneinfo import ZoneInfo
 import logging
 from utils.logger import escrever_linha_em_branco, escrever_linha_separador
@@ -9,12 +10,10 @@ from utils.logger import escrever_linha_em_branco, escrever_linha_separador
 class ConexaoBanco:
     """Classe para gerenciar a conexão com o banco de dados SQLite."""
 
-
     def __init__(self, db_path, nivel=logging.WARNING):
         self.db_path = db_path
         self.connection = None
         self.log_sucesso, self.log_erro = self._setup_logger(nivel=nivel)
-
 
     def _setup_logger(self, log_dir="logs/logs_insercao", nivel=logging.WARNING):
         hoje = datetime.now().strftime("%Y-%m-%d")
@@ -29,7 +28,9 @@ class ConexaoBanco:
         sucesso_handler = logging.FileHandler(
             os.path.join(log_sucesso_dir, "sucesso.log"), encoding="utf-8"
         )
-        sucesso_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+        sucesso_handler.setFormatter(
+            logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+        )
         sucesso_logger.addHandler(sucesso_handler)
 
         erro_logger = logging.getLogger(f"erro_{id(self)}")
@@ -37,7 +38,9 @@ class ConexaoBanco:
         erro_handler = logging.FileHandler(
             os.path.join(log_erro_dir, "erro.log"), encoding="utf-8"
         )
-        erro_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+        erro_handler.setFormatter(
+            logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+        )
         erro_logger.addHandler(erro_handler)
 
         # return sucesso_logger, erro_logger
@@ -124,22 +127,19 @@ class ConexaoBanco:
             # Construir valores garantindo que não haja extras e substituindo 'nan' por None
             # Construir valores garantindo validação dos campos
             values = (
-                tratar_valor(periodicos_eventuais._cnpj_companhia),
-                tratar_valor(periodicos_eventuais._codigo_cvm),
-                tratar_valor(periodicos_eventuais._assunto),
-                tratar_valor(periodicos_eventuais._categoria_doc),
-                tratar_valor(periodicos_eventuais._especie),
-                tratar_valor(periodicos_eventuais._link_doc),
-                tratar_valor(periodicos_eventuais._nome_companhia),
-                tratar_valor(periodicos_eventuais._protocolo_entrega),
-                tratar_valor(periodicos_eventuais._tipo),
-                tratar_valor(periodicos_eventuais._tipo_apresentacao),
-                tratar_valor(periodicos_eventuais._versao, tipo="int"),
-                tratar_valor(periodicos_eventuais._data_entrega_doc, tipo="date"),
-                tratar_valor(periodicos_eventuais._data_referencia_doc, tipo="date"),
-                tratar_valor(periodicos_eventuais._data_doc, tipo="date"),
-                tratar_valor(periodicos_eventuais._mes_doc, tipo="int"),
-                tratar_valor(periodicos_eventuais._ano_doc, tipo="int"),
+                tratar_valor(periodicos_eventuais.codigo_cvm),
+                tratar_valor(periodicos_eventuais.id_assunto, tipo="int"),
+                tratar_valor(periodicos_eventuais.id_categoria_doc, tipo="int"),
+                tratar_valor(periodicos_eventuais.id_especie_eventual, tipo="int"),
+                tratar_valor(periodicos_eventuais.link_doc),
+                tratar_valor(periodicos_eventuais.id_tipo_evento, tipo="int"),
+                tratar_valor(periodicos_eventuais.id_tipo_apres, tipo="int"),
+                tratar_valor(periodicos_eventuais.versao, tipo="int"),
+                tratar_valor(periodicos_eventuais.data_entrega, tipo="date"),
+                tratar_valor(periodicos_eventuais.data_referencia, tipo="date"),
+                tratar_valor(periodicos_eventuais.data_doc, tipo="date"),
+                tratar_valor(periodicos_eventuais.mes, tipo="int"),
+                tratar_valor(periodicos_eventuais.ano, tipo="int"),
             )
             # print("\n\n")
             # # Gerar query SQL formatada para depuração
