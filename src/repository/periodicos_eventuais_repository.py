@@ -89,22 +89,20 @@ class ConexaoBanco:
             cursor = self.connection.cursor()
             query = """
                             INSERT INTO periodicos_eventuais (
-                                cnpj_companhia,
                                 codigo_cvm,
-                                assunto,
-                                categoria_doc,
-                                especie,
+                                id_assunto,
+                                id_categoria_doc,
+                                id_especie_eventual,
                                 link_doc,
-                                nome_companhia,
                                 protocolo_entrega,
-                                tipo,
-                                tipo_apresentacao,
+                                id_tipo_evento,
+                                id_tipo_apres,
                                 versao,
-                                data_entrega_doc,
-                                data_referencia_doc,
+                                data_entrega,
+                                data_referencia,
                                 data_doc,
-                                mes_doc,
-                                ano_doc
+                                mes,
+                                ano
                             ) VALUES (
                                 ?,
                                 ?,
@@ -132,6 +130,7 @@ class ConexaoBanco:
                 tratar_valor(periodicos_eventuais.id_categoria_doc, tipo="int"),
                 tratar_valor(periodicos_eventuais.id_especie_eventual, tipo="int"),
                 tratar_valor(periodicos_eventuais.link_doc),
+                tratar_valor(periodicos_eventuais.protocolo_entrega),
                 tratar_valor(periodicos_eventuais.id_tipo_evento, tipo="int"),
                 tratar_valor(periodicos_eventuais.id_tipo_apres, tipo="int"),
                 tratar_valor(periodicos_eventuais.versao, tipo="int"),
@@ -151,10 +150,10 @@ class ConexaoBanco:
             cursor.execute(query, values)
             # self.connection.commit()
             self.log_sucesso.info(
-                f"Periodicos e Eventuais {periodicos_eventuais._nome_companhia}, do CNPJ: {periodicos_eventuais._cnpj_companhia} e do ano {periodicos_eventuais._ano_doc} inserida com sucesso."
+                f"Periodicos e Eventuais do Código CVM: {periodicos_eventuais._codigo_cvm} e do ano {periodicos_eventuais._ano} inserida com sucesso."
             )
             print(
-                f"Periodicos e Eventuais {periodicos_eventuais._nome_companhia} inserida com sucesso."
+                f"Periodicos e Eventuais {periodicos_eventuais._codigo_cvm} inserida com sucesso."
             )
             escrever_linha_em_branco(self.log_sucesso)
         except sqlite3.Error as e:
@@ -163,11 +162,11 @@ class ConexaoBanco:
             escrever_linha_em_branco(self.log_erro)
 
             self.log_erro.error(
-                f"Erro ao inserir Periodicos e Eventuais {periodicos_eventuais._nome_companhia}, do CNPJ: {periodicos_eventuais._cnpj_companhia} e do ano {periodicos_eventuais._ano_doc}, erro: {e}."
+                f"Erro ao inserir Periodicos e Eventuais do Código CVM: {periodicos_eventuais._codigo_cvm} e do ano {periodicos_eventuais._ano}, erro: {e}."
             )
             escrever_linha_em_branco(self.log_erro)
             print(
-                f"Erro ao inserir Periodicos e Eventuais {periodicos_eventuais._nome_companhia}, do CNPJ: {periodicos_eventuais._cnpj_companhia} e do ano {periodicos_eventuais._ano_doc}, erro: {e}."
+                f"Erro ao inserir Periodicos e Eventuais do Código CVM: {periodicos_eventuais._codigo_cvm} e do ano {periodicos_eventuais._ano}, erro: {e}."
             )
 
 

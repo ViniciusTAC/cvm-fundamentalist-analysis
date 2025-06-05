@@ -2,7 +2,7 @@ from datetime import date
 from numpy import double
 
 
-class DemonstrativoFinanceiro:
+class Demonstrativo_financeiro:
     _id_demonstrativo: int
     _codigo_cvm: str
     _id_plano_conta: int

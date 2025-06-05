@@ -17,13 +17,13 @@ def carregar_mapas_auxiliares(db_path):
         "categoria_documento": carregar_tabela(
             "categoria_documento", "id_categoria_doc"
         ),
-        "assunto_prensa": carregar_tabela("assunto_prensa", "id_assunto_prensa"),
+        "assunto_prensa": carregar_tabela("assunto_prensa", "id_assunto"),
         "especie_documento_eventual": carregar_tabela(
-            "especie_documento_eventual", "id_especie_documento_eventual"
+            "especie_documento_eventual", "id_especie_eventual"
         ),
         "tipo_evento": carregar_tabela("tipo_evento", "id_tipo_evento"),
         "tipo_apresentacao_evento": carregar_tabela(
-            "tipo_apresentacao_evento", "id_tipo_apresentacao_evento"
+            "tipo_apresentacao_evento", "id_tipo_apres"
         ),
     }
 
@@ -53,7 +53,7 @@ def process_csv_files(base_path, db_path):
 
                 for _, row in df.iterrows():
                     periodicos_eventuais = Periodicos_eventuais(
-                        _cnpj_companhia=row.get("CNPJ_Companhia"),
+                        # _cnpj_companhia=row.get("CNPJ_Companhia"),
                         _codigo_cvm=row.get("Codigo_CVM"),
                         _id_assunto=mapas["assunto_prensa"].get(
                             str(row.get("Assunto")).lower().strip()
@@ -65,17 +65,17 @@ def process_csv_files(base_path, db_path):
                             str(row.get("Especie")).lower().strip()
                         ),
                         _link_doc=row.get("Link_Download"),
-                        _nome_companhia=row.get("Nome_Companhia"),
+                        # _nome_companhia=row.get("Nome_Companhia"),
                         _protocolo_entrega=row.get("Protocolo_Entrega"),
                         _id_tipo_evento=mapas["tipo_evento"].get(
                             str(row.get("Tipo")).lower().strip()
                         ),
-                        _tipo_apresentacao=mapas["tipo_apresentacao_evento"].get(
+                        _id_tipo_apres=mapas["tipo_apresentacao_evento"].get(
                             str(row.get("Tipo_Apresentacao")).lower().strip()
                         ),
-                        _id_tipo_apres=row.get("Versao"),
-                        _data_entrega_doc=parse_date(row.get("Data_Entrega")),
-                        _data_referencia_doc=parse_date(row.get("Data_Referencia")),
+                        _versao=row.get("Versao"),
+                        _data_entrega=parse_date(row.get("Data_Entrega")),
+                        _data_referencia=parse_date(row.get("Data_Referencia")),
                         _data_doc=datetime.now().date(),
                         _mes=row.get("Data_Referencia")[5:7]
                         if row.get("Data_Referencia")

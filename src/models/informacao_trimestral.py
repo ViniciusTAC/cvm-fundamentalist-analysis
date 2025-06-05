@@ -2,7 +2,7 @@ from datetime import date
 from numpy import double
 
 
-class InformacaoTrimestral:
+class Informacao_trimestral:
     _codigo_cvm: str
     _id_plano_conta: int
     _id_escala: int

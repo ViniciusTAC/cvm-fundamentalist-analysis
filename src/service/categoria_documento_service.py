@@ -44,7 +44,7 @@ import pandas as pd
 from models.categoria_documento import Categoria_documento
 
 
-def process_categoria_documento(base_path, regex_arquivo, nome_campo):
+def process_csv_files(base_path, regex_arquivo, nome_campo):
     descricao_unica_set = set()
     categoria_documento_list = []
 

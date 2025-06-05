@@ -1,11 +1,13 @@
 from datetime import date
 
+
 class Periodicos_eventuais:
     _codigo_cvm: str
     _id_assunto: int
     _id_categoria_doc: int
     _id_especie_eventual: int
     _link_doc: str
+    _protocolo_entrega: str
     _id_tipo_evento: int
     _id_tipo_apres: int
     _versao: int
@@ -22,6 +24,7 @@ class Periodicos_eventuais:
         _id_categoria_doc,
         _id_especie_eventual,
         _link_doc,
+        _protocolo_entrega,
         _id_tipo_evento,
         _id_tipo_apres,
         _versao,
@@ -35,6 +38,7 @@ class Periodicos_eventuais:
         self._id_assunto = _id_assunto
         self._id_categoria_doc = _id_categoria_doc
         self._id_especie_eventual = _id_especie_eventual
+        self._protocolo_entrega = _protocolo_entrega
         self._link_doc = _link_doc
         self._id_tipo_evento = _id_tipo_evento
         self._id_tipo_apres = _id_tipo_apres
@@ -84,6 +88,14 @@ class Periodicos_eventuais:
     @link_doc.setter
     def link_doc(self, value):
         self._link_doc = value
+
+    @property
+    def protocolo_entrega(self):
+        return self._protocolo_entrega
+
+    @protocolo_entrega.setter
+    def protocolo_entrega(self, value):
+        self._protocolo_entrega = value
 
     @property
     def id_tipo_evento(self):
@@ -154,6 +166,7 @@ class Periodicos_eventuais:
         print("id_assunto: ", str(self._id_assunto))
         print("id_categoria_doc: ", str(self._id_categoria_doc))
         print("id_especie_eventual: ", str(self._id_especie_eventual))
+        print("protocolo_entrega: ", str(self._protocolo_entrega))
         print("link_doc: ", str(self._link_doc))
         print("id_tipo_evento: ", str(self._id_tipo_evento))
         print("id_tipo_apres: ", str(self._id_tipo_apres))

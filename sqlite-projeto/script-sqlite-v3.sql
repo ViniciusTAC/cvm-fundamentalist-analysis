@@ -270,6 +270,7 @@ CREATE TABLE periodicos_eventuais (
   id_categoria_doc      INTEGER,                           -- FK para categoria_documento(id_categoria_doc)
   id_especie_eventual   INTEGER,                           -- FK para especie_documento_eventual(id_especie_eventual)
   link_doc              TEXT,                              -- URL do documento
+  protocolo_entrega TEXT,
   id_tipo_evento        INTEGER,                           -- FK para tipo_evento(id_tipo_evento)
   id_tipo_apres         INTEGER,                           -- FK para tipo_apresentacao_evento(id_tipo_apres)
   versao                INTEGER,                           -- Versão do documento
