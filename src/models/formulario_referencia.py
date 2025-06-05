@@ -3,7 +3,7 @@ from datetime import date
 
 class Formulario_referencia:
     _cnpj_companhia: str
-    _categoria_doc: str
+    _id_categoria_doc: int
     _denominacao_companhia: str
     _id_doc: int
     _link_doc: str
@@ -17,7 +17,7 @@ class Formulario_referencia:
     def __init__(
         self,
         _cnpj_companhia,
-        _categoria_doc,
+        _id_categoria_doc,
         _denominacao_companhia,
         _id_doc,
         _link_doc,
@@ -29,7 +29,7 @@ class Formulario_referencia:
         _ano_doc,
     ):
         self._cnpj_companhia = _cnpj_companhia
-        self._categoria_doc = _categoria_doc
+        self._id_categoria_doc = _id_categoria_doc
         self._denominacao_companhia = _denominacao_companhia
         self._id_doc = _id_doc
         self._link_doc = _link_doc
@@ -50,11 +50,11 @@ class Formulario_referencia:
 
     @property
     def categoria_doc(self):
-        return self._categoria_doc
+        return self._id_categoria_doc
 
     @categoria_doc.setter
     def categoria_doc(self, value):
-        self._categoria_doc = value
+        self._id_categoria_doc = value
 
     @property
     def denominacao_companhia(self):
@@ -130,7 +130,7 @@ class Formulario_referencia:
 
     def mostrarDados(self):
         print("cnpj_companhia: ", str(self._cnpj_companhia))
-        print("categoria_doc: ", str(self._categoria_doc))
+        print("id_categoria_doc: ", str(self._id_categoria_doc))
         print("denominacao_companhia: ", str(self._denominacao_companhia))
         print("id_doc: ", str(self._id_doc))
         print("link_doc: ", str(self._link_doc))

@@ -4,8 +4,8 @@ from datetime import date
 class Parecer_demonstrativo:
     _cnpj_companhia: str
     _num_linha_parecer_declaracao: int
-    _tipo_parecer_declaracao: str
-    _tipo_relatorio_auditor: str
+    _id_tipo_parecer: str
+    _id_tipo_rel_auditor: str
     _texto_parecer_declaracao: str
     _versao: int
     _data_referencia_doc: date
@@ -17,8 +17,8 @@ class Parecer_demonstrativo:
         self,
         _cnpj_companhia,
         _num_linha_parecer_declaracao,
-        _tipo_parecer_declaracao,
-        _tipo_relatorio_auditor,
+        _id_tipo_parecer,
+        _id_tipo_rel_auditor,
         _texto_parecer_declaracao,
         _versao,
         _data_referencia_doc,
@@ -28,8 +28,8 @@ class Parecer_demonstrativo:
     ):
         self._cnpj_companhia = _cnpj_companhia
         self._num_linha_parecer_declaracao = _num_linha_parecer_declaracao
-        self._tipo_parecer_declaracao = _tipo_parecer_declaracao
-        self._tipo_relatorio_auditor = _tipo_relatorio_auditor
+        self._id_tipo_parecer = _id_tipo_parecer
+        self._id_tipo_rel_auditor = _id_tipo_rel_auditor
         self._texto_parecer_declaracao = _texto_parecer_declaracao
         self._versao = _versao
         self._data_referencia_doc = _data_referencia_doc
@@ -55,19 +55,19 @@ class Parecer_demonstrativo:
 
     @property
     def tipo_parecer_declaracao(self):
-        return self._tipo_parecer_declaracao
+        return self._id_tipo_parecer
 
     @tipo_parecer_declaracao.setter
     def tipo_parecer_declaracao(self, value):
-        self._tipo_parecer_declaracao = value
+        self._id_tipo_parecer = value
 
     @property
     def tipo_relatorio_auditor(self):
-        return self._tipo_relatorio_auditor
+        return self._id_tipo_rel_auditor
 
     @tipo_relatorio_auditor.setter
     def tipo_relatorio_auditor(self, value):
-        self._tipo_relatorio_auditor = value
+        self._id_tipo_rel_auditor = value
 
     @property
     def texto_parecer_declaracao(self):
@@ -123,8 +123,8 @@ class Parecer_demonstrativo:
             "self._num_linha_parecer_declaracao: ",
             str(self._num_linha_parecer_declaracao),
         )
-        print("tipo_parecer_declaracao: ", str(self._tipo_parecer_declaracao))
-        print("tipo_relatorio_auditor: ", str(self._tipo_relatorio_auditor))
+        print("id_tipo_parecer: ", str(self._id_tipo_parecer))
+        print("id_tipo_rel_auditor: ", str(self._id_tipo_rel_auditor))
         print("texto_parecer_declaracao: ", str(self._texto_parecer_declaracao))
         print("versao: ", str(self._versao))
         print("data_referencia_doc: ", str(self._data_referencia_doc))

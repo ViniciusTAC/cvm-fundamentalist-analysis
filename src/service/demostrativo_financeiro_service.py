@@ -2,13 +2,17 @@ import os
 import pandas as pd
 from datetime import datetime
 from models.demonstrativo_financeiro import Demonstrativo_financeiro
-
+import sqlite3
 # from models.planos_contas import PlanosContas  # Se quiser cruzar com o banco depois
 
+
 def carregar_grupos_demonstrativo(cursor):
-    cursor.execute("SELECT codigo_grupo_dfp, grupo_dfp FROM grupo_demonstrativo_financeiro")
+    cursor.execute(
+        "SELECT codigo_grupo_dfp, grupo_dfp FROM grupo_demonstrativo_financeiro"
+    )
     rows = cursor.fetchall()
     return {codigo.upper(): descricao for codigo, descricao in rows}
+
 
 def carregar_planos_contas(cursor):
     cursor.execute("SELECT comportamento, codigo_conta FROM planos_contas")
@@ -20,7 +24,6 @@ def carregar_planos_contas(cursor):
             planos[comportamento] = []
         planos[comportamento].append(codigo)
     return planos
-
 
 
 def identificar_comportamento(arquivo_nome, grupo_demostrativo):
@@ -39,10 +42,29 @@ def parse_date(date_str):
         return datetime.strptime(date_str, "%Y-%m-%d").date()
     except ValueError:
         return None
-    
-def process_dfp_files(base_path, conexao):
-    demonstrativos_list = []
 
+
+def carregar_mapas_auxiliares(db_path):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    def carregar_tabela(nome_tabela, nome_id_coluna):
+        cursor.execute(f"SELECT {nome_id_coluna}, descricao FROM {nome_tabela}")
+        return {desc.lower().strip(): id_ for id_, desc in cursor.fetchall()}
+
+    mapas = {
+        "escala_monetaria": carregar_tabela("tipo_parecer", "id_escala"),
+        "moeda": carregar_tabela("tipo_parecer", "id_moeda"),
+        "ordem_exercicio": carregar_tabela("tipo_parecer", "id_ordem"),
+    }
+
+    conn.close()
+    return mapas
+
+
+def process_dfp_files(base_path, conexao, db_path):
+    demonstrativos_list = []
+    mapas = carregar_mapas_auxiliares(db_path)
     cursor = conexao.connection.cursor()
     grupo_demostrativo = carregar_grupos_demonstrativo(cursor)
     planos_contas = carregar_planos_contas(cursor)
@@ -64,7 +86,9 @@ def process_dfp_files(base_path, conexao):
             file_path = os.path.join(year_path, file)
 
             try:
-                df = pd.read_csv(file_path, encoding="latin1", delimiter=";", on_bad_lines="skip")
+                df = pd.read_csv(
+                    file_path, encoding="latin1", delimiter=";", on_bad_lines="skip"
+                )
             except (pd.errors.ParserError, UnicodeDecodeError) as e:
                 print(f"[ERRO] {file_path}: {e}")
                 continue
@@ -81,10 +105,14 @@ def process_dfp_files(base_path, conexao):
                     _codigo_conta=row.get("CD_CONTA"),
                     _cnpj_companhia=row.get("CNPJ_CIA"),
                     _codigo_cvm=row.get("CD_CVM"),
-                    _escala_monetaria=row.get("ESCALA_MOEDA"),
+                    _id_escala=mapas["escala_monetaria"].get(
+                        str(row.get("ESCALA_MOEDA")).lower().strip()
+                    ),
+                    _id_moeda=mapas["moeda"].get(str(row.get("MOEDA")).lower().strip()),
+                    _id_ordem=mapas["ordem_exercicio"].get(
+                        str(row.get("ORDEM_EXERC")).lower().strip()
+                    ),
                     _grupo_dfp=row.get("GRUPO_DFP"),
-                    _moeda=row.get("MOEDA"),
-                    _ordem_exercicio=row.get("ORDEM_EXERC"),
                     _conta_fixa=row.get("CONTA_FIXA"),
                     _versao=row.get("VERSAO"),
                     _data_inicio_exercicio=parse_date(row.get("DT_INI_EXERC")),
@@ -92,11 +120,16 @@ def process_dfp_files(base_path, conexao):
                     _data_referencia_doc=parse_date(row.get("DT_REFER")),
                     _valor_conta=row.get("VL_CONTA"),
                     _data_doc=datetime.now().date(),
-                    _mes_doc=str(row.get("DT_REFER"))[5:7] if row.get("DT_REFER") else None,
-                    _ano_doc=str(row.get("DT_REFER"))[:4] if row.get("DT_REFER") else None
+                    _mes_doc=str(row.get("DT_REFER"))[5:7]
+                    if row.get("DT_REFER")
+                    else None,
+                    _ano_doc=str(row.get("DT_REFER"))[:4]
+                    if row.get("DT_REFER")
+                    else None,
                 )
 
                 demonstrativos_list.append(demonstrativo)
 
-    return demonstrativos_list
+                demonstrativos_list.append(demonstrativo)
 
+    return demonstrativos_list

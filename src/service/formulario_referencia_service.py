@@ -3,10 +3,28 @@ import re
 import pandas as pd
 from datetime import datetime
 from models.formulario_referencia import Formulario_referencia
+import sqlite3
 
 
-def process_csv_files(base_path):
+def carregar_mapas_auxiliares(db_path):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    def carregar_tabela(nome_tabela, nome_id_coluna):
+        cursor.execute(f"SELECT {nome_id_coluna}, descricao FROM {nome_tabela}")
+        return {desc.lower().strip(): id_ for id_, desc in cursor.fetchall()}
+
+    mapas = {
+        "categoria_doc": carregar_tabela("categoria_documento", "id_categoria_doc"),
+    }
+
+    conn.close()
+    return mapas
+
+
+def process_csv_files(base_path, db_path):
     formulario_referencia_list = []
+    mapas = carregar_mapas_auxiliares(db_path)
 
     # Expressão regular para nome do arquivo no formato: fre_cia_aberta_<ano>.csv
     padrao_nome_arquivo = re.compile(r"^fre_cia_aberta_\d{4}\.csv$")
@@ -36,7 +54,9 @@ def process_csv_files(base_path):
             for _, row in df.iterrows():
                 formulario_referencia = Formulario_referencia(
                     _cnpj_companhia=row.get("CNPJ_CIA"),
-                    _categoria_doc=row.get("CATEG_DOC"),
+                    _id_categoria_doc=mapas["categoria_documento"].get(
+                        str(row.get("CATEG_DOC")).lower().strip()
+                    ),
                     _denominacao_companhia=row.get("DENOM_CIA"),
                     _id_doc=row.get("ID_DOC"),
                     _link_doc=row.get("LINK_DOC"),
