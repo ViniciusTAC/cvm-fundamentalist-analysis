@@ -117,8 +117,6 @@ class ConexaoBanco:
                                 ?,
                                 ?,
                                 ?,
-                                ?,
-                                ?,
                                 ?
                             )
                     """

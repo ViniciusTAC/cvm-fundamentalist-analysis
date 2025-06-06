@@ -15,7 +15,7 @@ def carregar_mapas_auxiliares(db_path):
         return {desc.lower().strip(): id_ for id_, desc in cursor.fetchall()}
 
     mapas = {
-        "categoria_doc": carregar_tabela("categoria_documento", "id_categoria_doc"),
+        "categoria_documento": carregar_tabela("categoria_documento", "id_categoria_doc"),
     }
 
     conn.close()
@@ -53,21 +53,20 @@ def process_csv_files(base_path, db_path):
 
             for _, row in df.iterrows():
                 formulario_referencia = Formulario_referencia(
-                    _cnpj_companhia=row.get("CNPJ_CIA"),
+                    _codigo_cvm=row.get("CD_CVM"),
                     _id_categoria_doc=mapas["categoria_documento"].get(
                         str(row.get("CATEG_DOC")).lower().strip()
                     ),
-                    _denominacao_companhia=row.get("DENOM_CIA"),
                     _id_doc=row.get("ID_DOC"),
                     _link_doc=row.get("LINK_DOC"),
                     _versao=row.get("VERSAO"),
-                    _data_recebimento_doc=row.get("DT_RECEB"),
-                    _data_referencia_doc=row.get("DT_REFER"),
+                    _data_recebimento=row.get("DT_RECEB"),
+                    _data_referencia=row.get("DT_REFER"),
                     _data_doc=datetime.now().date(),
-                    _mes_doc=str(row.get("DT_REFER"))[5:7]
+                    _mes=str(row.get("DT_REFER"))[5:7]
                     if pd.notnull(row.get("DT_REFER"))
                     else None,
-                    _ano_doc=str(row.get("DT_REFER"))[:4]
+                    _ano=str(row.get("DT_REFER"))[:4]
                     if pd.notnull(row.get("DT_REFER"))
                     else None,
                 )
