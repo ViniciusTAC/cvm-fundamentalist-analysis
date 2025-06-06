@@ -93,7 +93,6 @@ class ConexaoBanco:
                                 texto_parecer_declaracao,
                                 versao,
                                 data_referencia_doc,
-                                data_doc,
                                 mes_doc,
                                 ano_doc
                             ) VALUES (
@@ -119,9 +118,8 @@ class ConexaoBanco:
                 tratar_valor(parecer_demonstrativo.texto_parecer_declaracao),
                 tratar_valor(parecer_demonstrativo.versao, tipo="int"),
                 tratar_valor(parecer_demonstrativo.data_referencia_doc, tipo="date"),
-                tratar_valor(parecer_demonstrativo.data_doc, tipo="date"),
-                tratar_valor(parecer_demonstrativo.mes_doc, tipo="int"),
-                tratar_valor(parecer_demonstrativo.ano_doc, tipo="int"),
+                tratar_valor(parecer_demonstrativo.mes, tipo="int"),
+                tratar_valor(parecer_demonstrativo.ano, tipo="int"),
             )
             # print("\n\n")
             # # Gerar query SQL formatada para depuração
@@ -135,11 +133,11 @@ class ConexaoBanco:
             # escrever_linha_em_branco()
             # escrever_linha_separador()
             # escrever_linha_em_branco()
-            # self.logger.info(f"Empresa {empresa._nome_empresa} do ano {empresa._ano_doc} inserida com sucesso.")
+            # self.logger.info(f"Empresa {empresa._nome_empresa} do ano {empresa.ano} inserida com sucesso.")
             # escrever_linha_em_branco()
-            self.log_sucesso.info(f"Parecer Demonstrativo do CNPJ: {parecer_demonstrativo._cnpj_companhia} e do ano {parecer_demonstrativo._ano_doc} inserida com sucesso.")
+            self.log_sucesso.info(f"Parecer Demonstrativo do CNPJ: {parecer_demonstrativo._cnpj_companhia} e do ano {parecer_demonstrativo.ano} inserida com sucesso.")
             print(
-                f"Parecer Demonstrativo  do CNPJ: {parecer_demonstrativo._cnpj_companhia} e do ano {parecer_demonstrativo._ano_doc} inserida com sucesso."
+                f"Parecer Demonstrativo  do CNPJ: {parecer_demonstrativo._cnpj_companhia} e do ano {parecer_demonstrativo.ano} inserida com sucesso."
             )
             escrever_linha_em_branco(self.log_sucesso)
         except sqlite3.Error as e:
@@ -148,11 +146,11 @@ class ConexaoBanco:
             escrever_linha_em_branco(self.log_erro)
 
             self.log_erro.error(
-                f"Erro ao inserir Parecer Demonstrativo do CNPJ: {parecer_demonstrativo._cnpj_companhia} e do ano {parecer_demonstrativo._ano_doc}, erro: {e}."
+                f"Erro ao inserir Parecer Demonstrativo do CNPJ: {parecer_demonstrativo._cnpj_companhia} e do ano {parecer_demonstrativo.ano}, erro: {e}."
             )
             escrever_linha_em_branco(self.log_erro)
             print(
-                f"Erro ao inserir Parecer Demonstrativo  do CNPJ: {parecer_demonstrativo._cnpj_companhia} e do ano {parecer_demonstrativo._ano_doc}, erro: {e}."
+                f"Erro ao inserir Parecer Demonstrativo  do CNPJ: {parecer_demonstrativo._cnpj_companhia} e do ano {parecer_demonstrativo.ano}, erro: {e}."
             )
 
 

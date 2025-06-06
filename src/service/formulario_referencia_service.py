@@ -4,6 +4,7 @@ import pandas as pd
 from datetime import datetime
 from models.formulario_referencia import Formulario_referencia
 import sqlite3
+import re
 
 
 def carregar_mapas_auxiliares(db_path):
@@ -15,7 +16,9 @@ def carregar_mapas_auxiliares(db_path):
         return {desc.lower().strip(): id_ for id_, desc in cursor.fetchall()}
 
     mapas = {
-        "categoria_documento": carregar_tabela("categoria_documento", "id_categoria_doc"),
+        "categoria_documento": carregar_tabela(
+            "categoria_documento", "id_categoria_doc"
+        ),
     }
 
     conn.close()
@@ -53,7 +56,7 @@ def process_csv_files(base_path, db_path):
 
             for _, row in df.iterrows():
                 formulario_referencia = Formulario_referencia(
-                    _codigo_cvm=row.get("CD_CVM"),
+                    _cnpj_companhia=re.sub(r"\D", "", row.get("CNPJ_CIA") or ""),
                     _id_categoria_doc=mapas["categoria_documento"].get(
                         str(row.get("CATEG_DOC")).lower().strip()
                     ),

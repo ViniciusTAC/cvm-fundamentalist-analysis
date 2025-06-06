@@ -89,7 +89,7 @@ class ConexaoBanco:
             cursor = self.connection.cursor()
             query = """
                             INSERT INTO formulario_referencia (
-                                codigo_cvm,
+                                cnpj_companhia,
                                 id_categoria_doc,
                                 id_doc,
                                 link_doc,
@@ -115,7 +115,7 @@ class ConexaoBanco:
             # Construir valores garantindo que não haja extras e substituindo 'nan' por None
             # Construir valores garantindo validação dos campos
             values = (
-                tratar_valor(formulario_referencia.codigo_cvm),
+                tratar_valor(formulario_referencia.cnpj_companhia),
                 tratar_valor(formulario_referencia.id_categoria_doc, tipo="int"),
                 tratar_valor(formulario_referencia.id_doc, tipo="int"),
                 tratar_valor(formulario_referencia.link_doc),
@@ -141,10 +141,10 @@ class ConexaoBanco:
             # self.logger.info(f"Empresa {empresa._nome_empresa} do ano {empresa._ano_doc} inserida com sucesso.")
             # escrever_linha_em_branco()
             self.log_sucesso.info(
-                f"Formulário de Referência do Código CVM: {formulario_referencia._codigo_cvm} e do ano {formulario_referencia._ano} inserida com sucesso."
+                f"Formulário de Referência do CNPJ: {formulario_referencia._cnpj_companhia} e do ano {formulario_referencia._ano} inserida com sucesso."
             )
             print(
-                f"Formulário de Referência do Código CVM: {formulario_referencia._codigo_cvm} inserida com sucesso."
+                f"Formulário de Referência do CNPJ: {formulario_referencia._cnpj_companhia} inserida com sucesso."
             )
             escrever_linha_em_branco(self.log_sucesso)
         except sqlite3.Error as e:
@@ -153,11 +153,11 @@ class ConexaoBanco:
             escrever_linha_em_branco(self.log_erro)
 
             self.log_erro.error(
-                f"Erro ao inserir Formulário de Referência do Código CVM: {formulario_referencia._codigo_cvm} e do ano {formulario_referencia._ano}, erro: {e}."
+                f"Erro ao inserir Formulário de Referência do CNPJ: {formulario_referencia._cnpj_companhia} e do ano {formulario_referencia._ano}, erro: {e}."
             )
             escrever_linha_em_branco(self.log_erro)
             print(
-                f"Erro ao inserir Formulário de Referência do Código CVM: {formulario_referencia._codigo_cvm} e do ano {formulario_referencia._ano}, erro: {e}."
+                f"Erro ao inserir Formulário de Referência do CNPJ: {formulario_referencia._cnpj_companhia} e do ano {formulario_referencia._ano}, erro: {e}."
             )
 
 

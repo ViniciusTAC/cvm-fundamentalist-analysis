@@ -2,7 +2,7 @@ from datetime import date
 
 
 class Periodicos_eventuais:
-    _codigo_cvm: str
+    _cnpj_companhia: str
     _id_assunto: int
     _id_categoria_doc: int
     _id_especie_eventual: int
@@ -19,7 +19,7 @@ class Periodicos_eventuais:
 
     def __init__(
         self,
-        _codigo_cvm,
+        _cnpj_companhia,
         _id_assunto,
         _id_categoria_doc,
         _id_especie_eventual,
@@ -34,7 +34,7 @@ class Periodicos_eventuais:
         _mes,
         _ano,
     ):
-        self._codigo_cvm = _codigo_cvm
+        self._cnpj_companhia = _cnpj_companhia
         self._id_assunto = _id_assunto
         self._id_categoria_doc = _id_categoria_doc
         self._id_especie_eventual = _id_especie_eventual
@@ -50,12 +50,12 @@ class Periodicos_eventuais:
         self._ano = _ano
 
     @property
-    def codigo_cvm(self):
-        return self._codigo_cvm
+    def cnpj_companhia(self):
+        return self._cnpj_companhia
 
-    @codigo_cvm.setter
-    def codigo_cvm(self, value):
-        self._codigo_cvm = value
+    @cnpj_companhia.setter
+    def cnpj_companhia(self, value):
+        self._cnpj_companhia = value
 
     @property
     def id_assunto(self):
@@ -162,7 +162,7 @@ class Periodicos_eventuais:
         self._ano = value
 
     def mostrarDados(self):
-        print("codigo_cvm: ", str(self._codigo_cvm))
+        print("cnpj_companhia: ", str(self._cnpj_companhia))
         print("id_assunto: ", str(self._id_assunto))
         print("id_categoria_doc: ", str(self._id_categoria_doc))
         print("id_especie_eventual: ", str(self._id_especie_eventual))

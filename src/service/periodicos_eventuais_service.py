@@ -3,6 +3,7 @@ import pandas as pd
 from datetime import datetime
 from models.periodicos_eventuais import Periodicos_eventuais
 import sqlite3
+import re
 
 
 def carregar_mapas_auxiliares(db_path):
@@ -53,8 +54,9 @@ def process_csv_files(base_path, db_path):
 
                 for _, row in df.iterrows():
                     periodicos_eventuais = Periodicos_eventuais(
-                        # _cnpj_companhia=row.get("CNPJ_Companhia"),
-                        _codigo_cvm=row.get("Codigo_CVM"),
+                        _cnpj_companhia=re.sub(
+                            r"\D", "", row.get("CNPJ_Companhia") or ""
+                        ),
                         _id_assunto=mapas["assunto_prensa"].get(
                             str(row.get("Assunto")).lower().strip()
                         ),
@@ -65,7 +67,6 @@ def process_csv_files(base_path, db_path):
                             str(row.get("Especie")).lower().strip()
                         ),
                         _link_doc=row.get("Link_Download"),
-                        # _nome_companhia=row.get("Nome_Companhia"),
                         _protocolo_entrega=row.get("Protocolo_Entrega"),
                         _id_tipo_evento=mapas["tipo_evento"].get(
                             str(row.get("Tipo")).lower().strip()

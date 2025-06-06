@@ -89,7 +89,7 @@ class ConexaoBanco:
             cursor = self.connection.cursor()
             query = """
                             INSERT INTO periodicos_eventuais (
-                                codigo_cvm,
+                                cnpj_companhia,
                                 id_assunto,
                                 id_categoria_doc,
                                 id_especie_eventual,
@@ -123,7 +123,7 @@ class ConexaoBanco:
             # Construir valores garantindo que não haja extras e substituindo 'nan' por None
             # Construir valores garantindo validação dos campos
             values = (
-                tratar_valor(periodicos_eventuais.codigo_cvm),
+                tratar_valor(periodicos_eventuais.cnpj_companhia),
                 tratar_valor(periodicos_eventuais.id_assunto, tipo="int"),
                 tratar_valor(periodicos_eventuais.id_categoria_doc, tipo="int"),
                 tratar_valor(periodicos_eventuais.id_especie_eventual, tipo="int"),
@@ -148,10 +148,10 @@ class ConexaoBanco:
             cursor.execute(query, values)
             # self.connection.commit()
             self.log_sucesso.info(
-                f"Periodicos e Eventuais do Código CVM: {periodicos_eventuais._codigo_cvm} e do ano {periodicos_eventuais._ano} inserida com sucesso."
+                f"Periodicos e Eventuais do CNPJ: {periodicos_eventuais._cnpj_companhia} e do ano {periodicos_eventuais._ano} inserida com sucesso."
             )
             print(
-                f"Periodicos e Eventuais {periodicos_eventuais._codigo_cvm} inserida com sucesso."
+                f"Periodicos e Eventuais {periodicos_eventuais._cnpj_companhia} inserida com sucesso."
             )
             escrever_linha_em_branco(self.log_sucesso)
         except sqlite3.Error as e:
@@ -160,11 +160,11 @@ class ConexaoBanco:
             escrever_linha_em_branco(self.log_erro)
 
             self.log_erro.error(
-                f"Erro ao inserir Periodicos e Eventuais do Código CVM: {periodicos_eventuais._codigo_cvm} e do ano {periodicos_eventuais._ano}, erro: {e}."
+                f"Erro ao inserir Periodicos e Eventuais do CNPJ: {periodicos_eventuais._cnpj_companhia} e do ano {periodicos_eventuais._ano}, erro: {e}."
             )
             escrever_linha_em_branco(self.log_erro)
             print(
-                f"Erro ao inserir Periodicos e Eventuais do Código CVM: {periodicos_eventuais._codigo_cvm} e do ano {periodicos_eventuais._ano}, erro: {e}."
+                f"Erro ao inserir Periodicos e Eventuais do CNPJ: {periodicos_eventuais._cnpj_companhia} e do ano {periodicos_eventuais._ano}, erro: {e}."
             )
 
 

@@ -28,7 +28,6 @@ class Empresas:
     _data_situacao_emissor: date
     _data_alteracao_exercicio_social: date
     _dia_encerramento_exercicio_social: int
-    _data_doc: date
     _mes_doc: str
     _ano_doc: str
 
@@ -60,7 +59,6 @@ class Empresas:
         _data_situacao_emissor,
         _data_alteracao_exercicio_social,
         _dia_encerramento_exercicio_social,
-        _data_doc,
         _mes_doc,
         _ano_doc,
     ):
@@ -90,7 +88,6 @@ class Empresas:
         self._data_situacao_emissor = _data_situacao_emissor
         self._data_alteracao_exercicio_social = _data_alteracao_exercicio_social
         self._dia_encerramento_exercicio_social = _dia_encerramento_exercicio_social
-        self._data_doc = _data_doc
         self._mes_doc = _mes_doc
         self._ano_doc = _ano_doc
 
@@ -303,14 +300,6 @@ class Empresas:
         self._dia_encerramento_exercicio_social = value
 
     @property
-    def data_doc(self):
-        return self._data_doc
-
-    @data_doc.setter
-    def data_doc(self, value):
-        self._data_doc = value
-
-    @property
     def mes_doc(self):
         return self._mes_doc
 
@@ -354,7 +343,6 @@ class Empresas:
             f"data_situacao_emissor: {self.data_situacao_emissor}, "
             f"data_alteracao_exercicio_social: {self.data_alteracao_exercicio_social}, "
             f"dia_encerramento_exercicio_social: {self.dia_encerramento_exercicio_social}, "
-            f"data_doc: {self.data_doc}, "
             f"mes_doc: {self.mes_doc}, "
             f"ano_doc: {self.ano_doc}"
         )

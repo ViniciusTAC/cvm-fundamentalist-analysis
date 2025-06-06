@@ -2,10 +2,8 @@ from datetime import date
 
 
 class Formulario_referencia:
-    # _cnpj_companhia: str
-    _codigo_cvm: int
+    _cnpj_companhia: str
     _id_categoria_doc: int
-    # _denominacao_companhia: str
     _id_doc: int
     _link_doc: str
     _versao: int
@@ -17,7 +15,7 @@ class Formulario_referencia:
 
     def __init__(
         self,
-        _codigo_cvm,
+        _cnpj_companhia,
         _id_categoria_doc,
         _id_doc,
         _link_doc,
@@ -28,7 +26,7 @@ class Formulario_referencia:
         _mes,
         _ano,
     ):
-        self._codigo_cvm = _codigo_cvm
+        self._cnpj_companhia = _cnpj_companhia
         self._id_categoria_doc = _id_categoria_doc
         self._id_doc = _id_doc
         self._link_doc = _link_doc
@@ -41,12 +39,12 @@ class Formulario_referencia:
 
 
     @property
-    def codigo_cvm(self):
-        return self._codigo_cvm
+    def cnpj_companhia(self):
+        return self._cnpj_companhia
 
-    @codigo_cvm.setter
-    def codigo_cvm(self, value):
-        self._codigo_cvm = value
+    @cnpj_companhia.setter
+    def cnpj_companhia(self, value):
+        self._cnpj_companhia = value
 
     @property
     def id_categoria_doc(self):
@@ -122,9 +120,7 @@ class Formulario_referencia:
         self._ano = value
 
     def mostrarDados(self):
-        # print("cnpj_companhia: ", str(self._cnpj_companhia))
-        print("id_categoria_doc: ", str(self._id_categoria_doc))
-        # print("denominacao_companhia: ", str(self._denominacao_companhia))
+        print("cnpj_companhia: ", str(self._cnpj_companhia))
         print("id_doc: ", str(self._id_doc))
         print("link_doc: ", str(self._link_doc))
         print("versao: ", str(self._versao))

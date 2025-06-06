@@ -1595,32 +1595,32 @@ def run_processos_selecionados(vars):
         executar_moeda()
         mensagens.append("Moeda processada.")
 
-    if vars["empresas"].get():
-        dados = process_empresas("data_extraido/FCA/sucesso", db_path=CAMINHO_BANCO)
-        repo = BancoEmpresas(db_path=CAMINHO_BANCO)
-        repo.conectar()
-        for d in dados:
-            repo.inserir_ou_atualizar_empresa(d)
-        repo.desconectar()
-        mensagens.append("Empresas inseridas.")
+    # if vars["empresas"].get():
+    #     dados = process_empresas("data_extraido/FCA/sucesso", db_path=CAMINHO_BANCO)
+    #     repo = BancoEmpresas(db_path=CAMINHO_BANCO)
+    #     repo.conectar()
+    #     for d in dados:
+    #         repo.inserir_ou_atualizar_empresa(d)
+    #     repo.desconectar()
+    #     mensagens.append("Empresas inseridas.")
 
-    if vars["ipe"].get():
-        dados = process_ipe("data_extraido/IPE/sucesso", db_path=CAMINHO_BANCO)
-        repo = BancoIPE(db_path=CAMINHO_BANCO)
-        repo.conectar()
-        for d in dados:
-            repo.inserir_periodicos_eventuais(d)
-        repo.desconectar()
-        mensagens.append("Periódicos Eventuais inseridos.")
+    # if vars["ipe"].get():
+    #     dados = process_ipe("data_extraido/IPE/sucesso", db_path=CAMINHO_BANCO)
+    #     repo = BancoIPE(db_path=CAMINHO_BANCO)
+    #     repo.conectar()
+    #     for d in dados:
+    #         repo.inserir_periodicos_eventuais(d)
+    #     repo.desconectar()
+    #     mensagens.append("Periódicos Eventuais inseridos.")
 
-    if vars["fre"].get():
-        dados = process_fre("data_extraido/FRE/sucesso", db_path=CAMINHO_BANCO)
-        repo = BancoFRE(db_path=CAMINHO_BANCO)
-        repo.conectar()
-        for d in dados:
-            repo.inserir_formulario_referencia(d)
-        repo.desconectar()
-        mensagens.append("Formulários de Referência inseridos.")
+    # if vars["fre"].get():
+    #     dados = process_fre("data_extraido/FRE/sucesso", db_path=CAMINHO_BANCO)
+    #     repo = BancoFRE(db_path=CAMINHO_BANCO)
+    #     repo.conectar()
+    #     for d in dados:
+    #         repo.inserir_formulario_referencia(d)
+    #     repo.desconectar()
+    #     mensagens.append("Formulários de Referência inseridos.")
 
     if vars["parecer_demo"].get():
         dados = process_parecer_demo("data_extraido/DFP/sucesso", db_path=CAMINHO_BANCO)
