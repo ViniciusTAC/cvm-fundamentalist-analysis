@@ -3,42 +3,40 @@ from datetime import date
 
 class Formulario_referencia:
     _cnpj_companhia: str
-    _categoria_doc: str
-    _denominacao_companhia: str
+    _id_categoria_doc: int
     _id_doc: int
     _link_doc: str
     _versao: int
-    _data_recebimento_doc: date
-    _data_referencia_doc: date
+    _data_recebimento: date
+    _data_referencia: date
     _data_doc: date
-    _mes_doc: str
-    _ano_doc: str
+    _mes: str
+    _ano: str
 
     def __init__(
         self,
         _cnpj_companhia,
-        _categoria_doc,
-        _denominacao_companhia,
+        _id_categoria_doc,
         _id_doc,
         _link_doc,
         _versao,
-        _data_recebimento_doc,
-        _data_referencia_doc,
+        _data_recebimento,
+        _data_referencia,
         _data_doc,
-        _mes_doc,
-        _ano_doc,
+        _mes,
+        _ano,
     ):
         self._cnpj_companhia = _cnpj_companhia
-        self._categoria_doc = _categoria_doc
-        self._denominacao_companhia = _denominacao_companhia
+        self._id_categoria_doc = _id_categoria_doc
         self._id_doc = _id_doc
         self._link_doc = _link_doc
         self._versao = _versao
-        self._data_recebimento_doc = _data_recebimento_doc
-        self._data_referencia_doc = _data_referencia_doc
+        self._data_recebimento = _data_recebimento
+        self._data_referencia = _data_referencia
         self._data_doc = _data_doc
-        self._mes_doc = _mes_doc
-        self._ano_doc = _ano_doc
+        self._mes = _mes
+        self._ano = _ano
+
 
     @property
     def cnpj_companhia(self):
@@ -49,20 +47,12 @@ class Formulario_referencia:
         self._cnpj_companhia = value
 
     @property
-    def categoria_doc(self):
-        return self._categoria_doc
+    def id_categoria_doc(self):
+        return self._id_categoria_doc
 
-    @categoria_doc.setter
-    def categoria_doc(self, value):
-        self._categoria_doc = value
-
-    @property
-    def denominacao_companhia(self):
-        return self._denominacao_companhia
-
-    @denominacao_companhia.setter
-    def denominacao_companhia(self, value):
-        self._denominacao_companhia = value
+    @id_categoria_doc.setter
+    def id_categoria_doc(self, value):
+        self._id_categoria_doc = value
 
     @property
     def id_doc(self):
@@ -89,20 +79,21 @@ class Formulario_referencia:
         self._versao = value
 
     @property
-    def data_recebimento_doc(self):
-        return self._data_recebimento_doc
+    def data_recebimento(self):
+        return self._data_recebimento
 
-    @data_recebimento_doc.setter
-    def data_recebimento_doc(self, value):
-        self._data_recebimento_doc = value
+    @data_recebimento.setter
+    def data_recebimento(self, value):
+        self._data_recebimento = value
 
     @property
-    def data_referencia_doc(self):
-        return self._data_referencia_doc
+    def data_referencia(self):
+        return self._data_referencia
 
-    @data_referencia_doc.setter
-    def data_referencia_doc(self, value):
-        self._data_referencia_doc = value
+    @data_referencia.setter
+    def data_referencia(self, value):
+        self._data_referencia = value
+
 
     @property
     def data_doc(self):
@@ -113,30 +104,28 @@ class Formulario_referencia:
         self._data_doc = value
 
     @property
-    def mes_doc(self):
-        return self._mes_doc
+    def mes(self):
+        return self._mes
 
-    @mes_doc.setter
-    def mes_doc(self, value):
-        self._mes_doc = value
+    @mes.setter
+    def mes(self, value):
+        self._mes = value
 
     @property
-    def ano_doc(self):
-        return self._ano_doc
+    def ano(self):
+        return self._ano
 
-    @ano_doc.setter
-    def ano_doc(self, value):
-        self._ano_doc = value
+    @ano.setter
+    def ano(self, value):
+        self._ano = value
 
     def mostrarDados(self):
         print("cnpj_companhia: ", str(self._cnpj_companhia))
-        print("categoria_doc: ", str(self._categoria_doc))
-        print("denominacao_companhia: ", str(self._denominacao_companhia))
         print("id_doc: ", str(self._id_doc))
         print("link_doc: ", str(self._link_doc))
         print("versao: ", str(self._versao))
-        print("data_recebimento_doc: ", str(self._data_recebimento_doc))
-        print("data_referencia_doc: ", str(self._data_referencia_doc))
+        print("data_recebimento: ", str(self._data_recebimento))
+        print("_data_referencia: ", str(self._data_referencia))
         print("data_doc: ", str(self._data_doc))
-        print("mes_doc: ", str(self._mes_doc))
-        print("ano_doc: ", str(self._ano_doc))
+        print("mes: ", str(self._mes))
+        print("ano: ", str(self._ano))

@@ -112,16 +112,16 @@ class ConexaoBanco:
             # Construir valores garantindo que não haja extras e substituindo 'nan' por None
             # Construir valores garantindo validação dos campos
             values = (
-                        tratar_valor(parecer_trimestral._cnpj_companhia),
-                        tratar_valor(parecer_trimestral._num_linha_parecer_declaracao, tipo="int"),
-                        tratar_valor(parecer_trimestral._tipo_parecer_declaracao),
-                        tratar_valor(parecer_trimestral._tipo_relatorio_especial),
-                        tratar_valor(parecer_trimestral._texto_parecer_declaracao),
-                        tratar_valor(parecer_trimestral._versao, tipo="int"),
-                        tratar_valor(parecer_trimestral.data_referencia_doc, tipo="date"),
-                        tratar_valor(parecer_trimestral._data_doc, tipo="date"),
-                        tratar_valor(parecer_trimestral._mes_doc, tipo="int"),
-                        tratar_valor(parecer_trimestral._ano_doc, tipo="int"),
+                tratar_valor(parecer_trimestral.cnpj_companhia),
+                tratar_valor(parecer_trimestral.num_linha_parecer_declaracao, tipo="int"),
+                tratar_valor(parecer_trimestral.tipo_parecer_declaracao, tipo="int"),
+                tratar_valor(parecer_trimestral.tipo_relatorio_auditor, tipo="int"),
+                tratar_valor(parecer_trimestral.texto_parecer_declaracao),
+                tratar_valor(parecer_trimestral.versao, tipo="int"),
+                tratar_valor(parecer_trimestral.data_referencia_doc, tipo="date"),
+                tratar_valor(parecer_trimestral.data_doc, tipo="date"),
+                tratar_valor(parecer_trimestral.mes_doc),
+                tratar_valor(parecer_trimestral.ano_doc),
             )
             # print("\n\n")
             # # Gerar query SQL formatada para depuração

@@ -1,6 +1,7 @@
 import sqlite3
 import os
 from datetime import datetime
+
 # from zoneinfo import ZoneInfo
 import logging
 from utils.logger import escrever_linha_em_branco, escrever_linha_separador
@@ -9,12 +10,10 @@ from utils.logger import escrever_linha_em_branco, escrever_linha_separador
 class ConexaoBanco:
     """Classe para gerenciar a conexão com o banco de dados SQLite."""
 
-
     def __init__(self, db_path, nivel=logging.WARNING):
         self.db_path = db_path
         self.connection = None
         self.log_sucesso, self.log_erro = self._setup_logger(nivel=nivel)
-
 
     def _setup_logger(self, log_dir="logs/logs_insercao", nivel=logging.WARNING):
         hoje = datetime.now().strftime("%Y-%m-%d")
@@ -29,7 +28,9 @@ class ConexaoBanco:
         sucesso_handler = logging.FileHandler(
             os.path.join(log_sucesso_dir, "sucesso.log"), encoding="utf-8"
         )
-        sucesso_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+        sucesso_handler.setFormatter(
+            logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+        )
         sucesso_logger.addHandler(sucesso_handler)
 
         erro_logger = logging.getLogger(f"erro_{id(self)}")
@@ -37,7 +38,9 @@ class ConexaoBanco:
         erro_handler = logging.FileHandler(
             os.path.join(log_erro_dir, "erro.log"), encoding="utf-8"
         )
-        erro_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+        erro_handler.setFormatter(
+            logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+        )
         erro_logger.addHandler(erro_handler)
 
         # return sucesso_logger, erro_logger
@@ -81,11 +84,9 @@ class ConexaoBanco:
             self.connection.close()
             print("Conexão com o banco de dados encerrada.")
 
-
-
-
     def inserir_ou_atualizar_informacao_tri(self, informacao_trimestral):
         try:
+
             def debug_sql(query, values):
                 print("\n--- SQL GERADO ---")
                 parts = query.split("?")
@@ -104,24 +105,34 @@ class ConexaoBanco:
                 sql_with_values += parts[-1]
                 print(sql_with_values)
                 print("--- FIM SQL ---\n")
-                
+
             cursor = self.connection.cursor()
             # agora_local = datetime.now(ZoneInfo("America/Sao_Paulo")).strftime('%Y-%m-%d %H:%M:%S')
 
             query = """
                 INSERT INTO informacao_trimestral (
-                    codigo_conta, cnpj_companhia, codigo_cvm, escala_monetaria, grupo_dfp,
-                    moeda, ordem_exercicio, conta_fixa, versao,
-                    data_inicio_exercicio, data_fim_exercicio, data_referencia_doc,
-                    valor_conta, data_doc, mes_doc, ano_doc
+                    codigo_cvm,
+                    id_plano_conta,
+                    id_escala,
+                    codigo_grupo_dfp,
+                    id_moeda,
+                    id_ordem,
+                    conta_fixa,
+                    versao,
+                    data_inicio_exercicio,
+                    data_fim_exercicio,
+                    data_referencia_doc,
+                    valor_conta,
+                    data_doc,
+                    mes,
+                    ano
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ON CONFLICT(cnpj_companhia, codigo_conta, grupo_dfp, conta_fixa, mes_doc, ano_doc) DO UPDATE SET
-                    codigo_cvm = excluded.codigo_cvm,
-                    escala_monetaria = excluded.escala_monetaria,
-                    moeda = excluded.moeda,
-                    ordem_exercicio = excluded.ordem_exercicio,
-                    conta_fixa = excluded.conta_fixa,
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(codigo_cvm, id_plano_conta, codigo_grupo_dfp, conta_fixa, mes, ano)
+                DO UPDATE SET
+                    id_escala = excluded.id_escala,
+                    id_moeda = excluded.id_moeda,
+                    id_ordem = excluded.id_ordem,
                     versao = excluded.versao,
                     data_inicio_exercicio = excluded.data_inicio_exercicio,
                     data_fim_exercicio = excluded.data_fim_exercicio,
@@ -131,39 +142,41 @@ class ConexaoBanco:
             """
 
             values = (
-                tratar_valor(informacao_trimestral._codigo_conta),
-                tratar_valor(informacao_trimestral._cnpj_companhia),
-                tratar_valor(informacao_trimestral._codigo_cvm),
-                tratar_valor(informacao_trimestral._escala_monetaria),
-                tratar_valor(informacao_trimestral._grupo_dfp),
-                tratar_valor(informacao_trimestral._moeda, tipo="int"),
-                tratar_valor(informacao_trimestral._ordem_exercicio),
-                tratar_valor(informacao_trimestral._conta_fixa),
-                tratar_valor(informacao_trimestral._versao, tipo="int"),
-                tratar_valor(informacao_trimestral._data_inicio_exercicio, tipo="date"),
-                tratar_valor(informacao_trimestral._data_fim_exercicio, tipo="date"),
-                tratar_valor(informacao_trimestral._data_referencia_doc, tipo="date"),
-                tratar_valor(informacao_trimestral._valor_conta, tipo="float"),
-                tratar_valor(informacao_trimestral._data_doc, tipo="date"),
-                tratar_valor(informacao_trimestral._mes_doc),
-                tratar_valor(informacao_trimestral._ano_doc)
+                tratar_valor(informacao_trimestral.codigo_cvm),
+                tratar_valor(informacao_trimestral.id_plano_conta),
+                tratar_valor(informacao_trimestral.id_escala),
+                tratar_valor(informacao_trimestral.codigo_grupo_dfp),
+                tratar_valor(informacao_trimestral.id_moeda, tipo="int"),
+                tratar_valor(informacao_trimestral.id_ordem, tipo="int"),
+                tratar_valor(informacao_trimestral.conta_fixa),
+                tratar_valor(informacao_trimestral.versao, tipo="int"),
+                tratar_valor(informacao_trimestral.data_inicio_exercicio, tipo="date"),
+                tratar_valor(informacao_trimestral.data_fim_exercicio, tipo="date"),
+                tratar_valor(informacao_trimestral.data_referencia_doc, tipo="date"),
+                tratar_valor(informacao_trimestral.valor_conta, tipo="float"),
+                tratar_valor(informacao_trimestral.data_doc, tipo="date"),
+                tratar_valor(informacao_trimestral.mes, tipo="int"),
+                tratar_valor(informacao_trimestral.ano, tipo="int"),
             )
             # debug_sql(query, values)
             cursor.execute(query, values)
-            
+
             # self.connection.commit()
             self.log_sucesso.info(
                 f"informacao_trimestral inserido para CNPJ {informacao_trimestral._cnpj_companhia}, conta {informacao_trimestral._codigo_conta}, mês {informacao_trimestral._mes_doc}, ano {informacao_trimestral._ano_doc}."
             )
-            print(f"✔ informacao_trimestral inserido para CNPJ {informacao_trimestral._cnpj_companhia}, conta {informacao_trimestral._codigo_conta}.")
+            print(
+                f"✔ informacao_trimestral inserido para CNPJ {informacao_trimestral._cnpj_companhia}, conta {informacao_trimestral._codigo_conta}."
+            )
         except sqlite3.Error as e:
             escrever_linha_em_branco(self.log_erro)
             escrever_linha_separador(self.log_erro)
             self.log_erro.error(
                 f"Erro ao inserir informacao_trimestral para CNPJ {informacao_trimestral._cnpj_companhia}, conta {informacao_trimestral._codigo_conta}, erro: {e}."
             )
-            print(f"❌ Erro ao inserir informacao_trimestral para CNPJ {informacao_trimestral._cnpj_companhia}, erro: {e}")
-
+            print(
+                f"❌ Erro ao inserir informacao_trimestral para CNPJ {informacao_trimestral._cnpj_companhia}, erro: {e}"
+            )
 
 
 def tratar_valor(valor, tipo=None):

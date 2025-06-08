@@ -1,8 +1,10 @@
 import os
 import pandas as pd
-from datetime import datetime
+
+# from datetime import datetime
 from models.empresas import Empresas
 import sqlite3
+import re
 
 
 def carregar_mapas_auxiliares(db_path):
@@ -51,7 +53,9 @@ def process_csv_files(base_path, db_path):
                             str(row.get("Categoria_Registro_CVM")).lower().strip()
                         ),
                         _codigo_cvm=row.get("Codigo_CVM"),
-                        _cnpj_companhia=row.get("CNPJ_Companhia"),
+                        _cnpj_companhia=re.sub(
+                            r"\D", "", row.get("CNPJ_Companhia") or ""
+                        ),
                         _descricao_atividade=row.get("Descricao_Atividade"),
                         _id_especie=mapas["especie"].get(
                             str(row.get("Especie_Controle_Acionario")).lower().strip()
@@ -95,7 +99,6 @@ def process_csv_files(base_path, db_path):
                         _dia_encerramento_exercicio_social=row.get(
                             "Dia_Encerramento_Exercicio_Social"
                         ),
-                        _data_doc=datetime.now().date(),
                         _mes_doc=row.get("Data_Referencia")[5:7],
                         _ano_doc=row.get("Data_Referencia")[:4],
                     )

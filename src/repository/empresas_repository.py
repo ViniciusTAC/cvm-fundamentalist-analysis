@@ -105,8 +105,9 @@ class ConexaoBanco:
                         VALUES (
                             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
                         )
-                        ON CONFLICT(codigo_cvm, mes, ano) DO UPDATE SET
+                        ON CONFLICT(cnpj_companhia, mes, ano) DO UPDATE SET
                             id_categoria_doc = excluded.id_categoria_doc,
+                            cnpj_companhia = excluded.cnpj_companhia,
                             codigo_cvm = excluded.codigo_cvm,
                             descricao_atividade = excluded.descricao_atividade,
                             id_especie = excluded.id_especie,

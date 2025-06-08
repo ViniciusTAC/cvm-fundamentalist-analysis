@@ -3,13 +3,12 @@ from numpy import double
 
 
 class Informacao_trimestral:
-    _codigo_conta: str
-    _cnpj_companhia: str
     _codigo_cvm: str
-    _escala_monetaria: str
-    _grupo_dfp: int
-    _moeda: int
-    _ordem_exercicio: str
+    _id_plano_conta: int
+    _id_escala: int
+    _codigo_grupo_dfp: str
+    _id_moeda: int
+    _id_ordem: int
     _conta_fixa: str
     _versao: int
     _data_inicio_exercicio: date
@@ -17,61 +16,44 @@ class Informacao_trimestral:
     _data_referencia_doc: date
     _valor_conta: double
     _data_doc: date
-    _mes_doc: str
-    _ano_doc: str
+    _mes: int
+    _ano: int
 
     def __init__(
         self,
-        _codigo_conta,
-        _cnpj_companhia,
-        _codigo_cvm,
-        _escala_monetaria,
-        _grupo_dfp,
-        _moeda,
-        _ordem_exercicio,
-        _conta_fixa,
-        _versao,
-        _data_inicio_exercicio,
-        _data_fim_exercicio,
-        _data_referencia_doc,
-        _valor_conta,
-        _data_doc,
-        _mes_doc,
-        _ano_doc,
+        codigo_cvm,
+        id_plano_conta,
+        id_escala,
+        codigo_grupo_dfp,
+        id_moeda,
+        id_ordem,
+        conta_fixa,
+        versao,
+        data_inicio_exercicio,
+        data_fim_exercicio,
+        data_referencia_doc,
+        valor_conta,
+        data_doc,
+        mes,
+        ano
     ):
-        self._codigo_conta = _codigo_conta
-        self._cnpj_companhia = _cnpj_companhia
-        self._codigo_cvm = _codigo_cvm
-        self._escala_monetaria = _escala_monetaria
-        self._grupo_dfp = _grupo_dfp
-        self._moeda = _moeda
-        self._ordem_exercicio = _ordem_exercicio
-        self._conta_fixa = _conta_fixa
-        self._versao = _versao
-        self._data_inicio_exercicio = _data_inicio_exercicio
-        self._data_fim_exercicio = _data_fim_exercicio
-        self._data_referencia_doc = _data_referencia_doc
-        self._valor_conta = _valor_conta
-        self._data_doc = _data_doc
-        self._mes_doc = _mes_doc
-        self._ano_doc = _ano_doc
+        self._codigo_cvm = codigo_cvm
+        self._id_plano_conta = id_plano_conta
+        self._id_escala = id_escala
+        self._codigo_grupo_dfp = codigo_grupo_dfp
+        self._id_moeda = id_moeda
+        self._id_ordem = id_ordem
+        self._conta_fixa = conta_fixa
+        self._versao = versao
+        self._data_inicio_exercicio = data_inicio_exercicio
+        self._data_fim_exercicio = data_fim_exercicio
+        self._data_referencia_doc = data_referencia_doc
+        self._valor_conta = valor_conta
+        self._data_doc = data_doc
+        self._mes = mes
+        self._ano = ano
 
-    @property
-    def codigo_conta(self):
-        return self._codigo_conta
-
-    @codigo_conta.setter
-    def codigo_conta(self, value):
-        self._codigo_conta = value
-
-    @property
-    def cnpj_companhia(self):
-        return self._cnpj_companhia
-
-    @cnpj_companhia.setter
-    def cnpj_companhia(self, value):
-        self._cnpj_companhia = value
-
+    # Getters e setters
     @property
     def codigo_cvm(self):
         return self._codigo_cvm
@@ -81,36 +63,44 @@ class Informacao_trimestral:
         self._codigo_cvm = value
 
     @property
-    def escala_monetaria(self):
-        return self._escala_monetaria
+    def id_plano_conta(self):
+        return self._id_plano_conta
 
-    @escala_monetaria.setter
-    def escala_monetaria(self, value):
-        self._escala_monetaria = value
-
-    @property
-    def grupo_dfp(self):
-        return self._grupo_dfp
-
-    @grupo_dfp.setter
-    def grupo_dfp(self, value):
-        self._grupo_dfp = value
+    @id_plano_conta.setter
+    def id_plano_conta(self, value):
+        self._id_plano_conta = value
 
     @property
-    def moeda(self):
-        return self._moeda
+    def id_escala(self):
+        return self._id_escala
 
-    @moeda.setter
-    def moeda(self, value):
-        self._moeda = value
+    @id_escala.setter
+    def id_escala(self, value):
+        self._id_escala = value
 
     @property
-    def ordem_exercicio(self):
-        return self._ordem_exercicio
+    def codigo_grupo_dfp(self):
+        return self._codigo_grupo_dfp
 
-    @ordem_exercicio.setter
-    def ordem_exercicio(self, value):
-        self._ordem_exercicio = value
+    @codigo_grupo_dfp.setter
+    def codigo_grupo_dfp(self, value):
+        self._codigo_grupo_dfp = value
+
+    @property
+    def id_moeda(self):
+        return self._id_moeda
+
+    @id_moeda.setter
+    def id_moeda(self, value):
+        self._id_moeda = value
+
+    @property
+    def id_ordem(self):
+        return self._id_ordem
+
+    @id_ordem.setter
+    def id_ordem(self, value):
+        self._id_ordem = value
 
     @property
     def conta_fixa(self):
@@ -169,35 +159,34 @@ class Informacao_trimestral:
         self._data_doc = value
 
     @property
-    def mes_doc(self):
-        return self._mes_doc
+    def mes(self):
+        return self._mes
 
-    @mes_doc.setter
-    def mes_doc(self, value):
-        self._mes_doc = value
+    @mes.setter
+    def mes(self, value):
+        self._mes = value
 
     @property
-    def ano_doc(self):
-        return self._ano_doc
+    def ano(self):
+        return self._ano
 
-    @ano_doc.setter
-    def ano_doc(self, value):
-        self._ano_doc = value
+    @ano.setter
+    def ano(self, value):
+        self._ano = value
 
-    def mostrarDados(self):
-        print("codigo_conta: ", str(self._codigo_conta))
-        print("cnpj_companhia: ", str(self._cnpj_companhia))
-        print("codigo_cvm: ", str(self._codigo_cvm))
-        print("escala_monetaria: ", str(self._escala_monetaria))
-        print("grupo_dfp: ", str(self._grupo_dfp))
-        print("moeda: ", str(self._moeda))
-        print("ordem_exercicio: ", str(self._ordem_exercicio))
-        print("conta_fixa: ", str(self._conta_fixa))
-        print("versao: ", str(self._versao))
-        print("data_inicio_exercicio: ", str(self._data_inicio_exercicio))
-        print("data_fim_exercicio: ", str(self._data_fim_exercicio))
-        print("data_referencia_doc: ", str(self._data_referencia_doc))
-        print("valor_conta: ", str(self._valor_conta))
-        print("data_doc: ", str(self._data_doc))
-        print("mes_doc: ", str(self._mes_doc))
-        print("ano_doc: ", str(self._ano_doc))
+    def mostrar_dados(self):
+        print("codigo_cvm: ", self._codigo_cvm)
+        print("id_plano_conta: ", self._id_plano_conta)
+        print("id_escala: ", self._id_escala)
+        print("codigo_grupo_dfp: ", self._codigo_grupo_dfp)
+        print("id_moeda: ", self._id_moeda)
+        print("id_ordem: ", self._id_ordem)
+        print("conta_fixa: ", self._conta_fixa)
+        print("versao: ", self._versao)
+        print("data_inicio_exercicio: ", self._data_inicio_exercicio)
+        print("data_fim_exercicio: ", self._data_fim_exercicio)
+        print("data_referencia_doc: ", self._data_referencia_doc)
+        print("valor_conta: ", self._valor_conta)
+        print("data_doc: ", self._data_doc)
+        print("mes: ", self._mes)
+        print("ano: ", self._ano)

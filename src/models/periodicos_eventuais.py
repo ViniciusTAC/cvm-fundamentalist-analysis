@@ -3,57 +3,51 @@ from datetime import date
 
 class Periodicos_eventuais:
     _cnpj_companhia: str
-    _codigo_cvm: str
-    _assunto: str
-    _categoria_doc: str
-    _especie: str
+    _id_assunto: int
+    _id_categoria_doc: int
+    _id_especie_eventual: int
     _link_doc: str
-    _nome_companhia: str
     _protocolo_entrega: str
-    _tipo: str
-    _tipo_apresentacao: str
+    _id_tipo_evento: int
+    _id_tipo_apres: int
     _versao: int
-    _data_entrega_doc: date
-    _data_referencia_doc: date
+    _data_entrega: date
+    _data_referencia: date
     _data_doc: date
-    _mes_doc: str
-    _ano_doc: str
+    _mes: int
+    _ano: int
 
     def __init__(
         self,
         _cnpj_companhia,
-        _codigo_cvm,
-        _assunto,
-        _categoria_doc,
-        _especie,
+        _id_assunto,
+        _id_categoria_doc,
+        _id_especie_eventual,
         _link_doc,
-        _nome_companhia,
         _protocolo_entrega,
-        _tipo,
-        _tipo_apresentacao,
+        _id_tipo_evento,
+        _id_tipo_apres,
         _versao,
-        _data_entrega_doc,
-        _data_referencia_doc,
+        _data_entrega,
+        _data_referencia,
         _data_doc,
-        _mes_doc,
-        _ano_doc,
+        _mes,
+        _ano,
     ):
         self._cnpj_companhia = _cnpj_companhia
-        self._codigo_cvm = _codigo_cvm
-        self._assunto = _assunto
-        self._categoria_doc = _categoria_doc
-        self._especie = _especie
-        self._link_doc = _link_doc
-        self._nome_companhia = _nome_companhia
+        self._id_assunto = _id_assunto
+        self._id_categoria_doc = _id_categoria_doc
+        self._id_especie_eventual = _id_especie_eventual
         self._protocolo_entrega = _protocolo_entrega
-        self._tipo = _tipo
-        self._tipo_apresentacao = _tipo_apresentacao
+        self._link_doc = _link_doc
+        self._id_tipo_evento = _id_tipo_evento
+        self._id_tipo_apres = _id_tipo_apres
         self._versao = _versao
-        self._data_entrega_doc = _data_entrega_doc
-        self._data_referencia_doc = _data_referencia_doc
+        self._data_entrega = _data_entrega
+        self._data_referencia = _data_referencia
         self._data_doc = _data_doc
-        self._mes_doc = _mes_doc
-        self._ano_doc = _ano_doc
+        self._mes = _mes
+        self._ano = _ano
 
     @property
     def cnpj_companhia(self):
@@ -64,36 +58,28 @@ class Periodicos_eventuais:
         self._cnpj_companhia = value
 
     @property
-    def codigo_cvm(self):
-        return self._codigo_cvm
+    def id_assunto(self):
+        return self._id_assunto
 
-    @codigo_cvm.setter
-    def codigo_cvm(self, value):
-        self._codigo_cvm = value
-
-    @property
-    def assunto(self):
-        return self._assunto
-
-    @assunto.setter
-    def assunto(self, value):
-        self._assunto = value
+    @id_assunto.setter
+    def id_assunto(self, value):
+        self._id_assunto = value
 
     @property
-    def categoria_doc(self):
-        return self._categoria_doc
+    def id_categoria_doc(self):
+        return self._id_categoria_doc
 
-    @categoria_doc.setter
-    def categoria_doc(self, value):
-        self._categoria_doc = value
+    @id_categoria_doc.setter
+    def id_categoria_doc(self, value):
+        self._id_categoria_doc = value
 
     @property
-    def especie(self):
-        return self._especie
+    def id_especie_eventual(self):
+        return self._id_especie_eventual
 
-    @especie.setter
-    def especie(self, value):
-        self._especie = value
+    @id_especie_eventual.setter
+    def id_especie_eventual(self, value):
+        self._id_especie_eventual = value
 
     @property
     def link_doc(self):
@@ -104,14 +90,6 @@ class Periodicos_eventuais:
         self._link_doc = value
 
     @property
-    def nome_companhia(self):
-        return self._nome_companhia
-
-    @nome_companhia.setter
-    def nome_companhia(self, value):
-        self._nome_companhia = value
-
-    @property
     def protocolo_entrega(self):
         return self._protocolo_entrega
 
@@ -120,20 +98,20 @@ class Periodicos_eventuais:
         self._protocolo_entrega = value
 
     @property
-    def tipo(self):
-        return self._tipo
+    def id_tipo_evento(self):
+        return self._id_tipo_evento
 
-    @tipo.setter
-    def tipo(self, value):
-        self._tipo = value
+    @id_tipo_evento.setter
+    def id_tipo_evento(self, value):
+        self._id_tipo_evento = value
 
     @property
-    def tipo_apresentacao(self):
-        return self._tipo_apresentacao
+    def id_tipo_apres(self):
+        return self._id_tipo_apres
 
-    @tipo_apresentacao.setter
-    def tipo_apresentacao(self, value):
-        self._tipo_apresentacao = value
+    @id_tipo_apres.setter
+    def id_tipo_apres(self, value):
+        self._id_tipo_apres = value
 
     @property
     def versao(self):
@@ -144,20 +122,20 @@ class Periodicos_eventuais:
         self._versao = value
 
     @property
-    def data_entrega_doc(self):
-        return self._data_entrega_doc
+    def data_entrega(self):
+        return self._data_entrega
 
-    @data_entrega_doc.setter
-    def data_entrega_doc(self, value):
-        self._data_entrega_doc = value
+    @data_entrega.setter
+    def data_entrega(self, value):
+        self._data_entrega = value
 
     @property
-    def data_referencia_doc(self):
-        return self._data_referencia_doc
+    def data_referencia(self):
+        return self._data_referencia
 
-    @data_referencia_doc.setter
-    def data_referencia_doc(self, value):
-        self._data_referencia_doc = value
+    @data_referencia.setter
+    def data_referencia(self, value):
+        self._data_referencia = value
 
     @property
     def data_doc(self):
@@ -168,35 +146,33 @@ class Periodicos_eventuais:
         self._data_doc = value
 
     @property
-    def mes_doc(self):
-        return self._mes_doc
+    def mes(self):
+        return self._mes
 
-    @mes_doc.setter
-    def mes_doc(self, value):
-        self._mes_doc = value
+    @mes.setter
+    def mes(self, value):
+        self._mes = value
 
     @property
-    def ano_doc(self):
-        return self._ano_doc
+    def ano(self):
+        return self._ano
 
-    @ano_doc.setter
-    def ano_doc(self, value):
-        self._ano_doc = value
+    @ano.setter
+    def ano(self, value):
+        self._ano = value
 
     def mostrarDados(self):
         print("cnpj_companhia: ", str(self._cnpj_companhia))
-        print("codigo_cvm: ", str(self._codigo_cvm))
-        print("assunto: ", str(self._assunto))
-        print("categoria_doc: ", str(self._categoria_doc))
-        print("especie: ", str(self._especie))
-        print("link_doc: ", str(self._link_doc))
-        print("nome_companhia: ", str(self._nome_companhia))
+        print("id_assunto: ", str(self._id_assunto))
+        print("id_categoria_doc: ", str(self._id_categoria_doc))
+        print("id_especie_eventual: ", str(self._id_especie_eventual))
         print("protocolo_entrega: ", str(self._protocolo_entrega))
-        print("tipo: ", str(self._tipo))
-        print("tipo_apresentacao: ", str(self._tipo_apresentacao))
+        print("link_doc: ", str(self._link_doc))
+        print("id_tipo_evento: ", str(self._id_tipo_evento))
+        print("id_tipo_apres: ", str(self._id_tipo_apres))
         print("versao: ", str(self._versao))
-        print("data_entrega_doc: ", str(self._data_entrega_doc))
-        print("data_referencia_doc: ", str(self._data_referencia_doc))
+        print("data_entrega: ", str(self._data_entrega))
+        print("data_referencia: ", str(self._data_referencia))
         print("data_doc: ", str(self._data_doc))
-        print("mes_doc: ", str(self._mes_doc))
-        print("ano_doc: ", str(self._ano_doc))
+        print("mes: ", str(self._mes))
+        print("ano: ", str(self._ano))

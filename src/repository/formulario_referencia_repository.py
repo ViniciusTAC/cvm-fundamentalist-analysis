@@ -90,18 +90,16 @@ class ConexaoBanco:
             query = """
                             INSERT INTO formulario_referencia (
                                 cnpj_companhia,
-                                categoria_doc,
-                                denominacao_companhia,
+                                id_categoria_doc,
                                 id_doc,
                                 link_doc,
                                 versao,
-                                data_recebimento_doc,
-                                data_referencia_doc,
+                                data_recebimento,
+                                data_referencia,
                                 data_doc,
-                                mes_doc,
-                                ano_doc
+                                mes,
+                                ano
                             ) VALUES (
-                                ?,
                                 ?,
                                 ?,
                                 ?,
@@ -117,17 +115,16 @@ class ConexaoBanco:
             # Construir valores garantindo que não haja extras e substituindo 'nan' por None
             # Construir valores garantindo validação dos campos
             values = (
-                tratar_valor(formulario_referencia._cnpj_companhia),
-                tratar_valor(formulario_referencia._categoria_doc),
-                tratar_valor(formulario_referencia._denominacao_companhia),
-                tratar_valor(formulario_referencia._id_doc, tipo="int"),
-                tratar_valor(formulario_referencia._link_doc),
-                tratar_valor(formulario_referencia._versao, tipo="int"),
-                tratar_valor(formulario_referencia.data_recebimento_doc, tipo="date"),
-                tratar_valor(formulario_referencia.data_referencia_doc, tipo="date"),
-                tratar_valor(formulario_referencia._data_doc, tipo="date"),
-                tratar_valor(formulario_referencia._mes_doc, tipo="int"),
-                tratar_valor(formulario_referencia._ano_doc, tipo="int"),
+                tratar_valor(formulario_referencia.cnpj_companhia),
+                tratar_valor(formulario_referencia.id_categoria_doc, tipo="int"),
+                tratar_valor(formulario_referencia.id_doc, tipo="int"),
+                tratar_valor(formulario_referencia.link_doc),
+                tratar_valor(formulario_referencia.versao, tipo="int"),
+                tratar_valor(formulario_referencia.data_recebimento, tipo="date"),
+                tratar_valor(formulario_referencia.data_referencia, tipo="date"),
+                tratar_valor(formulario_referencia.data_doc, tipo="date"),
+                tratar_valor(formulario_referencia.mes),
+                tratar_valor(formulario_referencia.ano),
             )
             # print("\n\n")
             # Gerar query SQL formatada para depuração
@@ -144,10 +141,10 @@ class ConexaoBanco:
             # self.logger.info(f"Empresa {empresa._nome_empresa} do ano {empresa._ano_doc} inserida com sucesso.")
             # escrever_linha_em_branco()
             self.log_sucesso.info(
-                f"Formulário de Referência {formulario_referencia._denominacao_companhia}, do CNPJ: {formulario_referencia._cnpj_companhia} e do ano {formulario_referencia._ano_doc} inserida com sucesso."
+                f"Formulário de Referência do CNPJ: {formulario_referencia._cnpj_companhia} e do ano {formulario_referencia._ano} inserida com sucesso."
             )
             print(
-                f"Formulário de Referência {formulario_referencia._denominacao_companhia} inserida com sucesso."
+                f"Formulário de Referência do CNPJ: {formulario_referencia._cnpj_companhia} inserida com sucesso."
             )
             escrever_linha_em_branco(self.log_sucesso)
         except sqlite3.Error as e:
@@ -156,11 +153,11 @@ class ConexaoBanco:
             escrever_linha_em_branco(self.log_erro)
 
             self.log_erro.error(
-                f"Erro ao inserir Formulário de Referência {formulario_referencia._denominacao_companhia}, do CNPJ: {formulario_referencia._cnpj_companhia} e do ano {formulario_referencia._ano_doc}, erro: {e}."
+                f"Erro ao inserir Formulário de Referência do CNPJ: {formulario_referencia._cnpj_companhia} e do ano {formulario_referencia._ano}, erro: {e}."
             )
             escrever_linha_em_branco(self.log_erro)
             print(
-                f"Erro ao inserir Formulário de Referência {formulario_referencia._denominacao_companhia}, do CNPJ: {formulario_referencia._cnpj_companhia} e do ano {formulario_referencia._ano_doc}, erro: {e}."
+                f"Erro ao inserir Formulário de Referência do CNPJ: {formulario_referencia._cnpj_companhia} e do ano {formulario_referencia._ano}, erro: {e}."
             )
 
 
