@@ -1,10 +1,7 @@
 import os
 import pandas as pd
-
-# from datetime import datetime
-from models.empresas import Empresas
-import sqlite3
 import re
+from models.empresas import Empresas
 
 
 def carregar_mapas_auxiliares(conexao):

@@ -1,11 +1,17 @@
+
 import os
 import pandas as pd
 from datetime import datetime
 from models.demonstrativo_financeiro import Demonstrativo_financeiro
-import sqlite3
-
-# from models.planos_contas import PlanosContas  # Se quiser cruzar com o banco depois
 import re
+
+# Mapeia siglas de arquivos para comportamentos da tabela planos_contas
+SIGLA_COMPORTAMENTO_MAP = {
+    "BPA": "BPA",
+    "BPP": "BPP",
+    "DRE": "DRE",
+    "DVA": "DVA"
+}
 
 
 def carregar_grupos_demonstrativo(cursor):
@@ -24,16 +30,15 @@ def carregar_planos_contas(cursor):
     for comportamento, codigo in rows:
         if comportamento not in planos:
             planos[comportamento] = []
-        planos[comportamento].append(codigo)
+        planos[comportamento].append(str(codigo).strip().lower())
     return planos
 
 
-def identificar_comportamento(arquivo_nome, grupo_demostrativo):
+def identificar_comportamento(arquivo_nome):
     arquivo_nome = arquivo_nome.upper()
-    print("arquivo_nome: " + str(arquivo_nome))
-    for sigla in grupo_demostrativo:
+    for sigla, comportamento in SIGLA_COMPORTAMENTO_MAP.items():
         if sigla in arquivo_nome:
-            return sigla[:3]  # BPA, BPP, DRE, DVA
+            return comportamento
     return None
 
 
@@ -48,21 +53,16 @@ def parse_date(date_str):
 
 def carregar_mapas_auxiliares(conexao):
     cursor = conexao.connection.cursor()
-    # conn = sqlite3.connect(db_path)
-    # cursor = conn.cursor()
 
     def carregar_tabela(nome_tabela, nome_id_coluna):
         cursor.execute(f"SELECT {nome_id_coluna}, descricao FROM {nome_tabela}")
         return {desc.lower().strip(): id_ for id_, desc in cursor.fetchall()}
 
-    mapas = {
+    return {
         "escala_monetaria": carregar_tabela("escala_monetaria", "id_escala"),
         "moeda": carregar_tabela("moeda", "id_moeda"),
         "ordem_exercicio": carregar_tabela("ordem_exercicio", "id_ordem"),
     }
-
-    # conn.close()
-    return mapas
 
 
 def process_dfp_files(base_path, conexao):
@@ -81,11 +81,13 @@ def process_dfp_files(base_path, conexao):
             if not file.endswith(".csv"):
                 continue
 
-            comportamento = identificar_comportamento(file, grupo_demostrativo)
-            print("comportamento: " + str(comportamento))
+            comportamento = identificar_comportamento(file)
+            print(f"Arquivo: {file} → comportamento identificado: {comportamento}")
+
             if comportamento is None or comportamento not in planos_contas:
                 continue
 
+            contas_desejadas = planos_contas[comportamento]
             file_path = os.path.join(year_path, file)
 
             try:
@@ -96,21 +98,19 @@ def process_dfp_files(base_path, conexao):
                 print(f"[ERRO] {file_path}: {e}")
                 continue
 
-            contas_desejadas = planos_contas[comportamento]
+            # Normaliza colunas antes de comparar
+            df["CD_CONTA"] = df["CD_CONTA"].astype(str).str.strip().str.lower()
+            df["DS_CONTA"] = df["DS_CONTA"].astype(str).str.strip().str.lower()
 
             df_filtrado = df[
-                df["CD_CONTA"].astype(str).isin(contas_desejadas)
-                | df["DS_CONTA"].astype(str).isin(contas_desejadas)
+                df["CD_CONTA"].isin(contas_desejadas)
+                | df["DS_CONTA"].isin(contas_desejadas)
             ]
 
             for _, row in df_filtrado.iterrows():
                 demonstrativo = Demonstrativo_financeiro(
-                    # _id_plano_conta=mapas["planos_contas"].get(
-                    #     str(row.get("CD_CONTA")).lower().strip()
-                    # ),
                     _id_plano_conta=row.get("CD_CONTA"),
                     _cnpj_companhia=re.sub(r"\D", "", row.get("CNPJ_CIA") or ""),
-                    # _codigo_cvm=row.get("CD_CVM"),
                     _id_escala=mapas["escala_monetaria"].get(
                         str(row.get("ESCALA_MOEDA")).lower().strip()
                     ),
@@ -119,22 +119,15 @@ def process_dfp_files(base_path, conexao):
                         str(row.get("ORDEM_EXERC")).lower().strip()
                     ),
                     _codigo_grupo_dfp=row.get("GRUPO_DFP"),
-                    _conta_fixa=row.get("CONTA_FIXA"),
+                    _conta_fixa=row.get("ST_CONTA_FIXA"),
                     _versao=row.get("VERSAO"),
                     _data_inicio_exercicio=parse_date(row.get("DT_INI_EXERC")),
                     _data_fim_exercicio=parse_date(row.get("DT_FIM_EXERC")),
                     _data_referencia_doc=parse_date(row.get("DT_REFER")),
                     _valor_conta=row.get("VL_CONTA"),
-                    _mes=(
-                        str(row.get("DT_REFER"))[5:7] if row.get("DT_REFER") else None
-                    ),
-                    _ano=(
-                        str(row.get("DT_REFER"))[:4] if row.get("DT_REFER") else None
-                    ),
+                    _mes=str(row.get("DT_REFER"))[5:7] if row.get("DT_REFER") else None,
+                    _ano=str(row.get("DT_REFER"))[:4] if row.get("DT_REFER") else None,
                 )
-
-                demonstrativos_list.append(demonstrativo)
-
                 demonstrativos_list.append(demonstrativo)
 
     return demonstrativos_list

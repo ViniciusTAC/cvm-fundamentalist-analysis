@@ -41,30 +41,32 @@ class ConexaoBanco:
 
         # return sucesso_logger, erro_logger
 
-        os.makedirs(log_sucesso_dir, exist_ok=True)
-        os.makedirs(log_erro_dir, exist_ok=True)
 
-        sucesso_logger = logging.getLogger("sucesso")
-        sucesso_logger.setLevel(logging.INFO)
-        sucesso_handler = logging.FileHandler(
-            os.path.join(log_sucesso_dir, "sucesso.log"), encoding="utf-8"
-        )
-        sucesso_handler.setFormatter(
-            logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
-        )
-        if not sucesso_logger.handlers:
-            sucesso_logger.addHandler(sucesso_handler)
+        # os.makedirs(log_sucesso_dir, exist_ok=True)
+        # os.makedirs(log_erro_dir, exist_ok=True)
 
-        erro_logger = logging.getLogger("erro")
-        erro_logger.setLevel(logging.WARNING)
-        erro_handler = logging.FileHandler(
-            os.path.join(log_erro_dir, "erro.log"), encoding="utf-8"
-        )
-        erro_handler.setFormatter(
-            logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
-        )
-        if not erro_logger.handlers:
-            erro_logger.addHandler(erro_handler)
+        # sucesso_logger = logging.getLogger("sucesso")
+        # sucesso_logger.setLevel(logging.INFO)
+        # sucesso_handler = logging.FileHandler(
+        #     os.path.join(log_sucesso_dir, "sucesso.log"), encoding="utf-8"
+        # )
+        # sucesso_handler.setFormatter(
+        #     logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+        # )
+        # if not sucesso_logger.handlers:
+        #     sucesso_logger.addHandler(sucesso_handler)
+
+        # erro_logger = logging.getLogger("erro")
+        # erro_logger.setLevel(logging.WARNING)
+        # erro_handler = logging.FileHandler(
+        #     os.path.join(log_erro_dir, "erro.log"), encoding="utf-8"
+        # )
+        # erro_handler.setFormatter(
+        #     logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+        # )
+        # if not erro_logger.handlers:
+        #     erro_logger.addHandler(erro_handler)
+
 
         return sucesso_logger, erro_logger
 
