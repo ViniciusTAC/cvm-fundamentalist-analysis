@@ -497,7 +497,7 @@ def run_processos_selecionados(vars):
             conn.execute("BEGIN")
 
             if usa_banco:
-                dados = process_func(caminho, banco, *args_extra)
+                dados = process_func(caminho, CAMINHO_BANCO, *args_extra)
             else:
                 dados = (
                     process_func(caminho, *args_extra)
@@ -575,7 +575,7 @@ def run_processos_selecionados(vars):
             BancoEmpresas,
             process_empresas,
             "inserir_ou_atualizar_empresa",
-            True,  # <- usa somente a conexão
+            True,
         )
 
     if vars["ipe"].get():

@@ -14,18 +14,18 @@ Ordem Exercício: 4 inseridos, 0 com erro.
 
 Moeda: 2 inseridos, 0 com erro.
 
-Erro fatal em Empresas: expected str, bytes or os.PathLike object, not ConexaoBanco
+Empresas: 10899 inseridos, 0 com erro.
 
-Erro fatal em Periódicos Eventuais: expected str, bytes or os.PathLike object, not ConexaoBanco
+Periódicos Eventuais: 681785 inseridos, 0 com erro.
 
-Erro fatal em Formulários de Referência: expected str, bytes or os.PathLike object, not ConexaoBanco
+Formulários de Referência: 65915 inseridos, 0 com erro.
 
-Erro fatal em Parecer - Demonstrativos: expected str, bytes or os.PathLike object, not ConexaoBanco
+Parecer - Demonstrativos: 48487 inseridos, 0 com erro.
 
-Erro fatal em Parecer - Trimestral: expected str, bytes or os.PathLike object, not ConexaoBanco
+Parecer - Trimestral: 83923 inseridos, 0 com erro.
 
 Número de Ações: 14608 inseridos, 0 com erro.
 
-Demonstrativos Financeiros: 932176 inseridos, 0 com erro.
+Erro fatal em Demonstrativos Financeiros: 'str' object has no attribute 'connection'
 
-Informações Trimestrais: 1628158 inseridos, 0 com erro.
+Erro fatal em Informações Trimestrais: 'str' object has no attribute 'connection'
