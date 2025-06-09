@@ -7,9 +7,8 @@ import sqlite3
 import re
 
 
-def carregar_mapas_auxiliares(db_path):
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
+def carregar_mapas_auxiliares(conexao):
+    cursor = conexao.connection.cursor()
 
     def carregar_tabela(nome_tabela, nome_id_coluna):
         cursor.execute(f"SELECT {nome_id_coluna}, descricao FROM {nome_tabela}")
@@ -21,13 +20,13 @@ def carregar_mapas_auxiliares(db_path):
         ),
     }
 
-    conn.close()
+    # conn.close()
     return mapas
 
 
-def process_csv_files(base_path, db_path):
+def process_csv_files(base_path, conexao):
     formulario_referencia_list = []
-    mapas = carregar_mapas_auxiliares(db_path)
+    mapas = carregar_mapas_auxiliares(conexao)
 
     # Expressão regular para nome do arquivo no formato: fre_cia_aberta_<ano>.csv
     padrao_nome_arquivo = re.compile(r"^fre_cia_aberta_\d{4}\.csv$")

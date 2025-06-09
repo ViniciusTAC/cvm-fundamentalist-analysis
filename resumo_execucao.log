@@ -4,28 +4,32 @@ Situação do Emissor: 8 inseridos, 0 com erro.
 
 Setor de Atividade: 66 inseridos, 0 com erro.
 
-Categoria Documento: 0 inseridos, 0 com erro.
+Categoria Documento: 69 inseridos, 0 com erro.
 
-Tipo Parecer: 0 inseridos, 0 com erro.
+Tipo Parecer: 12 inseridos, 0 com erro.
 
-Escala Monetária: 4 inseridos, 0 com erro.
+escala_monetaria: 2 inseridos, 0 com erro.
 
-Ordem Exercício: 4 inseridos, 0 com erro.
+ordem_exercicio: 2 inseridos, 0 com erro.
 
-Moeda: 2 inseridos, 0 com erro.
+moeda: 1 inseridos, 0 com erro.
+
+tipo_relatorio_auditor: 0 inseridos, 0 com erro.
+
+tipo_relatorio_especial: 4 inseridos, 0 com erro.
+
+assunto_prensa: 273486 inseridos, 0 com erro.
+
+especie_documento_eventual: 37 inseridos, 0 com erro.
+
+tipo_evento: 84 inseridos, 0 com erro.
+
+tipo_apresentacao_evento: 84 inseridos, 0 com erro.
 
 Empresas: 10899 inseridos, 0 com erro.
 
-Periódicos Eventuais: 681785 inseridos, 0 com erro.
+Demonstrativos Financeiros: 465956 inseridos, 0 com erro.
 
-Formulários de Referência: 65915 inseridos, 0 com erro.
+Informações Trimestrais: 1648436 inseridos, 0 com erro.
 
-Parecer - Demonstrativos: 48487 inseridos, 0 com erro.
-
-Parecer - Trimestral: 83923 inseridos, 0 com erro.
-
-Número de Ações: 14608 inseridos, 0 com erro.
-
-Erro fatal em Demonstrativos Financeiros: 'str' object has no attribute 'connection'
-
-Erro fatal em Informações Trimestrais: 'str' object has no attribute 'connection'
+🕒 Tempo total de execução: 00:15:52

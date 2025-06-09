@@ -1,15 +1,11 @@
 import os
 import pandas as pd
-
-# from datetime import datetime
-from models.empresas import Empresas
-import sqlite3
 import re
+from models.empresas import Empresas
 
 
-def carregar_mapas_auxiliares(db_path):
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
+def carregar_mapas_auxiliares(conexao):
+    cursor = conexao.connection.cursor()
 
     def carregar_tabela(nome_tabela, nome_id_coluna):
         cursor.execute(f"SELECT {nome_id_coluna}, descricao FROM {nome_tabela}")
@@ -22,13 +18,13 @@ def carregar_mapas_auxiliares(db_path):
         "setor": carregar_tabela("setor_atividade", "id_setor"),
     }
 
-    conn.close()
+    # conn.close()
     return mapas
 
 
-def process_csv_files(base_path, db_path):
+def process_csv_files(base_path, conexao):
     empresas_list = []
-    mapas = carregar_mapas_auxiliares(db_path)
+    mapas = carregar_mapas_auxiliares(conexao)
 
     for year_folder in os.listdir(base_path):
         year_path = os.path.join(base_path, year_folder)
