@@ -111,7 +111,7 @@ class ConexaoBanco:
 
             query = """
                 INSERT INTO informacao_trimestral (
-                    codigo_cvm,
+                    cnpj_companhia,
                     id_plano_conta,
                     id_escala,
                     codigo_grupo_dfp,
@@ -123,12 +123,11 @@ class ConexaoBanco:
                     data_fim_exercicio,
                     data_referencia_doc,
                     valor_conta,
-                    data_doc,
                     mes,
                     ano
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ON CONFLICT(codigo_cvm, id_plano_conta, codigo_grupo_dfp, conta_fixa, mes, ano)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(cnpj_companhia, id_plano_conta, codigo_grupo_dfp, conta_fixa, mes, ano)
                 DO UPDATE SET
                     id_escala = excluded.id_escala,
                     id_moeda = excluded.id_moeda,
@@ -137,12 +136,11 @@ class ConexaoBanco:
                     data_inicio_exercicio = excluded.data_inicio_exercicio,
                     data_fim_exercicio = excluded.data_fim_exercicio,
                     data_referencia_doc = excluded.data_referencia_doc,
-                    valor_conta = excluded.valor_conta,
-                    data_doc = excluded.data_doc
+                    valor_conta = excluded.valor_conta
             """
 
             values = (
-                tratar_valor(informacao_trimestral.codigo_cvm),
+                tratar_valor(informacao_trimestral.cnpj_companhia),
                 tratar_valor(informacao_trimestral.id_plano_conta),
                 tratar_valor(informacao_trimestral.id_escala),
                 tratar_valor(informacao_trimestral.codigo_grupo_dfp),
@@ -154,7 +152,6 @@ class ConexaoBanco:
                 tratar_valor(informacao_trimestral.data_fim_exercicio, tipo="date"),
                 tratar_valor(informacao_trimestral.data_referencia_doc, tipo="date"),
                 tratar_valor(informacao_trimestral.valor_conta, tipo="float"),
-                tratar_valor(informacao_trimestral.data_doc, tipo="date"),
                 tratar_valor(informacao_trimestral.mes, tipo="int"),
                 tratar_valor(informacao_trimestral.ano, tipo="int"),
             )
@@ -163,19 +160,19 @@ class ConexaoBanco:
 
             # self.connection.commit()
             self.log_sucesso.info(
-                f"informacao_trimestral inserido para CNPJ {informacao_trimestral._cnpj_companhia}, conta {informacao_trimestral._codigo_conta}, mês {informacao_trimestral._mes_doc}, ano {informacao_trimestral._ano_doc}."
+                f"Informação Trimestral inserido para CNPJ {informacao_trimestral._cnpj_companhia}, conta {informacao_trimestral.id_plano_conta}, mês {informacao_trimestral._mes}, ano {informacao_trimestral._ano}."
             )
             print(
-                f"✔ informacao_trimestral inserido para CNPJ {informacao_trimestral._cnpj_companhia}, conta {informacao_trimestral._codigo_conta}."
+                f"✔ Informação Trimestral inserido para CNPJ {informacao_trimestral._cnpj_companhia}, conta {informacao_trimestral.id_plano_conta}, mês {informacao_trimestral._mes}, ano {informacao_trimestral._ano}."
             )
         except sqlite3.Error as e:
             escrever_linha_em_branco(self.log_erro)
             escrever_linha_separador(self.log_erro)
             self.log_erro.error(
-                f"Erro ao inserir informacao_trimestral para CNPJ {informacao_trimestral._cnpj_companhia}, conta {informacao_trimestral._codigo_conta}, erro: {e}."
+                f"Erro ao inserir Informação Trimestral para CNPJ {informacao_trimestral._cnpj_companhia}, conta {informacao_trimestral.id_plano_conta}, mês {informacao_trimestral._mes}, ano {informacao_trimestral._ano}, erro: {e}."
             )
             print(
-                f"❌ Erro ao inserir informacao_trimestral para CNPJ {informacao_trimestral._cnpj_companhia}, erro: {e}"
+                f"❌ Erro ao inserir Informação Trimestral para CNPJ {informacao_trimestral._cnpj_companhia}, conta {informacao_trimestral.id_plano_conta}, mês {informacao_trimestral._mes}, ano {informacao_trimestral._ano}, erro: {e}"
             )
 
 

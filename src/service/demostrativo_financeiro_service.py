@@ -3,7 +3,9 @@ import pandas as pd
 from datetime import datetime
 from models.demonstrativo_financeiro import Demonstrativo_financeiro
 import sqlite3
+
 # from models.planos_contas import PlanosContas  # Se quiser cruzar com o banco depois
+import re
 
 
 def carregar_grupos_demonstrativo(cursor):
@@ -53,9 +55,9 @@ def carregar_mapas_auxiliares(db_path):
         return {desc.lower().strip(): id_ for id_, desc in cursor.fetchall()}
 
     mapas = {
-        "escala_monetaria": carregar_tabela("tipo_parecer", "id_escala"),
-        "moeda": carregar_tabela("tipo_parecer", "id_moeda"),
-        "ordem_exercicio": carregar_tabela("tipo_parecer", "id_ordem"),
+        "escala_monetaria": carregar_tabela("escala_monetaria", "id_escala"),
+        "moeda": carregar_tabela("moeda", "id_moeda"),
+        "ordem_exercicio": carregar_tabela("ordem_exercicio", "id_ordem"),
     }
 
     conn.close()
@@ -102,9 +104,12 @@ def process_dfp_files(base_path, conexao, db_path):
 
             for _, row in df_filtrado.iterrows():
                 demonstrativo = Demonstrativo_financeiro(
-                    _codigo_conta=row.get("CD_CONTA"),
-                    _cnpj_companhia=row.get("CNPJ_CIA"),
-                    _codigo_cvm=row.get("CD_CVM"),
+                    # _id_plano_conta=mapas["planos_contas"].get(
+                    #     str(row.get("CD_CONTA")).lower().strip()
+                    # ),
+                    _id_plano_conta=row.get("CD_CONTA"),
+                    _cnpj_companhia=re.sub(r"\D", "", row.get("CNPJ_CIA") or ""),
+                    # _codigo_cvm=row.get("CD_CVM"),
                     _id_escala=mapas["escala_monetaria"].get(
                         str(row.get("ESCALA_MOEDA")).lower().strip()
                     ),
@@ -112,20 +117,19 @@ def process_dfp_files(base_path, conexao, db_path):
                     _id_ordem=mapas["ordem_exercicio"].get(
                         str(row.get("ORDEM_EXERC")).lower().strip()
                     ),
-                    _grupo_dfp=row.get("GRUPO_DFP"),
+                    _codigo_grupo_dfp=row.get("GRUPO_DFP"),
                     _conta_fixa=row.get("CONTA_FIXA"),
                     _versao=row.get("VERSAO"),
                     _data_inicio_exercicio=parse_date(row.get("DT_INI_EXERC")),
                     _data_fim_exercicio=parse_date(row.get("DT_FIM_EXERC")),
                     _data_referencia_doc=parse_date(row.get("DT_REFER")),
                     _valor_conta=row.get("VL_CONTA"),
-                    _data_doc=datetime.now().date(),
-                    _mes_doc=str(row.get("DT_REFER"))[5:7]
-                    if row.get("DT_REFER")
-                    else None,
-                    _ano_doc=str(row.get("DT_REFER"))[:4]
-                    if row.get("DT_REFER")
-                    else None,
+                    _mes=(
+                        str(row.get("DT_REFER"))[5:7] if row.get("DT_REFER") else None
+                    ),
+                    _ano=(
+                        str(row.get("DT_REFER"))[:4] if row.get("DT_REFER") else None
+                    ),
                 )
 
                 demonstrativos_list.append(demonstrativo)

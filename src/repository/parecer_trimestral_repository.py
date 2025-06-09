@@ -88,16 +88,14 @@ class ConexaoBanco:
                             INSERT INTO parecer_trimestral (
                                 cnpj_companhia,
                                 num_linha_parecer_declaracao,
-                                tipo_parecer_declaracao,
-                                tipo_relatorio_especial,
+                                id_tipo_parecer,
+                                id_tipo_rel_especial,
                                 texto_parecer_declaracao,
                                 versao,
                                 data_referencia_doc,
-                                data_doc,
-                                mes_doc,
-                                ano_doc
+                                mes,
+                                ano
                             ) VALUES (
-                                ?,
                                 ?,
                                 ?,
                                 ?,
@@ -114,14 +112,13 @@ class ConexaoBanco:
             values = (
                 tratar_valor(parecer_trimestral.cnpj_companhia),
                 tratar_valor(parecer_trimestral.num_linha_parecer_declaracao, tipo="int"),
-                tratar_valor(parecer_trimestral.tipo_parecer_declaracao, tipo="int"),
-                tratar_valor(parecer_trimestral.tipo_relatorio_auditor, tipo="int"),
+                tratar_valor(parecer_trimestral.id_tipo_parecer, tipo="int"),
+                tratar_valor(parecer_trimestral.id_tipo_rel_especial, tipo="int"),
                 tratar_valor(parecer_trimestral.texto_parecer_declaracao),
                 tratar_valor(parecer_trimestral.versao, tipo="int"),
                 tratar_valor(parecer_trimestral.data_referencia_doc, tipo="date"),
-                tratar_valor(parecer_trimestral.data_doc, tipo="date"),
-                tratar_valor(parecer_trimestral.mes_doc),
-                tratar_valor(parecer_trimestral.ano_doc),
+                tratar_valor(parecer_trimestral.mes),
+                tratar_valor(parecer_trimestral.ano),
             )
             # print("\n\n")
             # # Gerar query SQL formatada para depuração
@@ -132,9 +129,9 @@ class ConexaoBanco:
 
             cursor.execute(query, values)
             # self.connection.commit()
-            self.log_sucesso.info(f"Parecer Trimestral do CNPJ: {parecer_trimestral._cnpj_companhia} e do ano {parecer_trimestral._ano_doc} inserida com sucesso.")
+            self.log_sucesso.info(f"Parecer Trimestral do CNPJ: {parecer_trimestral._cnpj_companhia} e do ano {parecer_trimestral._ano} inserida com sucesso.")
             print(
-                f"Parecer Demonstrativo  do CNPJ: {parecer_trimestral._cnpj_companhia} e do ano {parecer_trimestral._ano_doc} inserida com sucesso."
+                f"Parecer Demonstrativo  do CNPJ: {parecer_trimestral._cnpj_companhia} e do ano {parecer_trimestral._ano} inserida com sucesso."
             )
             escrever_linha_em_branco(self.log_sucesso)
         except sqlite3.Error as e:
@@ -143,11 +140,11 @@ class ConexaoBanco:
             escrever_linha_em_branco(self.log_erro)
 
             self.log_erro.error(
-                f"Erro ao inserir Parecer Trimestral do CNPJ: {parecer_trimestral._cnpj_companhia} e do ano {parecer_trimestral._ano_doc}, erro: {e}."
+                f"Erro ao inserir Parecer Trimestral do CNPJ: {parecer_trimestral._cnpj_companhia} e do ano {parecer_trimestral._ano}, erro: {e}."
             )
             escrever_linha_em_branco(self.log_erro)
             print(
-                f"Erro ao inserir Parecer Trimestral do CNPJ: {parecer_trimestral._cnpj_companhia} e do ano {parecer_trimestral._ano_doc}, erro: {e}."
+                f"Erro ao inserir Parecer Trimestral do CNPJ: {parecer_trimestral._cnpj_companhia} e do ano {parecer_trimestral._ano}, erro: {e}."
             )
 
 

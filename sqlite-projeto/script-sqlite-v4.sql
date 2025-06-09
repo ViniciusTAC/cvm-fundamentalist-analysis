@@ -138,7 +138,7 @@ CREATE TABLE empresas (
 -- ========== planos_contas ==========
 -- Define o plano de contas utilizado nos demonstrativos e informações trimestrais
 CREATE TABLE planos_contas (
-  id_planos_contas INTEGER PRIMARY KEY AUTOINCREMENT, -- Identificador interno do plano de contas
+  id_plano_conta INTEGER PRIMARY KEY AUTOINCREMENT, -- Identificador interno do plano de contas
   codigo_conta     TEXT    NOT NULL UNIQUE,           -- Código do plano de contas (ex.: '1', '1.01', etc.)
   descricao_conta  TEXT    NOT NULL,                  -- Descrição da conta (ex.: 'Ativo Total', 'Passivo Circulante' etc.)
   comportamento    TEXT    NOT NULL                   -- Tipo de comportamento (ex.: 'BPA', 'DRE', 'DVA' etc.)
@@ -156,7 +156,7 @@ CREATE TABLE grupo_demonstrativo_financeiro (
 CREATE TABLE demonstrativo_financeiro (
   id_demonstrativo         INTEGER PRIMARY KEY AUTOINCREMENT,  -- Identificador interno do registro
   cnpj_companhia           TEXT    NOT NULL,                  -- FK para empresas(cnpj_companhia, ano, mes)
-  id_plano_conta           INTEGER NOT NULL,                  -- FK para planos_contas(id_planos_contas)
+  id_plano_conta         INTEGER NOT NULL,                  -- FK para planos_contas(id_planos_contas)
   id_escala                INTEGER,                           -- FK para escala_monetaria(id_escala)
   codigo_grupo_dfp         TEXT    NOT NULL,                  -- FK para grupo_demonstrativo_financeiro(codigo_grupo_dfp)
   id_moeda                 INTEGER,                           -- FK para moeda(id_moeda)
@@ -167,11 +167,10 @@ CREATE TABLE demonstrativo_financeiro (
   data_fim_exercicio       DATE,                              -- Data de fim do exercício considerado
   data_referencia_doc      DATE,                              -- Data de referência do documento
   valor_conta              REAL,                              -- Valor monetário do item
-  data_doc                 DATE    NOT NULL,                  -- Data do documento
   mes                      INTEGER NOT NULL,                  -- Mês extraído de data_doc (1-12)
   ano                      INTEGER NOT NULL,                  -- Ano extraído de data_doc (ex.: 2020, 2021 etc.)
   FOREIGN KEY (cnpj_companhia, ano, mes)      REFERENCES empresas(cnpj_companhia, ano, mes),
-  FOREIGN KEY (id_plano_conta)      REFERENCES planos_contas(id_planos_contas),
+  FOREIGN KEY (id_plano_conta)      REFERENCES planos_contas(id_plano_conta),
   FOREIGN KEY (codigo_grupo_dfp)    REFERENCES grupo_demonstrativo_financeiro(codigo_grupo_dfp),
   FOREIGN KEY (id_escala)           REFERENCES escala_monetaria(id_escala),
   FOREIGN KEY (id_moeda)            REFERENCES moeda(id_moeda),
@@ -194,11 +193,10 @@ CREATE TABLE informacao_trimestral (
   data_fim_exercicio        DATE,                             -- Data de fim do exercício trimestral
   data_referencia_doc       DATE,                             -- Data de referência do documento
   valor_conta               REAL,                             -- Valor contabilizado
-  data_doc                  DATE    NOT NULL,                 -- Data do documento ITR
   mes                       INTEGER NOT NULL,                 -- Mês extraído de data_doc (1-12)
   ano                       INTEGER NOT NULL,                 -- Ano extraído de data_doc (ex.: 2020, 2021 etc.)
   FOREIGN KEY (cnpj_companhia, ano, mes)      REFERENCES empresas(cnpj_companhia, ano, mes),
-  FOREIGN KEY (id_plano_conta)      REFERENCES planos_contas(id_planos_contas),
+  FOREIGN KEY (id_plano_conta)      REFERENCES planos_contas(id_plano_conta),
   FOREIGN KEY (codigo_grupo_dfp)    REFERENCES grupo_demonstrativo_financeiro(codigo_grupo_dfp),
   FOREIGN KEY (id_escala)           REFERENCES escala_monetaria(id_escala),
   FOREIGN KEY (id_moeda)            REFERENCES moeda(id_moeda),
@@ -216,7 +214,6 @@ CREATE TABLE parecer_demonstrativo (
   texto_parecer_declaracao          TEXT,                               -- Texto completo do parecer/declaracao
   versao                            INTEGER,                            -- Versão do parecer
   data_referencia_doc               DATE,                               -- Data de referência do documento
-  data_doc                          DATE    NOT NULL,                   -- Data do documento de parecer
   mes                               INTEGER NOT NULL,                   -- Mês extraído de data_doc (1-12)
   ano                               INTEGER NOT NULL,                   -- Ano extraído de data_doc (ex.: 2020, 2021 etc.)
   FOREIGN KEY (cnpj_companhia, ano, mes)      REFERENCES empresas(cnpj_companhia, ano, mes),
@@ -235,7 +232,6 @@ CREATE TABLE parecer_trimestral (
   texto_parecer_declaracao          TEXT,                               -- Texto completo do parecer/declaracao
   versao                            INTEGER,                            -- Versão do parecer
   data_referencia_doc               DATE,                               -- Data de referência do documento
-  data_doc                          DATE    NOT NULL,                   -- Data do documento de parecer
   mes                               INTEGER NOT NULL,                   -- Mês extraído de data_doc (1-12)
   ano                               INTEGER NOT NULL,                   -- Ano extraído de data_doc (ex.: 2020, 2021 etc.)
   FOREIGN KEY (cnpj_companhia, ano, mes)      REFERENCES empresas(cnpj_companhia, ano, mes),
@@ -301,11 +297,10 @@ CREATE TABLE numeros_acoes (
   qtd_total_acoes_tesouro                          INTEGER, -- Quantidade total de ações em tesouraria
   versao                  INTEGER,                     -- Versão do relatório
   data_referencia         DATE,                        -- Data de referência do documento
-  data_doc                DATE    NOT NULL,            -- Data do documento de quantidade de ações
   mes                     INTEGER NOT NULL,            -- Mês extraído de data_doc (1-12)
   ano                     INTEGER NOT NULL,            -- Ano extraído de data_doc (ex.: 2020, 2021 etc.)
   FOREIGN KEY (cnpj_companhia, ano, mes)      REFERENCES empresas(cnpj_companhia, ano, mes),
-  UNIQUE (fonte_dados, cnpj_companhia, data_referencia, data_doc) -- Garante unicidade por fonte, empresa e datas
+  UNIQUE (fonte_dados, cnpj_companhia, data_referencia) -- Garante unicidade por fonte, empresa e datas
 );
 
 -- ==========================

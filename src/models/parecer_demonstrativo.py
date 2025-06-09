@@ -51,19 +51,19 @@ class Parecer_demonstrativo:
         self._num_linha_parecer_declaracao = value
 
     @property
-    def tipo_parecer_declaracao(self):
+    def id_tipo_parecer(self):
         return self._id_tipo_parecer
 
-    @tipo_parecer_declaracao.setter
-    def tipo_parecer_declaracao(self, value):
+    @id_tipo_parecer.setter
+    def id_tipo_parecer(self, value):
         self._id_tipo_parecer = value
 
     @property
-    def tipo_relatorio_auditor(self):
+    def id_tipo_rel_auditor(self):
         return self._id_tipo_rel_auditor
 
-    @tipo_relatorio_auditor.setter
-    def tipo_relatorio_auditor(self, value):
+    @id_tipo_rel_auditor.setter
+    def id_tipo_rel_auditor(self, value):
         self._id_tipo_rel_auditor = value
 
     @property

@@ -88,15 +88,14 @@ class ConexaoBanco:
                             INSERT INTO parecer_demonstrativo (
                                 cnpj_companhia,
                                 num_linha_parecer_declaracao,
-                                tipo_parecer_declaracao,
-                                tipo_relatorio_auditor,
+                                id_tipo_parecer,
+                                id_tipo_rel_auditor,
                                 texto_parecer_declaracao,
                                 versao,
                                 data_referencia_doc,
-                                mes_doc,
-                                ano_doc
+                                mes,
+                                ano
                             ) VALUES (
-                                ?,
                                 ?,
                                 ?,
                                 ?,
@@ -113,8 +112,8 @@ class ConexaoBanco:
             values = (
                 tratar_valor(parecer_demonstrativo.cnpj_companhia),
                 tratar_valor(parecer_demonstrativo.num_linha_parecer_declaracao, tipo="int"),
-                tratar_valor(parecer_demonstrativo.tipo_parecer_declaracao),
-                tratar_valor(parecer_demonstrativo.tipo_relatorio_auditor),
+                tratar_valor(parecer_demonstrativo.id_tipo_rel_auditor, tipo="int"),
+                tratar_valor(parecer_demonstrativo.id_tipo_rel_auditor, tipo="int"),
                 tratar_valor(parecer_demonstrativo.texto_parecer_declaracao),
                 tratar_valor(parecer_demonstrativo.versao, tipo="int"),
                 tratar_valor(parecer_demonstrativo.data_referencia_doc, tipo="date"),

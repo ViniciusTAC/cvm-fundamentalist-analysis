@@ -9,9 +9,8 @@ class Parecer_trimestral:
     _texto_parecer_declaracao: str
     _versao: int
     _data_referencia_doc: date
-    _data_doc: date
-    _mes_doc: str
-    _ano_doc: str
+    _mes: str
+    _ano: str
 
     def __init__(
         self,
@@ -22,9 +21,8 @@ class Parecer_trimestral:
         _texto_parecer_declaracao,
         _versao,
         _data_referencia_doc,
-        _data_doc,
-        _mes_doc,
-        _ano_doc,
+        _mes,
+        _ano,
     ):
         self._cnpj_companhia = _cnpj_companhia
         self._num_linha_parecer_declaracao = _num_linha_parecer_declaracao
@@ -33,9 +31,8 @@ class Parecer_trimestral:
         self._texto_parecer_declaracao = _texto_parecer_declaracao
         self._versao = _versao
         self._data_referencia_doc = _data_referencia_doc
-        self._data_doc = _data_doc
-        self._mes_doc = _mes_doc
-        self._ano_doc = _ano_doc
+        self._mes = _mes
+        self._ano = _ano
 
     @property
     def cnpj_companhia(self):
@@ -54,19 +51,19 @@ class Parecer_trimestral:
         self._num_linha_parecer_declaracao = value
 
     @property
-    def tipo_parecer_declaracao(self):
+    def id_tipo_parecer(self):
         return self._id_tipo_parecer
 
-    @tipo_parecer_declaracao.setter
-    def tipo_parecer_declaracao(self, value):
+    @id_tipo_parecer.setter
+    def id_tipo_parecer(self, value):
         self._id_tipo_parecer = value
 
     @property
-    def tipo_relatorio_auditor(self):
+    def id_tipo_rel_especial(self):
         return self._id_tipo_rel_especial
 
-    @tipo_relatorio_auditor.setter
-    def tipo_relatorio_auditor(self, value):
+    @id_tipo_rel_especial.setter
+    def id_tipo_rel_especial(self, value):
         self._id_tipo_rel_especial = value
 
     @property
@@ -94,28 +91,20 @@ class Parecer_trimestral:
         self._data_referencia_doc = value
 
     @property
-    def data_doc(self):
-        return self._data_doc
+    def mes(self):
+        return self._mes
 
-    @data_doc.setter
-    def data_doc(self, value):
-        self._data_doc = value
-
-    @property
-    def mes_doc(self):
-        return self._mes_doc
-
-    @mes_doc.setter
-    def mes_doc(self, value):
-        self._mes_doc = value
+    @mes.setter
+    def mes(self, value):
+        self._mes = value
 
     @property
-    def ano_doc(self):
-        return self._ano_doc
+    def ano(self):
+        return self._ano
 
-    @ano_doc.setter
-    def ano_doc(self, value):
-        self._ano_doc = value
+    @ano.setter
+    def ano(self, value):
+        self._ano = value
 
     def mostrarDados(self):
         print("self._cnpj_companhia: ", str(self._cnpj_companhia))
@@ -129,5 +118,5 @@ class Parecer_trimestral:
         print("versao: ", str(self._versao))
         print("data_referencia_doc: ", str(self._data_referencia_doc))
         print("data_doc: ", str(self._data_doc))
-        print("mes_doc: ", str(self._mes_doc))
-        print("ano_doc: ", str(self._ano_doc))
+        print("mes: ", str(self._mes))
+        print("ano: ", str(self._ano))

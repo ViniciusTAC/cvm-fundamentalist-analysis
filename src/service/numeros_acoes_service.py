@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 from datetime import datetime
+import re
 
 from models.numeros_acoes import Numeros_Acoes
 
@@ -38,9 +39,10 @@ def process_csv_files(base_path, fonte_dados):
                 # Processa cada linha do DataFrame
                 for _, row in df.iterrows():
                     numero_acoes = Numeros_Acoes(
-                        _fonte_dados=fonte_dados,
-                        _cnpj_companhia=row.get("CNPJ_CIA", None),
-                        _denominacao_companhia=row.get("DENOM_CIA", None),
+                        _fonte_dados=fonte_dados,                        _cnpj_companhia=re.sub(
+                            r"\D", "", row.get("CNPJ_CIA") or ""
+                        ),
+                        # _cnpj_companhia=row.get("CNPJ_CIA", None),
                         _qtd_acoes_ordinarias_capital_integralizado=row.get(
                             "QT_ACAO_ORDIN_CAP_INTEGR", None
                         ),
@@ -58,10 +60,9 @@ def process_csv_files(base_path, fonte_dados):
                         ),
                         _qtd_total_acoes_tesouro=row.get("QT_ACAO_TOTAL_TESOURO", None),
                         _versao=row.get("VERSAO", None),
-                        _data_referencia_doc=row.get("DT_REFER", None),
-                        _data_doc=datetime.now().date(),
-                        _mes_doc=str(row.get("DT_REFER"))[5:7],
-                        _ano_doc=str(row.get("DT_REFER"))[:4],
+                        _data_referencia=row.get("DT_REFER", None),
+                        _mes=str(row.get("DT_REFER"))[5:7],
+                        _ano=str(row.get("DT_REFER"))[:4],
                     )
                     # Adiciona os dados à lista
                     numero_acoes_list.append(numero_acoes)

@@ -111,7 +111,7 @@ class ConexaoBanco:
 
             query = """
                 INSERT INTO demonstrativo_financeiro (
-                    codigo_cvm,
+                    cnpj_companhia,
                     id_plano_conta,
                     id_escala,
                     codigo_grupo_dfp,
@@ -123,12 +123,11 @@ class ConexaoBanco:
                     data_fim_exercicio,
                     data_referencia_doc,
                     valor_conta,
-                    data_doc,
-                    mes_doc,
-                    ano_doc
+                    mes,
+                    ano
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ON CONFLICT(codigo_cvm, id_plano_conta, codigo_grupo_dfp, conta_fixa, mes_doc, ano_doc) DO UPDATE SET
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(cnpj_companhia, id_plano_conta, codigo_grupo_dfp, conta_fixa, mes, ano) DO UPDATE SET
                     id_escala = excluded.id_escala,
                     id_moeda = excluded.id_moeda,
                     id_ordem = excluded.id_ordem,
@@ -136,12 +135,11 @@ class ConexaoBanco:
                     data_inicio_exercicio = excluded.data_inicio_exercicio,
                     data_fim_exercicio = excluded.data_fim_exercicio,
                     data_referencia_doc = excluded.data_referencia_doc,
-                    valor_conta = excluded.valor_conta,
-                    data_doc = excluded.data_doc
+                    valor_conta = excluded.valor_conta
             """
 
             values = (
-                tratar_valor(demonstrativo.codigo_cvm),
+                tratar_valor(demonstrativo.cnpj_companhia),
                 tratar_valor(demonstrativo.id_plano_conta),
                 tratar_valor(demonstrativo.id_escala),
                 tratar_valor(demonstrativo.codigo_grupo_dfp),
@@ -153,7 +151,6 @@ class ConexaoBanco:
                 tratar_valor(demonstrativo.data_fim_exercicio, tipo="date"),
                 tratar_valor(demonstrativo.data_referencia_doc, tipo="date"),
                 tratar_valor(demonstrativo.valor_conta, tipo="float"),
-                tratar_valor(demonstrativo.data_doc, tipo="date"),
                 tratar_valor(demonstrativo.mes, tipo="int"),
                 tratar_valor(demonstrativo.ano, tipo="int"),
             )
@@ -162,19 +159,19 @@ class ConexaoBanco:
 
             # self.connection.commit()
             self.log_sucesso.info(
-                f"Demonstrativo inserido para CNPJ {demonstrativo._cnpj_companhia}, conta {demonstrativo._codigo_conta}, mês {demonstrativo._mes_doc}, ano {demonstrativo._ano_doc}."
+                f"Demonstrativo inserido para CNPJ {demonstrativo._cnpj_companhia}, conta {demonstrativo._id_plano_conta}, mês {demonstrativo._mes}, ano {demonstrativo._ano}."
             )
             print(
-                f"✔ Demonstrativo inserido para CNPJ {demonstrativo._cnpj_companhia}, conta {demonstrativo._codigo_conta}."
+                f"✔ Demonstrativo inserido para CNPJ {demonstrativo._cnpj_companhia}, conta {demonstrativo._id_plano_conta}, mês {demonstrativo._mes}, ano {demonstrativo._ano}."
             )
         except sqlite3.Error as e:
             escrever_linha_em_branco(self.log_erro)
             escrever_linha_separador(self.log_erro)
             self.log_erro.error(
-                f"Erro ao inserir demonstrativo para CNPJ {demonstrativo._cnpj_companhia}, conta {demonstrativo._codigo_conta}, erro: {e}."
+                f"Erro ao inserir demonstrativo para CNPJ {demonstrativo._cnpj_companhia}, conta {demonstrativo._id_plano_conta}, mês {demonstrativo._mes}, ano {demonstrativo._ano}, erro: {e}."
             )
             print(
-                f"❌ Erro ao inserir demonstrativo para CNPJ {demonstrativo._cnpj_companhia}, erro: {e}"
+                f"Erro ao inserir demonstrativo para CNPJ {demonstrativo._cnpj_companhia}, conta {demonstrativo._id_plano_conta}, mês {demonstrativo._mes}, ano {demonstrativo._ano}, erro: {e}."
             )
 
 

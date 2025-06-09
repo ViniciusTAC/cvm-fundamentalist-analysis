@@ -1,21 +1,31 @@
-Empresas: Todos os 10678 registros inseridos com sucesso.
+Espécies de Controle: 6 inseridos, 0 com erro.
 
-Periódicos Eventuais: Todos os 684037 registros inseridos com sucesso.
+Situação do Emissor: 8 inseridos, 0 com erro.
 
-Formulários de Referência: Todos os 66234 registros inseridos com sucesso.
+Setor de Atividade: 66 inseridos, 0 com erro.
 
-Parecer - Demonst. Financeiros: Todos os 48465 registros inseridos com sucesso.
+Categoria Documento: 0 inseridos, 0 com erro.
 
-Parecer - Inf. Trimestrais: Todos os 85331 registros inseridos com sucesso.
+Tipo Parecer: 0 inseridos, 0 com erro.
 
-Número de Ações: Todos os 15020 inseridos com sucesso.
+Escala Monetária: 4 inseridos, 0 com erro.
 
-Demonstrativos Financeiros: Todos os 465858 inseridos com sucesso.
+Ordem Exercício: 4 inseridos, 0 com erro.
 
-Informações Trimestrais: Todos os 1647972 inseridos com sucesso.
+Moeda: 2 inseridos, 0 com erro.
 
-Número de Ações: Todos os 15020 inseridos com sucesso.
+Erro fatal em Empresas: expected str, bytes or os.PathLike object, not ConexaoBanco
 
-Demonstrativos Financeiros: Todos os 465858 inseridos com sucesso.
+Erro fatal em Periódicos Eventuais: expected str, bytes or os.PathLike object, not ConexaoBanco
 
-Informações Trimestrais: Todos os 1647972 inseridos com sucesso.
+Erro fatal em Formulários de Referência: expected str, bytes or os.PathLike object, not ConexaoBanco
+
+Erro fatal em Parecer - Demonstrativos: expected str, bytes or os.PathLike object, not ConexaoBanco
+
+Erro fatal em Parecer - Trimestral: expected str, bytes or os.PathLike object, not ConexaoBanco
+
+Número de Ações: 14608 inseridos, 0 com erro.
+
+Demonstrativos Financeiros: 932176 inseridos, 0 com erro.
+
+Informações Trimestrais: 1628158 inseridos, 0 com erro.
