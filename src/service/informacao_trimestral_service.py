@@ -46,9 +46,10 @@ def parse_date(date_str):
         return None
 
 
-def carregar_mapas_auxiliares(db_path):
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
+def carregar_mapas_auxiliares(conexao):
+    cursor = conexao.connection.cursor()
+    # conn = sqlite3.connect(db_path)
+    # cursor = conn.cursor()
 
     def carregar_tabela(nome_tabela, nome_id_coluna):
         cursor.execute(f"SELECT {nome_id_coluna}, descricao FROM {nome_tabela}")
@@ -60,14 +61,14 @@ def carregar_mapas_auxiliares(db_path):
         "ordem_exercicio": carregar_tabela("ordem_exercicio", "id_ordem"),
     }
 
-    conn.close()
+    # conn.close()
     return mapas
 
 
-def process_dfp_files(base_path, conexao, db_path):
+def process_dfp_files(base_path, conexao):
     informacao_tri_list = []
-    mapas = carregar_mapas_auxiliares(db_path)
     cursor = conexao.connection.cursor()
+    mapas = carregar_mapas_auxiliares(conexao)
     grupo_demostrativo = carregar_grupos_demonstrativo(cursor)
     planos_contas = carregar_planos_contas(cursor)
 

@@ -497,7 +497,7 @@ def run_processos_selecionados(vars):
             conn.execute("BEGIN")
 
             if usa_banco:
-                dados = process_func(caminho, CAMINHO_BANCO, *args_extra)
+                dados = process_func(caminho, banco, *args_extra)
             else:
                 dados = (
                     process_func(caminho, *args_extra)
@@ -637,7 +637,7 @@ def run_processos_selecionados(vars):
                 try:
                     banco.inserir_numeros_acoes(d)
                     sucesso += 1
-                except:
+                except:  # noqa: E722
                     falha += 1
             conn.commit()
             banco.desconectar()
@@ -653,7 +653,7 @@ def run_processos_selecionados(vars):
             process_dfp,
             "inserir_ou_atualizar_demonstrativo",
             True,
-            CAMINHO_BANCO,
+            # CAMINHO_BANCO,
         )
 
     if vars["itr"].get():
@@ -664,7 +664,7 @@ def run_processos_selecionados(vars):
             process_itr,
             "inserir_ou_atualizar_informacao_tri",
             True,
-            CAMINHO_BANCO,
+            # CAMINHO_BANCO,
         )
     print("\n✅ Execução finalizada.\n")
     resumo_texto = "\n\n".join(mensagens)

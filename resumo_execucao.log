@@ -14,18 +14,18 @@ Ordem Exercício: 4 inseridos, 0 com erro.
 
 Moeda: 2 inseridos, 0 com erro.
 
-Empresas: 10899 inseridos, 0 com erro.
+Empresas: 10850 inseridos, 0 com erro.
 
-Periódicos Eventuais: 681785 inseridos, 0 com erro.
+Periódicos Eventuais: 684705 inseridos, 0 com erro.
 
-Formulários de Referência: 65915 inseridos, 0 com erro.
+Formulários de Referência: 66777 inseridos, 0 com erro.
 
-Parecer - Demonstrativos: 48487 inseridos, 0 com erro.
+Parecer - Demonstrativos: 48476 inseridos, 0 com erro.
 
-Parecer - Trimestral: 83923 inseridos, 0 com erro.
+Parecer - Trimestral: 85369 inseridos, 0 com erro.
 
-Número de Ações: 14608 inseridos, 0 com erro.
+Número de Ações: 15031 inseridos, 0 com erro.
 
-Erro fatal em Demonstrativos Financeiros: 'str' object has no attribute 'connection'
+Demonstrativos Financeiros: 931892 inseridos, 0 com erro.
 
-Erro fatal em Informações Trimestrais: 'str' object has no attribute 'connection'
+Informações Trimestrais: 1648436 inseridos, 0 com erro.
