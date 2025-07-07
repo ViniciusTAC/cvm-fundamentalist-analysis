@@ -73,7 +73,7 @@ def upsert_dataframe(df: pd.DataFrame, table_name: str, conn: sqlite3.Connection
     print(f"✅ Tabela {table_name}: {novos} inseridos, {atualizados} atualizados.")
 
 def main():
-    print("🚀 Iniciando processo de análise fundamentalista...")
+    print("\n🚀 Iniciando processo de análise fundamentalista...")
     conn = sqlite3.connect(CAMINHO_BANCO)
 
     create_sql, itr_sql, dfp_sql = carregar_sqls()
