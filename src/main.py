@@ -1,4 +1,3 @@
-
 import os
 import sys
 import subprocess
@@ -74,7 +73,9 @@ from repository.setor_atividade_repository import ConexaoBanco as BancoSetor_ati
 def configurar_argumentos():
     parser = argparse.ArgumentParser(description="Processador CVM")
     parser.add_argument("-d", "--debug", action="store_true", help="Ativa modo debug")
-    parser.add_argument("-v", "--verbose", action="store_true", help="Ativa modo verbose")
+    parser.add_argument(
+        "-v", "--verbose", action="store_true", help="Ativa modo verbose"
+    )
     return parser.parse_args()
 
 
@@ -122,6 +123,15 @@ def executar_script_inicial():
         sys.exit(1)
 
 
+def executar_script_final():
+    try:
+        subprocess.run([sys.executable, "src/rodar_analise.py"], check=True)
+        # print("\u2705 Script de Analise Fundamenstalista executado com sucesso.")
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Erro ao executar o script:\n{str(e)}")
+        sys.exit(1)
+
+
 def run_processos_selecionados(vars):
     print("🔄 Executando...\n")
     mensagens = []
@@ -134,7 +144,15 @@ def run_processos_selecionados(vars):
         coletor.collect_data()
         mensagens.append("Coleta e extração concluídas.")
 
-    def executar_etapa(etiqueta, caminho, banco_cls, process_func, insert_func, usa_banco=False, *args_extra):
+    def executar_etapa(
+        etiqueta,
+        caminho,
+        banco_cls,
+        process_func,
+        insert_func,
+        usa_banco=False,
+        *args_extra,
+    ):
         try:
             banco = banco_cls(db_path=CAMINHO_BANCO)
             banco.conectar()
@@ -144,7 +162,11 @@ def run_processos_selecionados(vars):
             if usa_banco:
                 dados = process_func(caminho, banco, *args_extra)
             else:
-                dados = process_func(caminho, *args_extra) if args_extra else process_func(caminho)
+                dados = (
+                    process_func(caminho, *args_extra)
+                    if args_extra
+                    else process_func(caminho)
+                )
 
             sucesso = falha = 0
             for dado in dados:
@@ -166,42 +188,106 @@ def run_processos_selecionados(vars):
 
     # Auxiliares simples
     if vars["especies_controle"].get():
-        executar_etapa("Espécies de Controle", "data_extraido/FCA/sucesso", BancoEspecie_controle, process_especie_controle, "inserir_ou_ignorar_especie_controle")
+        executar_etapa(
+            "Espécies de Controle",
+            "data_extraido/FCA/sucesso",
+            BancoEspecie_controle,
+            process_especie_controle,
+            "inserir_ou_ignorar_especie_controle",
+        )
 
     if vars["situacao_emissor"].get():
-        executar_etapa("Situação do Emissor", "data_extraido/FCA/sucesso", BancoSituacao_emissor, process_situacao_emissor, "inserir_ou_ignorar_situacao_emissor")
+        executar_etapa(
+            "Situação do Emissor",
+            "data_extraido/FCA/sucesso",
+            BancoSituacao_emissor,
+            process_situacao_emissor,
+            "inserir_ou_ignorar_situacao_emissor",
+        )
 
     if vars["setor_atividade"].get():
-        executar_etapa("Setor de Atividade", "data_extraido/FCA/sucesso", BancoSetor_atividade, process_setor_atividade, "inserir_ou_ignorar_setor_atividade")
+        executar_etapa(
+            "Setor de Atividade",
+            "data_extraido/FCA/sucesso",
+            BancoSetor_atividade,
+            process_setor_atividade,
+            "inserir_ou_ignorar_setor_atividade",
+        )
 
     # Auxiliares extras
-    if vars["categoria_documento"].get(): mensagens.append(executar_categoria_documento())# noqa: E701
-    if vars["tipo_parecer"].get(): mensagens.append(executar_tipo_parecer())# noqa: E701
-    if vars["escala_monetaria"].get(): mensagens.append(executar_escala_monetaria())# noqa: E701
-    if vars["ordem_exercicio"].get(): mensagens.append(executar_ordem_exercicio())# noqa: E701
-    if vars["moeda"].get(): mensagens.append(executar_moeda())# noqa: E701
-    if vars["tipo_relatorio_auditor"].get(): mensagens.append(executar_tipo_relatorio_auditor())# noqa: E701
-    if vars["tipo_relatorio_especial"].get(): mensagens.append(executar_tipo_relatorio_especial())# noqa: E701
-    if vars["assunto_prensa"].get(): mensagens.append(executar_assunto_prensa())# noqa: E701
-    if vars["especie_documento_eventual"].get(): mensagens.append(executar_especie_documento_eventual())# noqa: E701
-    if vars["tipo_evento"].get(): mensagens.append(executar_tipo_evento())# noqa: E701
-    if vars["tipo_apresentacao_evento"].get(): mensagens.append(executar_tipo_apresentacao_evento())  # noqa: E701
+    if vars["categoria_documento"].get():
+        mensagens.append(executar_categoria_documento())  # noqa: E701
+    if vars["tipo_parecer"].get():
+        mensagens.append(executar_tipo_parecer())  # noqa: E701
+    if vars["escala_monetaria"].get():
+        mensagens.append(executar_escala_monetaria())  # noqa: E701
+    if vars["ordem_exercicio"].get():
+        mensagens.append(executar_ordem_exercicio())  # noqa: E701
+    if vars["moeda"].get():
+        mensagens.append(executar_moeda())  # noqa: E701
+    if vars["tipo_relatorio_auditor"].get():
+        mensagens.append(executar_tipo_relatorio_auditor())  # noqa: E701
+    if vars["tipo_relatorio_especial"].get():
+        mensagens.append(executar_tipo_relatorio_especial())  # noqa: E701
+    if vars["assunto_prensa"].get():
+        mensagens.append(executar_assunto_prensa())  # noqa: E701
+    if vars["especie_documento_eventual"].get():
+        mensagens.append(executar_especie_documento_eventual())  # noqa: E701
+    if vars["tipo_evento"].get():
+        mensagens.append(executar_tipo_evento())  # noqa: E701
+    if vars["tipo_apresentacao_evento"].get():
+        mensagens.append(executar_tipo_apresentacao_evento())  # noqa: E701
 
     # Tabelas principais
     if vars["empresas"].get():
-        executar_etapa("Empresas", "data_extraido/FCA/sucesso", BancoEmpresas, process_empresas, "inserir_ou_atualizar_empresa", True)
+        executar_etapa(
+            "Empresas",
+            "data_extraido/FCA/sucesso",
+            BancoEmpresas,
+            process_empresas,
+            "inserir_ou_atualizar_empresa",
+            True,
+        )
 
     if vars["ipe"].get():
-        executar_etapa("Periódicos Eventuais", "data_extraido/IPE/sucesso", BancoIPE, process_ipe, "inserir_periodicos_eventuais", True)
+        executar_etapa(
+            "Periódicos Eventuais",
+            "data_extraido/IPE/sucesso",
+            BancoIPE,
+            process_ipe,
+            "inserir_periodicos_eventuais",
+            True,
+        )
 
     if vars["fre"].get():
-        executar_etapa("Formulários de Referência", "data_extraido/FRE/sucesso", BancoFRE, process_fre, "inserir_formulario_referencia", True)
+        executar_etapa(
+            "Formulários de Referência",
+            "data_extraido/FRE/sucesso",
+            BancoFRE,
+            process_fre,
+            "inserir_formulario_referencia",
+            True,
+        )
 
     if vars["parecer_demo"].get():
-        executar_etapa("Parecer - Demonstrativos", "data_extraido/DFP/sucesso", BancoParecerDemo, process_parecer_demo, "inserir_parecer_demonstrativo", True)
+        executar_etapa(
+            "Parecer - Demonstrativos",
+            "data_extraido/DFP/sucesso",
+            BancoParecerDemo,
+            process_parecer_demo,
+            "inserir_parecer_demonstrativo",
+            True,
+        )
 
     if vars["parecer_trim"].get():
-        executar_etapa("Parecer - Trimestral", "data_extraido/ITR/sucesso", BancoParecerTrim, process_parecer_trim, "inserir_parecer_trimestral", True)
+        executar_etapa(
+            "Parecer - Trimestral",
+            "data_extraido/ITR/sucesso",
+            BancoParecerTrim,
+            process_parecer_trim,
+            "inserir_parecer_trimestral",
+            True,
+        )
 
     if vars["num_acoes"].get():
         try:
@@ -209,7 +295,9 @@ def run_processos_selecionados(vars):
             banco.conectar()
             conn = banco.connection
             conn.execute("BEGIN")
-            dados = process_num_acoes("data_extraido/DFP/sucesso", "DFP") + process_num_acoes("data_extraido/ITR/sucesso", "ITR")
+            dados = process_num_acoes(
+                "data_extraido/DFP/sucesso", "DFP"
+            ) + process_num_acoes("data_extraido/ITR/sucesso", "ITR")
             sucesso = falha = 0
             for d in dados:
                 if cancelar_evento.is_set():
@@ -229,12 +317,30 @@ def run_processos_selecionados(vars):
             mensagens.append(f"Erro fatal em Número de Ações: {str(e)}")
 
     if vars["dfp"].get():
-        executar_etapa("Demonstrativos Financeiros", "data_extraido/DFP/sucesso", BancoDemostrativo, process_dfp, "inserir_ou_atualizar_demonstrativo", True)
+        executar_etapa(
+            "Demonstrativos Financeiros",
+            "data_extraido/DFP/sucesso",
+            BancoDemostrativo,
+            process_dfp,
+            "inserir_ou_atualizar_demonstrativo",
+            True,
+        )
 
     if vars["itr"].get():
-        executar_etapa("Informações Trimestrais", "data_extraido/ITR/sucesso", BancoInformacaoTri, process_itr, "inserir_ou_atualizar_informacao_tri", True)
+        executar_etapa(
+            "Informações Trimestrais",
+            "data_extraido/ITR/sucesso",
+            BancoInformacaoTri,
+            process_itr,
+            "inserir_ou_atualizar_informacao_tri",
+            True,
+        )
+
+
+    executar_script_final()
 
     print("\n✅ Execução finalizada.\n")
+
     tempo_fim = time.time()
     duracao = tempo_fim - tempo_inicio
     duracao_formatada = time.strftime("%H:%M:%S", time.gmtime(duracao))
@@ -251,7 +357,13 @@ def run_processos_selecionados(vars):
 
 if __name__ == "__main__":
     args = configurar_argumentos()
-    nivel_log = logging.DEBUG if args.debug else logging.INFO if args.verbose else logging.WARNING
+    nivel_log = (
+        logging.DEBUG
+        if args.debug
+        else logging.INFO
+        if args.verbose
+        else logging.WARNING
+    )
     logger = configurar_logger(nivel=nivel_log)
 
     try:

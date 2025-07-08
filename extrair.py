@@ -2,7 +2,7 @@ import os
 import zipfile
 
 # Caminhos de origem e destino
-pasta_zip = r"C:\Users\vinicius.costa\OneDrive - Sitio Recanto do Queijo\Documentos\cvm-fundamentalist-analysis\CIA_ABERTA"
+pasta_zip = r"CIA_ABERTA"
 pasta_destino = os.path.join(os.path.dirname(pasta_zip), "CIA_ABERTA_extraida")
 
 # Percorrer a pasta de origem
