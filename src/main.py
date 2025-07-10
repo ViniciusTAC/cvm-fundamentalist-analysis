@@ -126,7 +126,6 @@ def executar_script_inicial():
 def executar_script_final():
     try:
         subprocess.run([sys.executable, "src/rodar_analise.py"], check=True)
-        # print("\u2705 Script de Analise Fundamenstalista executado com sucesso.")
     except subprocess.CalledProcessError as e:
         print(f"❌ Erro ao executar o script:\n{str(e)}")
         sys.exit(1)

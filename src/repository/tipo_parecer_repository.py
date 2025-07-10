@@ -89,20 +89,21 @@ class ConexaoBanco:
             query = """
                 INSERT INTO tipo_parecer (
                     descricao
-                )
-                VALUES (
+                ) VALUES (
                     ?
                 )
+                ON CONFLICT(descricao) DO UPDATE SET
+                    descricao = excluded.descricao
             """
 
             values = (tratar_valor(tipo_parecer._descricao),)
 
             cursor.execute(query, values)
-            # self.connection.commit()
+            # self.connection.commit()  # descomente se o commit for necessário aqui
             self.log_sucesso.info(
-                f"Tipo parecer: {tipo_parecer._descricao} inserida/atualizada com sucesso."
+                f"Tipo parecer: {tipo_parecer._descricao} inserido/atualizado com sucesso."
             )
-            print(f"Tipo parecer: {tipo_parecer._descricao} inserida com sucesso.")
+            print(f"Tipo parecer: {tipo_parecer._descricao} inserido/atualizado com sucesso.")
         except sqlite3.Error as e:
             escrever_linha_em_branco(self.log_erro)
             escrever_linha_separador(self.log_erro)
@@ -112,9 +113,7 @@ class ConexaoBanco:
             )
             escrever_linha_em_branco(self.log_erro)
             print(f"Erro ao inserir Tipo parecer: {tipo_parecer._descricao}, erro: {e}.")
-            # if commit:
-            #     self.connection.rollback()
-            # raise
+
 
 
 def tratar_valor(valor, tipo=None):
