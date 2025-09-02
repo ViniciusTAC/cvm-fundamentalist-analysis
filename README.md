@@ -138,7 +138,7 @@ python src/main.py
 
 ## 📄 Licença
 
-Este projeto é open-source sob a licença MIT. --> -->
+Este projeto é open-source sob a licença MIT. -->
 
 
 # CVM Fundamentalist Analysis
